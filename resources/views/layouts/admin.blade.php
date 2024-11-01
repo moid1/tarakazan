@@ -30,31 +30,35 @@
     <div class="container-fluid">
         <div class="row w-100 m-0">
             <div class="chemist-sidebar col-lg-3 d-none d-lg-block">
-                {{-- <button id="toggle-sidebar" class="toggle-btn">☰</button> --}}
                 <div class="row">
                     <span class="chemist-logo1 ">
                         <img src="{{ asset('images/tarakazan_logo.png') }}" alt="" class="img-fluid ">
                     </span>
                     <ul>
-                        <li class="active">
-                            <a href="../Admin Portal/adminDashboard.html"><img class="me-2 ms-1"
-                                    src="../images/chemist dashboard.svg" alt="" />Dashboard</a>
+                        <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                            <a href="../Admin Portal/adminDashboard.html">
+                                <img class="me-2 ms-1" src="../images/chemist dashboard.svg" alt="" />Dashboard
+                            </a>
                         </li>
-                        <li>
-                            <a href="../Admin Portal/adminProducts.html"><img class="me-2"
-                                    src="../images/chemist package box 06.svg" alt="" />Business Owners</a>
+                        <li class="{{ request()->routeIs('admin.business.owner.create') ? 'active' : '' }}">
+                            <a href="{{ route('admin.business.owner.create') }}">
+                                <img class="me-2" src="{{ asset('images/chemist package box 06.svg') }}" alt="" />Business Owners
+                            </a>
                         </li>
-                        <li>
-                            <a href="../Admin Portal/adminOrders.html"><img class="me-2"
-                                    src="../images/chemist shopping bag.svg" alt="" />Customers</a>
+                        <li class="{{ request()->routeIs('admin.orders') ? 'active' : '' }}">
+                            <a href="../Admin Portal/adminOrders.html">
+                                <img class="me-2" src="../images/chemist shopping bag.svg" alt="" />Customers
+                            </a>
                         </li>
-                        <li>
-                            <a href="../Admin Portal/adminChemists.html"><img class="me-2"
-                                    src="../images/heart-pulse.svg" alt="" />Packages</a>
+                        <li class="{{ request()->routeIs('admin.chemists') ? 'active' : '' }}">
+                            <a href="../Admin Portal/adminChemists.html">
+                                <img class="me-2" src="../images/heart-pulse.svg" alt="" />Packages
+                            </a>
                         </li>
                     </ul>
                 </div>
             </div>
+            
             <!-- ########################### For Small Screen Menu ######################### -->
             <div class="col-12 small-screen-nav d-lg-none ">
                 <div class="row ">
@@ -64,7 +68,8 @@
                             <span onclick="toggleclick();" class="line2 line"></span>
                             <span onclick="toggleclick();" class="line3 line"></span>
                         </div>
-                        <img class="small-screen-logo mx-auto" src="{{ asset('images/tarakazan_logo.png') }}" alt="">
+                        <img class="small-screen-logo mx-auto" src="{{ asset('images/tarakazan_logo.png') }}"
+                            alt="">
                     </div>
 
                     <div class="col-12 chemist-sidebar chemist-top-menubar">
@@ -122,71 +127,10 @@
                             <div class="welcome-order mt-3">Welcome, Manage your business</div>
                         </div>
                     </div>
-
-
-                    <div class="row dashboard-detail ">
-                        <div class="col-4">
-                            <div class=" detail-container1">
-                                <img class="ms-3 mt-3" src="../images/dash detail 1.svg" alt="" />
-                                <span class="detail-h1">Total Active Businesses</span>
-                                <div class="detail-h2">49</div>
-                                <div style="border-top: 1px solid #ededed">
-                                    <span class="detail-h3">Update: October 20, 2023</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class=" detail-container1">
-                                <img class="ms-3 mt-3" src="../images/dash detail 2.svg" alt="" />
-                                <span class="detail-h1">Total Customer Interactions</span>
-                                <div class="detail-h2">560</div>
-
-                                <div style="border-top: 1px solid #ededed">
-                                    <span class="detail-h3">Update: October 20, 2023</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class=" detail-container1">
-                                <img class="ms-3 mt-3" src="../images/dash detail 3.svg" alt="" />
-                                <span class="detail-h1">Total Revenue</span>
-                                <div class="detail-h2">10589</div>
-
-                                <div style="border-top: 1px solid #ededed">
-                                    <span class="detail-h3">Update: October 20, 2023</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <!-- ############################ CHARTS ############################  -->
-
-                    <div class="chart-container col-12 mt-3">
-                        <div class="chart-box1 ">
-                            <div class="chart-box ">
-                                <div class="chart-btn-div">
-                                    <span class="chart-heading">Total Customers</span>
-                                    {{-- <button>This Month <img class="ms-2" src="../images/Vector 1755.svg"
-                                            alt=""></button> --}}
-                                </div>
-                                <canvas id="revenueChart"></canvas>
-                            </div>
-                        </div>
-                        <div class="chart-box2">
-                            <div class="chart-box ">
-                                <div class="chart-btn-div">
-                                    <span class="chart-heading">Local Business Owners</span>
-                                    {{-- <button>This Month <img class="ms-2" src="../images/Vector 1755.svg"
-                                            alt=""></button> --}}
-                                </div>
-                                <canvas id="orderChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+                @yield('content')
             </div>
+
         </div>
     </div>
 
