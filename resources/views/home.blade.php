@@ -7,9 +7,7 @@
                 <img class="ms-3 mt-3" src="../images/dash detail 1.svg" alt="" />
                 <span class="detail-h1">Total Active Businesses</span>
                 <div class="detail-h2">49</div>
-                <div style="border-top: 1px solid #ededed">
-                    <span class="detail-h3">Update: October 20, 2023</span>
-                </div>
+               
             </div>
         </div>
         <div class="col-4">
@@ -18,9 +16,7 @@
                 <span class="detail-h1">Total Customer Interactions</span>
                 <div class="detail-h2">560</div>
 
-                <div style="border-top: 1px solid #ededed">
-                    <span class="detail-h3">Update: October 20, 2023</span>
-                </div>
+                
             </div>
         </div>
         <div class="col-4">
@@ -29,9 +25,7 @@
                 <span class="detail-h1">Total Revenue</span>
                 <div class="detail-h2">10589</div>
 
-                <div style="border-top: 1px solid #ededed">
-                    <span class="detail-h3">Update: October 20, 2023</span>
-                </div>
+                
             </div>
         </div>
     </div>

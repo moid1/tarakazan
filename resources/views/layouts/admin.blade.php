@@ -47,7 +47,7 @@
                             </a>
                         </li>
                         <li class="{{ request()->routeIs('admin.orders') ? 'active' : '' }}">
-                            <a href="../Admin Portal/adminOrders.html">
+                            <a href="{{route('customers.index')}}">
                                 <img class="me-2" src="../images/chemist shopping bag.svg" alt="" />Customers
                             </a>
                         </li>

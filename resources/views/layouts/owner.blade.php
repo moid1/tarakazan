@@ -44,7 +44,7 @@
 
                         <!-- Customers -->
                         <li class="{{ request()->routeIs('admin.customers') ? 'active' : '' }}">
-                            <a href="">
+                            <a href="{{route('customers.index')}}">
                                 <i class="fas fa-users me-2"></i> Customers
                             </a>
                         </li>
@@ -72,19 +72,19 @@
 
                         <li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
+                                onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">
                                 <!-- Font Awesome Logout Icon -->
                                 <i class="fas fa-sign-out-alt me-2"></i> <!-- Logout icon -->
                                 {{ __('Logout') }}
                             </a>
-                        
+
                             <!-- Logout Form -->
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
                         </li>
-                        
+
                     </ul>
 
                 </div>

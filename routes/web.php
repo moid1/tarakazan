@@ -4,6 +4,7 @@ use App\Http\Controllers\BusinessOwnerController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ChatBotController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SocialMediaController;
 use Illuminate\Support\Facades\Route;
@@ -45,3 +46,6 @@ Route::post('/coupon-store', [CouponController::class, 'store'])->name('coupon.s
 Route::get('/campaigns', [CampaignController::class, 'index'])->name('campaign.index');
 Route::get('/campaigns/create', [CampaignController::class, 'create'])->name('campaign.create');
 Route::post('/campaigns/store', [CampaignController::class, 'store'])->name('campaign.store');
+
+//Business-Owners Customers
+Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
