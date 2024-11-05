@@ -36,7 +36,7 @@
                     </span>
                     <ul>
                         <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
-                            <a href="{{route('home')}}">
+                            <a href="{{ route('home') }}">
                                 <img class="me-2 ms-1" src="../images/chemist dashboard.svg" alt="" />Dashboard
                             </a>
                         </li>
@@ -52,22 +52,26 @@
                             </a>
                         </li>
                         <li class="{{ request()->routeIs('admin.packages.index') ? 'active' : '' }}">
-                            <a href="{{route('admin.packages.index')}}">
+                            <a href="{{ route('admin.packages.index') }}">
                                 <img class="me-2" src="../images/heart-pulse.svg" alt="" />Packages
                             </a>
                         </li>
 
                         <li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                               onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                                <!-- Font Awesome Logout Icon -->
+                                <i class="fas fa-sign-out-alt me-2"></i> <!-- Logout icon -->
+                                {{ __('Logout') }}
+                            </a>
+                        
+                            <!-- Logout Form -->
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
                         </li>
+                        
                     </ul>
                 </div>
             </div>
@@ -137,7 +141,7 @@
                     <div class="col-12 dashboard-morning align-items-md-center ">
                         <div class="smith-cont " style="margin-right: -1.3rem;">
                             <span class="smith-heading ">Good Morning, {{ Auth::user()->name }} <img
-                                    src="{{asset('images/hand_wave-removebg.png')}}" alt=""></span>
+                                    src="{{ asset('images/hand_wave-removebg.png') }}" alt=""></span>
                             <div class="welcome-order mt-3">Welcome, Manage your business</div>
                         </div>
                     </div>

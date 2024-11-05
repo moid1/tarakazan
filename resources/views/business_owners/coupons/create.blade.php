@@ -5,7 +5,7 @@
         <h4 class="mt-3">
             Add New Coupon
         </h4>
-        <form method="POST" action="{{ route('admin.packages.store') }}" class="row new-chemist-child-row">
+        <form method="POST" action="{{ route('coupon.store') }}" class="row new-chemist-child-row">
             @csrf
             <div class="col-md-6">
                 <div class="row">

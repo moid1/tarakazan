@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('coupons', function (Blueprint $table) {
+        Schema::create('campaigns', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
-            $table->dateTime('expiry_date');
+            $table->string('name'); // Campaign name
+            $table->text('description'); // Campaign description
+            $table->string('status')->default('active'); // Campaign status: active, inactive, etc.
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->text('gift')->nullable();  
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('coupons');
+        Schema::dropIfExists('campaigns');
     }
 };

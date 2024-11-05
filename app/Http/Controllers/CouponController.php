@@ -29,7 +29,16 @@ class CouponController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the incoming request
+        $validatedData = $request->validate([
+            'code' => 'required|string|max:255|unique:coupons,code', // Ensure code is unique in the packages table
+            'expiry_date' => 'required|date|after_or_equal:today',  // Ensure it's a valid date and not in the past
+            'gift' => 'required|string|max:255',
+        ]);
+        $validatedData['user_id'] = auth()->id(); // Assuming you're using Laravel's built-in authentication
+
+        Coupon::create($validatedData);
+        return redirect()->route('coupon.index');
     }
 
     /**

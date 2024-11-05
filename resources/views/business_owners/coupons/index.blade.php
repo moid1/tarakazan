@@ -24,8 +24,8 @@
             </thead>
             <tbody>
                 @foreach ($coupons as $coupon)
-                    <td>{{ $owner->id }}</td>
-                    <td>{{ $coupon->name }}</td>
+                    <td>{{ $coupon->id }}</td>
+                    <td>{{ $coupon->code }}</td>
                     <td>{{ $coupon->expiry_date }}</td>
                     <td>{{ $coupon->gift }}</td>
                 @endforeach

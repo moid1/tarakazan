@@ -41,36 +41,52 @@
                                 <i class="fas fa-tachometer-alt me-2 ms-1"></i> Dashboard
                             </a>
                         </li>
-                    
+
                         <!-- Customers -->
                         <li class="{{ request()->routeIs('admin.customers') ? 'active' : '' }}">
                             <a href="">
                                 <i class="fas fa-users me-2"></i> Customers
                             </a>
                         </li>
-                    
+
                         <!-- Campaigns -->
-                        <li class="{{ request()->routeIs('admin.campaigns') ? 'active' : '' }}">
-                            <a href="">
+                        <li class="{{ request()->routeIs('campaign.index') ? 'active' : '' }}">
+                            <a href="{{ route('campaign.index') }}">
                                 <i class="fas fa-bullhorn me-2"></i> Campaigns
                             </a>
                         </li>
-                    
+
                         <!-- Social Media Insights -->
                         <li class="{{ request()->routeIs('social-media.index') ? 'active' : '' }}">
-                            <a href="{{route('social-media.index')}}">
+                            <a href="{{ route('social-media.index') }}">
                                 <i class="fas fa-chart-line me-2"></i> Social Media Insights
                             </a>
                         </li>
-                    
+
                         <!-- Gift Management -->
                         <li class="{{ request()->routeIs('coupon.index') ? 'active' : '' }}">
-                            <a href="{{route('coupon.index')}}">
+                            <a href="{{ route('coupon.index') }}">
                                 <i class="fas fa-gift me-2"></i> Gift Management
                             </a>
                         </li>
+
+                        <li>
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                                <!-- Font Awesome Logout Icon -->
+                                <i class="fas fa-sign-out-alt me-2"></i> <!-- Logout icon -->
+                                {{ __('Logout') }}
+                            </a>
+                        
+                            <!-- Logout Form -->
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </li>
+                        
                     </ul>
-                    
+
                 </div>
             </div>
 
