@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('country');
             $table->string('postal_code');
             $table->string('facebook')->nullable();
-            $table->string('twitter')->nullable();
+            $table->string('tiktok')->nullable();
             $table->string('instagram')->nullable();
             $table->timestamps();
         });

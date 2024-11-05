@@ -35,40 +35,42 @@
                         <img src="{{ asset('images/tarakazan_logo.png') }}" alt="" class="img-fluid ">
                     </span>
                     <ul>
+                        <!-- Dashboard -->
                         <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
-                            <a href="{{route('home')}}">
-                                <img class="me-2 ms-1" src="../images/chemist dashboard.svg" alt="" />Dashboard
+                            <a href="{{ route('home') }}">
+                                <i class="fas fa-tachometer-alt me-2 ms-1"></i> Dashboard
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('admin.business.owner.index') ? 'active' : '' }}">
-                            <a href="{{ route('admin.business.owner.index') }}">
-                                <img class="me-2" src="{{ asset('images/chemist package box 06.svg') }}"
-                                    alt="" />Business Owners
+                    
+                        <!-- Customers -->
+                        <li class="{{ request()->routeIs('admin.customers') ? 'active' : '' }}">
+                            <a href="">
+                                <i class="fas fa-users me-2"></i> Customers
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('admin.orders') ? 'active' : '' }}">
-                            <a href="../Admin Portal/adminOrders.html">
-                                <img class="me-2" src="../images/chemist shopping bag.svg" alt="" />Customers
+                    
+                        <!-- Campaigns -->
+                        <li class="{{ request()->routeIs('admin.campaigns') ? 'active' : '' }}">
+                            <a href="">
+                                <i class="fas fa-bullhorn me-2"></i> Campaigns
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('admin.packages.index') ? 'active' : '' }}">
-                            <a href="{{route('admin.packages.index')}}">
-                                <img class="me-2" src="../images/heart-pulse.svg" alt="" />Packages
+                    
+                        <!-- Social Media Insights -->
+                        <li class="{{ request()->routeIs('social-media.index') ? 'active' : '' }}">
+                            <a href="{{route('social-media.index')}}">
+                                <i class="fas fa-chart-line me-2"></i> Social Media Insights
                             </a>
                         </li>
-
-                        <li>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                    
+                        <!-- Gift Management -->
+                        <li class="{{ request()->routeIs('coupon.index') ? 'active' : '' }}">
+                            <a href="{{route('coupon.index')}}">
+                                <i class="fas fa-gift me-2"></i> Gift Management
+                            </a>
                         </li>
                     </ul>
+                    
                 </div>
             </div>
 
@@ -127,7 +129,7 @@
                         <div class="d-flex justify-content-center align-items-center">
                             <div class="d-flex flex-column">
                                 <span class="smith">{{ Auth::user()->name }}</span>
-                                <span>Admin</span>
+                                <span>Business Owner</span>
                             </div>
                             <button class="dashboard-notification">
                                 <i class="fas fa-bell"></i>
@@ -137,7 +139,7 @@
                     <div class="col-12 dashboard-morning align-items-md-center ">
                         <div class="smith-cont " style="margin-right: -1.3rem;">
                             <span class="smith-heading ">Good Morning, {{ Auth::user()->name }} <img
-                                    src="{{asset('images/hand_wave-removebg.png')}}" alt=""></span>
+                                    src="{{ asset('images/hand_wave-removebg.png') }}" alt=""></span>
                             <div class="welcome-order mt-3">Welcome, Manage your business</div>
                         </div>
                     </div>

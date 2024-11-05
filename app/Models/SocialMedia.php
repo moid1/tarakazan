@@ -4,9 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BusinessOwner extends Model
+class SocialMedia extends Model
 {
-    
-    protected $table = "business_owners";
     protected $guarded =[];
 }

@@ -11,6 +11,20 @@ body {
     box-sizing: border-box;
     /* font-family: "Montserrat", sans-serif; */
 }
+.orange-button {
+    background-color: #fa8502 !important;
+    outline: none !important;
+    border: none !important;
+    text-align: center!important;
+    color: #fff  !important; /* Make sure the text color contrasts well */
+}
+
+.orange-button:hover {
+    background-color: #e07b02; /* Darker shade on hover */
+    transform: scale(
+        1.05
+    ); 
+}
 
 /* #######################  Utility Class ###################### */
 .sm-btn {
