@@ -27,6 +27,7 @@
             </thead>
             <tbody>
                 @foreach ($packages as $package)
+                <tr>
                     <td>{{ $package->id }}</td>
                     <td>{{ $package->name }}</td>
                     <td>{{ $package->customers }}</td>
@@ -46,6 +47,7 @@
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                         </form>
                     </td>
+                </tr>
                 @endforeach
             </tbody>
 

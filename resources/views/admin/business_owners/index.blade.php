@@ -28,6 +28,7 @@
             </thead>
             <tbody>
                 @foreach ($businessOwners as $owner)
+                <tr>
                     <td>{{ $owner->id }}</td>
                     <td>{{ $owner->business_name }}</td>
                     <td>{{ $owner->address }}</td>
@@ -48,6 +49,7 @@
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                         </form>
                     </td>
+                </tr>
                 @endforeach
             </tbody>
 

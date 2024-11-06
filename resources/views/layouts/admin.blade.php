@@ -37,7 +37,7 @@
                     <ul>
                         <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
                             <a href="{{ route('home') }}">
-                                <img class="me-2 ms-1" src="../images/chemist dashboard.svg" alt="" />Dashboard
+                                <img class="me-2 ms-1" src="{{asset('images/chemist dashboard.svg')}}" alt="" />Dashboard
                             </a>
                         </li>
                         <li class="{{ request()->routeIs('admin.business.owner.index') ? 'active' : '' }}">
@@ -48,12 +48,12 @@
                         </li>
                         <li class="{{ request()->routeIs('admin.orders') ? 'active' : '' }}">
                             <a href="{{route('customers.index')}}">
-                                <img class="me-2" src="../images/chemist shopping bag.svg" alt="" />Customers
+                                <img class="me-2" src="{{asset('images/chemist shopping bag.svg')}}" alt="" />Customers
                             </a>
                         </li>
                         <li class="{{ request()->routeIs('admin.packages.index') ? 'active' : '' }}">
                             <a href="{{ route('admin.packages.index') }}">
-                                <img class="me-2" src="../images/heart-pulse.svg" alt="" />Packages
+                                <img class="me-2" src="{{asset('images/heart-pulse.svg')}}" alt="" />Packages
                             </a>
                         </li>
 
