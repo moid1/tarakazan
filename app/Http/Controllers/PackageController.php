@@ -47,7 +47,7 @@ class PackageController extends Controller
         $package->save(); // Save to the database
 
         // Redirect with a success message
-        return redirect()->route('admin.packages.create')->with('success', 'Package created successfully!');
+        return redirect()->route('admin.packages.index')->with('success', 'Package created successfully!');
     }
 
     /**
@@ -63,7 +63,8 @@ class PackageController extends Controller
      */
     public function edit(Package $package)
     {
-        //
+        return view('admin.packages.edit', compact('package'));
+
     }
 
     /**
@@ -71,14 +72,33 @@ class PackageController extends Controller
      */
     public function update(Request $request, Package $package)
     {
-        //
-    }
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'customers' => 'required|integer',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|numeric|min:100',
+        ]);
 
+        // Update the package
+        $package->name = $validatedData['name'];
+        $package->customers = $validatedData['customers'];
+        $package->price = $validatedData['price'];
+        $package->quantity = $validatedData['quantity'];
+        $package->save(); // Save the updated package
+
+        // Redirect with a success message
+        return redirect()->route('admin.packages.index')->with('success', 'Package updated successfully!');
+    }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Package $package)
     {
-        //
+        // Delete the package
+        $package->delete();
+
+        // Redirect with a success message
+        return redirect()->route('admin.packages.index')->with('success', 'Package deleted successfully!');
     }
 }

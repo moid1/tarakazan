@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    
+    public function businessOwner()
+{
+    return $this->hasOne(BusinessOwner::class);
+}
 }

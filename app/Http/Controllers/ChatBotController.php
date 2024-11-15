@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BusinessOwner;
 use App\Models\ChatBot;
+use App\Models\CustomerDetail;
 use Illuminate\Http\Request;
 
 class ChatBotController extends Controller
@@ -74,5 +75,25 @@ class ChatBotController extends Controller
     public function destroy(ChatBot $chatBot)
     {
         //
+    }
+
+    public function saveCustomerData(Request $request)
+    {
+        // Validate incoming data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:15',
+            'business_owner_id' => 'required|exists:business_owners,id',
+        ]);
+
+        // Create a new customer record
+        $customer = CustomerDetail::create([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'business_owner_id' => $request->business_owner_id,
+        ]);
+
+        // Return a response indicating success
+        return response()->json(['success' => true, 'customer' => $customer]);
     }
 }

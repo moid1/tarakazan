@@ -20,7 +20,6 @@
 
     <link rel="stylesheet" href="{{ asset('style.css') }}" />
     <script src="{{ asset('index.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -42,12 +41,6 @@
                             </a>
                         </li>
 
-                        <!-- Customers -->
-                        <li class="{{ request()->routeIs('admin.customers') ? 'active' : '' }}">
-                            <a href="{{route('customers.index')}}">
-                                <i class="fas fa-users me-2"></i> Customers
-                            </a>
-                        </li>
 
                         <!-- Campaigns -->
                         <li class="{{ request()->routeIs('campaign.index') ? 'active' : '' }}">
@@ -69,7 +62,12 @@
                                 <i class="fas fa-gift me-2"></i> Gift Management
                             </a>
                         </li>
+                        <li class="{{ request()->routeIs('business-owner.profile') ? 'active' : '' }}">
 
+                            <a class="nav-link" href="{{ route('business-owner.profile') }}">
+                                <i class="fas fa-user me-2"></i> Profile
+                            </a>
+                        </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();

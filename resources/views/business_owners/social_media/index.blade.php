@@ -12,7 +12,7 @@
                         <i class="fab fa-facebook-square fa-4x text-primary mb-3"></i>
                         <h5 class="card-title text-center">Facebook Clicks</h5>
                         <p class="card-text">
-                            <strong>{{ $facebookClicks->click_count ?? 0 }}</strong> clicks
+                            <strong>{{ $facebookClicks ?? 0 }}</strong> clicks
                         </p>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                         <i class="fab fa-tiktok fa-4x mb-3"></i>
                         <h5 class="card-title text-center">TikTok Clicks</h5>
                         <p class="card-text">
-                            <strong>{{ $tiktokClicks->click_count ?? 0 }}</strong> clicks
+                            <strong>{{ $tiktokClicks ?? 0 }}</strong> clicks
                         </p>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                         <i class="fab fa-instagram fa-4x text-danger mb-3"></i>
                         <h5 class="card-title text-center">Instagram Clicks</h5>
                         <p class="card-text">
-                            <strong>{{ $instagramClicks->click_count ?? 0 }}</strong> clicks
+                            <strong>{{ $instagramClicks ?? 0 }}</strong> clicks
                         </p>
                     </div>
                 </div>

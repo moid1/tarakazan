@@ -20,7 +20,6 @@
 
     <link rel="stylesheet" href="{{ asset('style.css') }}" />
     <script src="{{ asset('index.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -37,7 +36,8 @@
                     <ul>
                         <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
                             <a href="{{ route('home') }}">
-                                <img class="me-2 ms-1" src="{{asset('images/chemist dashboard.svg')}}" alt="" />Dashboard
+                                <img class="me-2 ms-1" src="{{ asset('images/chemist dashboard.svg') }}"
+                                    alt="" />Dashboard
                             </a>
                         </li>
                         <li class="{{ request()->routeIs('admin.business.owner.index') ? 'active' : '' }}">
@@ -46,32 +46,34 @@
                                     alt="" />Business Owners
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('admin.orders') ? 'active' : '' }}">
-                            <a href="{{route('customers.index')}}">
-                                <img class="me-2" src="{{asset('images/chemist shopping bag.svg')}}" alt="" />Customers
+                        <li class="{{ request()->routeIs('customers.index') ? 'active' : '' }}">
+                            <a href="{{ route('customers.index') }}">
+                                <img class="me-2" src="{{ asset('images/chemist shopping bag.svg') }}"
+                                    alt="" />Customers
                             </a>
                         </li>
                         <li class="{{ request()->routeIs('admin.packages.index') ? 'active' : '' }}">
                             <a href="{{ route('admin.packages.index') }}">
-                                <img class="me-2" src="{{asset('images/heart-pulse.svg')}}" alt="" />Packages
+                                <img class="me-2" src="{{ asset('images/heart-pulse.svg') }}"
+                                    alt="" />Packages
                             </a>
                         </li>
 
                         <li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
+                                onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">
                                 <!-- Font Awesome Logout Icon -->
                                 <i class="fas fa-sign-out-alt me-2"></i> <!-- Logout icon -->
                                 {{ __('Logout') }}
                             </a>
-                        
+
                             <!-- Logout Form -->
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
                         </li>
-                        
+
                     </ul>
                 </div>
             </div>
