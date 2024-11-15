@@ -4560,7 +4560,7 @@ input[type="checkbox"]:checked + .custom-checkbox::after {
         margin-top: -1px;
     }
     .chemist-top-menubar {
-        padding-top: 4rem;
+        padding-top: 2rem!important;
         margin-top: -5.7rem;
     }
     .dashboard-morning {
@@ -5800,3 +5800,18 @@ select {
 .dashboard-notification:hover i {
     color: #ff9600; /* Change color on hover */
 }
+
+
+/* Make the table scrollable horizontally on smaller screens */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure the table is full width */
+table.dataTable {
+    width: 100% !important;
+}
+
+
+

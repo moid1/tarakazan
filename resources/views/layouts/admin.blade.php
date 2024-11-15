@@ -40,7 +40,7 @@
                                     alt="" />Dashboard
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('admin.business.owner.index') ? 'active' : '' }}">
+                        <li class="{{ request()->routeIs('admin.business.owner.*') ? 'active' : '' }}">
                             <a href="{{ route('admin.business.owner.index') }}">
                                 <img class="me-2" src="{{ asset('images/chemist package box 06.svg') }}"
                                     alt="" />Business Owners
@@ -52,7 +52,7 @@
                                     alt="" />Customers
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('admin.packages.index') ? 'active' : '' }}">
+                        <li class="{{ request()->routeIs('admin.packages.*') ? 'active' : '' }}">
                             <a href="{{ route('admin.packages.index') }}">
                                 <img class="me-2" src="{{ asset('images/heart-pulse.svg') }}"
                                     alt="" />Packages
@@ -93,35 +93,46 @@
 
                     <div class="col-12 chemist-sidebar chemist-top-menubar">
                         <ul class="small-screen-ul">
-                            <li class="active">
-                                <a href="../Admin Portal/adminDashboard.html"><img class="me-2 ms-1 "
-                                        src="{{ asset('images/chemist dashboard.svg') }}"
-                                        alt="" />Dashboard</a>
+                            <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
+                                <a href="{{ route('home') }}">
+                                    <img class="me-2 ms-1" src="{{ asset('images/chemist dashboard.svg') }}"
+                                        alt="" />Dashboard
+                                </a>
                             </li>
+                            <li class="{{ request()->routeIs('admin.business.owner.*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.business.owner.index') }}">
+                                    <img class="me-2" src="{{ asset('images/chemist package box 06.svg') }}" alt="" />Business Owners
+                                </a>
+                            </li>
+                            
+                            <li class="{{ request()->routeIs('customers.index') ? 'active' : '' }}">
+                                <a href="{{ route('customers.index') }}">
+                                    <img class="me-2" src="{{ asset('images/chemist shopping bag.svg') }}"
+                                        alt="" />Customers
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('admin.packages.*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.packages.index') }}">
+                                    <img class="me-2" src="{{ asset('images/heart-pulse.svg') }}"
+                                        alt="" />Packages
+                                </a>
+                            </li>
+
                             <li>
-                                <a href="../Admin Portal/adminProducts.html"><img class="me-2"
-                                        src="../images/chemist package box 06.svg" alt="" />Products</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                                    <!-- Font Awesome Logout Icon -->
+                                    <i class="fas fa-sign-out-alt me-2"></i> <!-- Logout icon -->
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <!-- Logout Form -->
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
                             </li>
-                            <li>
-                                <a href="../Admin Portal/adminOrders.html"><img class="me-2"
-                                        src="../images/chemist shopping bag.svg" alt="" />Orders</a>
-                            </li>
-                            <li>
-                                <a href="../Admin Portal/adminChemists.html"><img class="me-2"
-                                        src="../images/heart-pulse.svg" alt="" />Chemists</a>
-                            </li>
-                            <li>
-                                <a href="../Admin Portal/adminCustomers.html"><img class="me-2"
-                                        src="../images/chemist users 01.svg" alt="" />Customers</a>
-                            </li>
-                            <li>
-                                <a href="../Admin Portal/adminPayment.html"><img class="me-2"
-                                        src="../images/coin-dollar.svg" alt="" />Payments</a>
-                            </li>
-                            <li>
-                                <a href="../Admin Portal/adminSettings.html"><img class="me-2"
-                                        src="../images/chemist setting.svg" alt="" />Settings</a>
-                            </li>
+
                         </ul>
                     </div>
                 </div>
@@ -144,7 +155,7 @@
                         <div class="smith-cont " style="margin-right: -1.3rem;">
                             <span class="smith-heading ">Good Morning, {{ Auth::user()->name }} <img
                                     src="{{ asset('images/hand_wave-removebg.png') }}" alt=""></span>
-                            <div class="welcome-order mt-3">Welcome, Manage your business</div>
+                            <div class="">Welcome, Manage your business</div>
                         </div>
                     </div>
                 </div>

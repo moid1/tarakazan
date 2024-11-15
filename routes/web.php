@@ -9,6 +9,15 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SocialMediaController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('migrate', function () {
+    \Artisan::call('migrate');
+    dd("Migration done");
+});
+
+Route::get('/foo', function () {
+    Artisan::call('storage:link');
+});
+
 Route::get('/', function () {
     return redirect('/login');
 });
@@ -67,5 +76,7 @@ Route::post('/campaigns/store', [CampaignController::class, 'store'])->name('cam
 
 //Business-Owners Customers
 Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+Route::get('customers/export-pdf', [CustomerController::class, 'exportPdf'])->name('admin.customer.pdf.export');
+
 
 Route::post('/save-customer-data', [ChatbotController::class, 'saveCustomerData']);

@@ -107,8 +107,9 @@
                                         <div class="col-12">
                                             <label for="email" class="form-label">Email <span
                                                     class="text-danger">*</span></label>
-                                            <input type="email" class="form-control" name="email" id="email"
-                                                placeholder="name@example.com" value="{{ old('email') }}" required>
+                                            <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                                name="email" id="email" placeholder="name@example.com"
+                                                value="{{ old('email') }}" required>
                                             @error('email')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -118,46 +119,30 @@
                                         <div class="col-12">
                                             <label for="password" class="form-label">Password <span
                                                     class="text-danger">*</span></label>
-                                            <input type="password" class="form-control" name="password" id="password"
-                                                value="{{ old('password') }}" required>
+                                            <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                                name="password" id="password" value="{{ old('password') }}" required>
                                             @error('password')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
 
-                                        <!-- Remember Me Checkbox -->
-                                        <div class="col-12">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="remember"
-                                                    id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                                <label class="form-check-label text-secondary" for="remember">
-                                                    Keep me logged in
-                                                </label>
-                                            </div>
-                                        </div>
-
                                         <!-- Submit Button -->
                                         <div class="col-12">
                                             <div class="d-grid">
-                                                <button class="btn bsb-btn-xl btn-primary"
-                                                    style="background: #fa8502;border:none" type="submit">Log in
-                                                    now</button>
+                                                <button class="btn bsb-btn-xl btn-primary" type="submit">Log in now</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
 
                                 <!-- Forgot Password Link -->
-                                {{-- <div class="row">
-                                    <div class="col-12">
-                                        <hr class="mt-5 mb-4 border-secondary-subtle">
-                                        <div
-                                            class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
-                                            <a href="{{ route('password.request') }}"
-                                                class="link-secondary text-decoration-none">Forgot password</a>
-                                        </div>
+                                <div class="row mt-4">
+                                    <div class="col-12 text-center">
+                                        <a href="{{ route('password.request') }}" class="link-secondary">
+                                            Forgot password?
+                                        </a>
                                     </div>
-                                </div> --}}
+                                </div>
                             </div>
                         </div>
                     </div>

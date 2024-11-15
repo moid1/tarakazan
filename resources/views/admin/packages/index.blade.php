@@ -11,59 +11,80 @@
             <div class="col-lg-6 d-flex justify-content-start">
                 <h4 class="mt-3">Packages</h4>
             </div>
-            <div class="col-lg-6 d-flex justify-content-end align-items-center">
+            <div class="col-lg-12 justify-content-end d-flex  flex-column flex-sm-row">
                 <a href="{{ route('admin.packages.create') }}" class="btn orange-button">
                     Add Package
                 </a>
-
             </div>
         </div>
 
-        <table id="example" class="display" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Customers</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($packages as $package)
+        <!-- Responsive Table Wrapper -->
+        <div class="table-responsive mt-3">
+            <table id="example" class="display table" style="width:100%">
+                <thead>
                     <tr>
-                        <td>{{ $package->id }}</td>
-                        <td>{{ $package->name }}</td>
-                        <td>{{ $package->customers }}</td>
-                        <td>{{ $package->price }}</td>
-                        <td>{{ $package->quantity }}</td>
-                        <td>
-                            <!-- Edit Button -->
-                            <a href="{{ route('admin.packages.edit', $package->id) }}" class="btn btn-warning btn-sm">
-                                Edit
-                            </a>
-
-
-                            <!-- Delete Button -->
-                            <form action="{{ route('admin.packages.destroy', $package->id) }}" method="POST"
-                                style="display:inline;"
-                                onsubmit="return confirm('Are you sure you want to delete this business owner?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        </td>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Customers</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
                     </tr>
-                @endforeach
-            </tbody>
+                </thead>
+                <tbody>
+                    @foreach ($packages as $package)
+                        <tr>
+                            <td>{{ $package->id }}</td>
+                            <td>{{ $package->name }}</td>
+                            <td>{{ $package->customers }}</td>
+                            <td>{{ $package->price }}</td>
+                            <td>{{ $package->quantity }}</td>
+                            <td>
+                                <!-- Edit Icon -->
+                                <a href="{{ route('admin.packages.edit', $package->id) }}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
 
-        </table>
+                                <!-- Delete Icon -->
+                                <form action="{{ route('admin.packages.destroy', $package->id) }}" method="POST"
+                                    style="display:inline;"
+                                    onsubmit="return confirm('Are you sure you want to delete this package?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 @endsection
 
 @section('customjs')
     <script>
-        new DataTable('#example');
+        $(document).ready(function() {
+            // Initialize DataTable with the responsive option enabled
+            new DataTable('#example', {
+                responsive: true, // Enable responsive plugin
+                paging: true, // Enable pagination
+                lengthChange: false, // Hide the page length menu
+                searching: true, // Enable search box
+                info: true, // Show information about number of entries
+                autoWidth: false, // Prevent automatic column width calculation
+                columnDefs: [{
+                    targets: -1, // Action column (Edit, Delete)
+                    orderable: false, // Disable sorting for the action column
+                }],
+            });
+        });
+
+        // Initialize Bootstrap tooltips
+        $(document).ready(function() {
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
     </script>
 @endsection
