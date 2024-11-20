@@ -49,6 +49,12 @@
                             </a>
                         </li>
 
+                        <li class="{{ request()->routeIs('campaign.sms.*') ? 'active' : '' }}">
+                            <a href="{{ route('campaign.sms.index') }}">
+                                <i class="fas fa-sms me-2"></i> Schedule SMS
+                            </a>
+                        </li>
+
                         <!-- Social Media Insights -->
                         <li class="{{ request()->routeIs('social-media.index') ? 'active' : '' }}">
                             <a href="{{ route('social-media.index') }}">
@@ -145,9 +151,9 @@
                                 <span class="smith">{{ Auth::user()->name }}</span>
                                 <span>Business Owner</span>
                             </div>
-                            <button class="dashboard-notification">
+                            {{-- <button class="dashboard-notification">
                                 <i class="fas fa-bell"></i>
-                            </button>
+                            </button> --}}
                         </div>
                     </div>
                     <div class="col-12 dashboard-morning align-items-md-center ">

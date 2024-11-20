@@ -29,9 +29,28 @@
                     </div>
                     <div class="col-6">
                         <div class="chemist-input-heading">SMS App Key</div>
-                        <input readonly type="text" name="app_key" id="app_key"
+                        <input  type="text" name="app_key" id="app_key"
                             value="{{ old('app_key', $businessOwner->app_key) }}" required />
                     </div>
+
+                    <div class="col-6">
+                        <div class="chemist-input-heading">SMS User Code</div>
+                        <input  type="text" name="sms_user_code" id="sms_user_code"
+                            value="{{ old('sms_user_code', $businessOwner->sms_user_code) }}" required />
+                    </div>
+
+                    <div class="col-6">
+                        <div class="chemist-input-heading">SMS User Password</div>
+                        <input  type="text" name="sms_user_password" id="sms_user_password"
+                            value="{{ old('sms_user_password', $businessOwner->sms_user_password) }}" required />
+                    </div>
+
+                    <div class="col-6">
+                        <div class="chemist-input-heading">SMS Message Header (Name that is registered on NetGSM)</div>
+                        <input  type="text" name="sms_message_header" id="sms_message_header"
+                            value="{{ old('sms_message_header', $businessOwner->sms_message_header) }}" required />
+                    </div>
+
                     <div class="col-6">
                         <div class="chemist-input-heading">Business Email</div>
                         <input type="email" name="business_email" id="business_email"
@@ -82,7 +101,7 @@
                 <input type="text" name="postal_code" id="postal_code"
                     value="{{ old('postal_code', $businessOwner->postal_code) }}" required />
             </div>
-           
+
             <!-- Social Media Links -->
             <div class="col-6">
                 <div class="profile-input-heading">Social Media Links</div>

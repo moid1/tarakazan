@@ -1,12 +1,16 @@
 <?php
 
+use App\Http\Controllers\BusinessOwnerCampaignSMSController;
 use App\Http\Controllers\BusinessOwnerController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ChatBotController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\SMSController;
 use App\Http\Controllers\SocialMediaController;
+use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('migrate', function () {
@@ -44,6 +48,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('packages/{package}/edit', [PackageController::class, 'edit'])->name('packages.edit');
     Route::put('packages/{package}', [PackageController::class, 'update'])->name('packages.update');
     Route::delete('packages/{package}', [PackageController::class, 'destroy'])->name('packages.destroy');
+
+    Route::get('all-subscriptions', [SubscriptionController::class, 'allSubscriptions'])->name('subscription.all');
 });
 
 
@@ -73,6 +79,17 @@ Route::post('/profile/update', [BusinessOwnerController::class, 'updateProfile']
 Route::get('/campaigns', [CampaignController::class, 'index'])->name('campaign.index');
 Route::get('/campaigns/create', [CampaignController::class, 'create'])->name('campaign.create');
 Route::post('/campaigns/store', [CampaignController::class, 'store'])->name('campaign.store');
+Route::get('/campaign/{id}/edit', [CampaignController::class, 'edit'])->name('campaign.edit');
+Route::put('/campaign/{id}', [CampaignController::class, 'update'])->name('campaign.update');
+Route::delete('/campaign/{id}', [CampaignController::class, 'destroy'])->name('campaign.destroy');
+
+// Business Owners SMS
+Route::get('/send-campaign-sms/create', [BusinessOwnerCampaignSMSController::class, 'create'])->name('campaign.sms.create');
+Route::get('/send-campaign-sms', [BusinessOwnerCampaignSMSController::class, 'index'])->name('campaign.sms.index');
+Route::get('/send-campaign-sms/edit/{id}', [BusinessOwnerCampaignSMSController::class, 'edit'])->name('campaign.sms.edit');
+Route::post('/send-sms-campaign', [BusinessOwnerCampaignSMSController::class, 'store'])->name('campaign.sms.store');
+Route::put('/send-campaign-sms/{id}', [BusinessOwnerCampaignSMSController::class, 'update'])->name('campaign.sms.update');
+Route::delete('/send-campaign-sms/{id}', [BusinessOwnerCampaignSMSController::class, 'destroy'])->name('campaign.sms.destroy');
 
 //Business-Owners Customers
 Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
@@ -80,3 +97,17 @@ Route::get('customers/export-pdf', [CustomerController::class, 'exportPdf'])->na
 
 
 Route::post('/save-customer-data', [ChatbotController::class, 'saveCustomerData']);
+
+//send OTP SMS 
+Route::post('send-otp-sms', [SMSController::class, 'sendOTPSMSToCustomer']);
+Route::post('verify-otp', [SMSController::class, 'verifyOTP']);
+
+
+//
+Route::get('payment', [PaymentController::class,'storageCard']);
+Route::get('payment-test', [PaymentController::class,'test']);
+
+
+// SUBSCRIPTION FOR BUSINESS OWNERS
+Route::get('/subscription/create', [SubscriptionController::class, 'create'])->name('subscription.create');
+Route::post('/subscription', [SubscriptionController::class, 'store'])->name('subscription.store');

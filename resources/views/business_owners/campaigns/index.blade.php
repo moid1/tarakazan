@@ -2,6 +2,11 @@
 
 @section('content')
     <div class="row new-chemist-parent-row">
+        @if (session('success'))
+        <div class="alert alert-success mt-3">
+            {{ session('success') }}
+        </div>
+    @endif
         <div class="row">
             <div class="col-lg-6 d-flex justify-content-start">
                 <h4 class="mt-3">Campaigns</h4>
@@ -24,23 +29,24 @@
             </thead>
             <tbody>
                 @foreach ($campaigns as $campaign)
+                <tr>
                     <td>{{ $campaign->id }}</td>
                     <td>{{ $campaign->name }}</td>
                     <td>{{ $campaign->description }}</td>
                     <td>
-                        <!-- Edit Button -->
-                        <a href="" class="btn btn-warning btn-sm">
-                            Edit
-                        </a>
+                            <!-- Edit Button -->
+                            <a href="{{ route('campaign.edit', $campaign->id) }}" class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
 
-                        <!-- Delete Button -->
-                        <form action="" method="POST" style="display:inline;"
-                            onsubmit="return confirm('Are you sure you want to delete this business owner?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
+                            <!-- Delete Button -->
+                            <form action="{{ route('campaign.destroy', $campaign->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this campaign?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
                     </td>
+                </tr>
                 @endforeach
             </tbody>
 

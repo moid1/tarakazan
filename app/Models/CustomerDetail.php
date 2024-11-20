@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CustomerDetail extends Model
 {
-    protected $fillable = ['name', 'phone', 'business_owner_id'];
+    protected $guarded = [];
 
     // Define the relationship with the BusinessOwner model
     public function businessOwner()

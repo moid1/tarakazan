@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\BusinessOwner;
 use App\Models\CustomerDetail;
 use App\Models\Package;
+use App\Models\SMSQuota;
+use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 
@@ -85,7 +87,7 @@ class HomeController extends Controller
 
         $userId = \Auth::id(); // Get the logged-in user's ID
         $businessOwner = BusinessOwner::where('user_id', $userId)->first(); // Get the first matching BusinessOwner
-        
+
         if ($businessOwner) {
             $businessOwnerId = $businessOwner->id;
         } else {
@@ -93,7 +95,19 @@ class HomeController extends Controller
         }
 
         $customersCount = CustomerDetail::where('business_owner_id', $businessOwnerId)->count();
+
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+        $package = Package::find($businessOwner->package);
+
+        $smsCount = SMSQuota::where('business_owner_id', $businessOwnerId)
+            ->whereMonth('created_at', $currentMonth)  // Filter by current month
+            ->whereYear('created_at', $currentYear)    // Filter by current year
+            ->count();  // Count the records        
         
-        return view('business_owners.home', compact('customersCount','businessOwner'));
+        $totalSMSRemaining = intVal($package->quantity) - $smsCount;
+        $user = auth()->user();
+
+        return view('business_owners.home', compact('customersCount', 'businessOwner', 'smsCount','totalSMSRemaining','user'));
     }
 }

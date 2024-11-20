@@ -29,6 +29,23 @@
                         <input type="text" name="app_key" id="app_key" required class="form-control" />
                     </div>
 
+                    {{-- SMS User Code --}}
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="chemist-input-heading">SMS User Code</div>
+                        <input type="text" name="sms_user_code" id="sms_user_code" required class="form-control" />
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="chemist-input-heading">SMS User Password</div>
+                        <input type="text" name="sms_user_password" id="sms_user_password" required class="form-control" />
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="chemist-input-heading">SMS Message Header (Name that is registered on NetGSM)</div>
+                        <input type="text" name="sms_message_header" id="sms_message_header" required class="form-control" />
+                    </div>
+
+
                     <!-- Business Email -->
                     <div class="col-12 col-md-6 mb-3">
                         <div class="chemist-input-heading">Business Email</div>

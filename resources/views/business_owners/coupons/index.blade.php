@@ -24,10 +24,12 @@
             </thead>
             <tbody>
                 @foreach ($coupons as $coupon)
-                    <td>{{ $coupon->id }}</td>
-                    <td>{{ $coupon->code }}</td>
-                    <td>{{ $coupon->expiry_date }}</td>
-                    <td>{{ $coupon->gift }}</td>
+                    <tr>
+                        <td>{{ $coupon->id }}</td>
+                        <td>{{ $coupon->code }}</td>
+                        <td>{{ $coupon->expiry_date }}</td>
+                        <td>{{ $coupon->gift }}</td>
+                    </tr>
                 @endforeach
             </tbody>
 

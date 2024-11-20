@@ -225,17 +225,18 @@
     <!-- Scripts -->
     <script>
         var businessOwner = @json($business);
-        console.log(businessOwner);
         let currentStep = 0;
         let userName = '';
         let userPhone = '';
         let otpSent = false;
-
+        let customerId = null;
+        let couponCode = null;
         document.addEventListener('DOMContentLoaded', function() {
             displayTypingEffect(); // Start typing effect
         });
 
         function displayTypingEffect() {
+            document.getElementById('user-answer').disabled = true;
             const chatContent = document.getElementById('chat-content');
             const typingDiv = document.createElement('div');
             typingDiv.classList.add('chat-message', 'bot-message');
@@ -246,6 +247,8 @@
 
             setTimeout(() => {
                 typingDiv.remove();
+                document.getElementById('user-answer').disabled = false;
+
                 // appendChatMessage('bot', 'Welcome to {{ $business->business_name }}!');
                 askName();
             }, 2000);
@@ -282,9 +285,9 @@
                     setTimeout(() => askPhone(), 2000);
                 } else if (currentStep === 2) {
                     userPhone = userAnswer;
-                    setTimeout(() => sendOTP(userPhone), 2000);
+                    setTimeout(() => sendOTP(userPhone, userName), 2000);
                 } else if (currentStep === 3) {
-                    setTimeout(() => verifyOTP(userAnswer), 2000);
+                    verifyOTP(userAnswer);
                 } else if (currentStep === 4) {
                     setTimeout(() => askReview(), 2000);
                 } else if (currentStep === 5) {
@@ -315,27 +318,75 @@
             currentStep = 2;
         }
 
-        function sendOTP(phone) {
+        function sendOTP(phone, customerName) {
             appendChatMessage('bot', `Sending OTP to ${phone}...`);
-            otpSent = true;
+            otpSent = false;
 
-            setTimeout(() => {
-                appendChatMessage('bot', 'OTP sent! Please enter the code you received.');
-                currentStep = 3;
-            }, 2000);
+            // Make the AJAX call to send the OTP to the server
+            fetch('/send-otp-sms', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        phone_no: phone,
+                        name: customerName,
+                        business_owner_id: businessOwner.id
+                    }) // Send phone number to the backend
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        otpSent = true; // Mark OTP as sent
+                        customerId = data.customer.id
+                        // Inform the user that OTP is sent
+                        appendChatMessage('bot', 'OTP sent! Please enter the code you received.');
+                        // Update the current step in the process
+                        currentStep = 3;
+                    } else {
+                        // Handle failure to send OTP
+                        appendChatMessage('bot', 'Failed to send OTP. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending OTP:', error);
+                    appendChatMessage('bot', 'An error occurred while sending OTP. Please try again later.');
+                });
         }
 
         function verifyOTP(otp) {
-            if (otp === '123456') {
-                appendChatMessage('bot', 'OTP verified successfully!');
+            fetch('/verify-otp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for Laravel
+                    },
+                    body: JSON.stringify({
+                        otp: otp,
+                        customerId: customerId,
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        appendChatMessage('bot', 'OTP verified successfully!');
+                        couponCode = data.code;
 
-                saveCustomerData(userName, userPhone, {{ $business->id }});
+                        // saveCustomerData(userName, userPhone, {{ $business->id }});
 
-                setTimeout(() => askReview(), 2000);
-            } else {
-                appendChatMessage('bot', 'Invalid OTP. Please try again.');
-                currentStep = 3; // Allow the user to re-enter OTP
-            }
+                        setTimeout(() => askReview(), 2000);
+                    } else {
+                        appendChatMessage('bot', 'Invalid OTP. Please try again.');
+                        currentStep = 3; // Allow the user to re-enter OTP
+                    }
+                })
+                .catch(error => {
+                    console.error('Error saving customer data:', error);
+                    appendChatMessage('bot', 'Invalid OTP. Please try again.');
+                    currentStep = 3; // Allow the user to re-enter OTP
+                });
+
         }
 
         function saveCustomerData(name, phone, businessOwnerId) {
@@ -361,19 +412,28 @@
         }
 
         function askReview() {
+            currentStep = 5;
+
             appendChatMessage('bot', 'Thank you for verifying your number! Please leave a review: ');
             // open google review google_review
             // https://search.google.com/local/writereview?placeid=ChIJN1t_tDeuEmsRUsoyG83frY4
-            const googleReviewLink = "https://search.google.com/local/writereview?placeid=ChIJN1t_tDeuEmsRUsoyG83frY4";
+            const googleReviewLink =
+                `https://search.google.com/local/writereview?placeid={{ $business->google_review }}`;
             window.open(googleReviewLink, "Google Review", "width=600,height=400,scrollbars=yes,resizable=yes");
 
-            currentStep = 4;
+            showConsent();
+
         }
 
         function handleConsent(consent) {
             appendChatMessage('user', consent);
             appendChatMessage('bot', 'Thank you for your feedback!');
-            appendChatMessage('bot', 'The process is complete. Have a great day!');
+            appendChatMessage('bot', `The process is complete. Here is your coupon code:  ${couponCode}`);
+        }
+
+        function showConsent() {
+            appendChatMessage('bot', 'Are you willing to receive promotional messages?');
+
         }
     </script>
 

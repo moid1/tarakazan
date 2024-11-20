@@ -59,6 +59,13 @@
                             </a>
                         </li>
 
+                        <li class="{{ request()->routeIs('admin.subscription.*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.subscription.all') }}">
+                                <img class="me-2" src="{{ asset('images/heart-pulse.svg') }}"
+                                    alt="" />Subscriptions
+                            </a>
+                        </li>
+
                         <li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
@@ -101,10 +108,11 @@
                             </li>
                             <li class="{{ request()->routeIs('admin.business.owner.*') ? 'active' : '' }}">
                                 <a href="{{ route('admin.business.owner.index') }}">
-                                    <img class="me-2" src="{{ asset('images/chemist package box 06.svg') }}" alt="" />Business Owners
+                                    <img class="me-2" src="{{ asset('images/chemist package box 06.svg') }}"
+                                        alt="" />Business Owners
                                 </a>
                             </li>
-                            
+
                             <li class="{{ request()->routeIs('customers.index') ? 'active' : '' }}">
                                 <a href="{{ route('customers.index') }}">
                                     <img class="me-2" src="{{ asset('images/chemist shopping bag.svg') }}"
@@ -118,6 +126,15 @@
                                 </a>
                             </li>
 
+                            <li class="{{ request()->routeIs('admin.subscriptions.*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.subscription.all') }}">
+                                    <img class="me-2" src="{{ asset('images/heart-pulse.svg') }}"
+                                        alt="" />Subscriptions
+                                </a>
+                            </li>
+
+
+
                             <li>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
@@ -128,7 +145,8 @@
                                 </a>
 
                                 <!-- Logout Form -->
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    class="d-none">
                                     @csrf
                                 </form>
                             </li>
@@ -146,9 +164,9 @@
                                 <span class="smith">{{ Auth::user()->name }}</span>
                                 <span>Admin</span>
                             </div>
-                            <button class="dashboard-notification">
+                            {{-- <button class="dashboard-notification">
                                 <i class="fas fa-bell"></i>
-                            </button>
+                            </button> --}}
                         </div>
                     </div>
                     <div class="col-12 dashboard-morning align-items-md-center ">

@@ -46,27 +46,41 @@ class CampaignController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Campaign $campaign)
+    public function edit($id)
     {
-        //
+        // Find the campaign by ID
+        $campaign = Campaign::findOrFail($id);
+        return view('business_owners.campaigns.edit', compact('campaign'));
+    }
+    public function update(Request $request, $id)
+    {
+        // Validate the form inputs
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:1000',
+        ]);
+
+        // Find the campaign by ID
+        $campaign = Campaign::findOrFail($id);
+
+        // Update the campaign data
+        $campaign->name = $validated['name'];
+        $campaign->description = $validated['description'];
+        $campaign->save();
+
+        // Redirect to a campaign list page or a success page
+        return redirect()->route('campaign.index')->with('success', 'Campaign updated successfully!');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Campaign $campaign)
+    public function destroy($id)
     {
-        //
-    }
+        // Find the campaign by ID
+        $campaign = Campaign::findOrFail($id);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Campaign $campaign)
-    {
-        //
+        // Delete the campaign
+        $campaign->delete();
+
+        // Redirect to the campaigns index page with a success message
+        return redirect()->route('campaign.index')->with('success', 'Campaign deleted successfully!');
     }
 }

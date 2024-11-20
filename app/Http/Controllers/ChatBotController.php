@@ -41,15 +41,7 @@ class ChatBotController extends Controller
     public function show($slug)
     {
         $business = BusinessOwner::where('slug', $slug)->firstOrFail();
-
-        // Hardcoded questions
-        $questions = [
-            'What is your favorite color?',
-            'What is your preferred contact method?',
-            'Do you need any assistance with our services?'
-        ];
-
-        return view('chatbot.index', compact('business', 'questions'));
+        return view('chatbot.index', compact('business'));
     }
 
 

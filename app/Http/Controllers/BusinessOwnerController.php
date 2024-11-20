@@ -52,6 +52,9 @@ class BusinessOwnerController extends Controller
             'instagram' => 'nullable|url',
             'password' => 'required|string|min:8', // Confirmed password validation,
             'app_key' => 'required',
+            'sms_user_code'=>'required',
+            'sms_user_password'=>'required',
+            'sms_message_header'=>'required',
             'google_review' => 'required'
         ]);
 
