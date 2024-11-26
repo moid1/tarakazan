@@ -114,7 +114,7 @@ class PaymentController extends Controller
         $options->setBaseUrl("https://sandbox-api.iyzipay.com");
         $request = new \Iyzipay\Request\RetrieveCheckoutFormRequest();
         $request->setLocale(\Iyzipay\Model\Locale::TR);
-        $request->setToken('9246394e-b874-41b9-bb17-ba7e4ab35837');
+        $request->setToken($requestsss->token);
 
         # make request
         $checkoutForm = \Iyzipay\Model\CheckoutForm::retrieve($request, $options);
@@ -132,6 +132,7 @@ class PaymentController extends Controller
             }
 
         }
+        return redirect()->route('home')->with('success','Your subscription has been successfully activated!');
 
     }
 }

@@ -6,6 +6,7 @@ use App\Models\BusinessOwner;
 use App\Models\CustomerDetail;
 use App\Models\Package;
 use App\Models\SMSQuota;
+use App\Models\Subscription;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
@@ -82,7 +83,15 @@ class HomeController extends Controller
                 $packageNames[] = $package->name; // Name of the package
                 $packageCounts[] = $data->total; // Count of business owners for the package
             }
-            return view('home', compact('totalActiveBusiness', 'months', 'counts', 'packageNames', 'packageCounts'));
+
+            $subscriptions = Subscription::all();
+            $totalRevenue = 0;
+            foreach ($subscriptions as $key => $subscription) {
+              $totalRevenue+=floatval($subscription->package->price);
+            }
+
+            $customerCount = CustomerDetail::count();
+            return view('home', compact('totalActiveBusiness', 'months', 'counts', 'packageNames', 'packageCounts', 'totalRevenue', 'customerCount'));
         }
 
         $userId = \Auth::id(); // Get the logged-in user's ID

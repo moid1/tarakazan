@@ -55,7 +55,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 
 //ChatBot
-Route::get('/chatbot/{slug}', [ChatBotController::class, 'show'])->name('chatbot.show');
+Route::get('/chatbot/{slug}', [ChatBotController::class, 'getNewChatBot'])->name('chatbot.show');
+Route::get('/bot/{slug}', [ChatBotController::class, 'getNewChatBot'])->name('chatbot.new.show');
 Route::post('/chatbot/{slug}/store', [ChatbotController::class, 'store'])->name('chatbot.store');
 
 
@@ -104,8 +105,8 @@ Route::post('verify-otp', [SMSController::class, 'verifyOTP']);
 
 
 //
-Route::get('payment', [PaymentController::class,'storageCard']);
-Route::get('payment-test', [PaymentController::class,'test']);
+Route::get('payment', [PaymentController::class,'storageeCard']);
+Route::post('payment-test', [PaymentController::class,'test']);
 
 
 // SUBSCRIPTION FOR BUSINESS OWNERS

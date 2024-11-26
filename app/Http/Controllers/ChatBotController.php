@@ -44,6 +44,12 @@ class ChatBotController extends Controller
         return view('chatbot.index', compact('business'));
     }
 
+    public function getNewChatBot($slug){
+        // fodays-coffee
+        $business = BusinessOwner::where('slug', $slug)->firstOrFail();
+        return view('chatbot.new.index', compact('business'));
+    }
+
 
     /**
      * Show the form for editing the specified resource.

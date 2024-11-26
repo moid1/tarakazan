@@ -63,7 +63,7 @@ class SendSmsCampaigns extends Command
             $this->sendCampaignSMS($recipients, $campaign->sms, $businessOwner);
 
             // Mark campaign as sent
-            // $campaign->update(['is_sent' => true]);
+            $campaign->update(['is_sent' => true]);
 
             $this->info("SMS sent for campaign ID: {$campaign->id}");
         }

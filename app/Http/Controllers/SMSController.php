@@ -31,6 +31,14 @@ class SMSController extends Controller
         // Generate a random OTP (6 digits)
         $otp = rand(100000, 999999);
 
+        $isAlreadyExists = CustomerDetail::where('phone', $request->phoneNo)->exists();
+        if ($isAlreadyExists) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You are already registered to this business name',
+            ], 200);
+        }
+
         // Store customer details
         try {
             $customer = CustomerDetail::create([
@@ -73,11 +81,15 @@ class SMSController extends Controller
        <appkey>{$businessOwner->app_key}</appkey>
    </header>
    <body>
-       <msg><![CDATA[Your OTP code is: $otp]]></msg>
+       <msg><![CDATA[Doğrulama Şifre: $otp]]></msg>
        <no>{$phoneNO}</no>
    </body>
 </mainbody>
 XML;
+
+
+
+        Log::info($xml);
 
         // Initialize cURL session
         $ch = curl_init();
@@ -156,6 +168,13 @@ XML;
             if ($businessOwner) {
                 // Get coupon codes associated with the business owner's user_id
                 $coupon = Coupon::where('user_id', $businessOwner->user_id)->first();
+                if (!$coupon) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'No Coupon Code Available'
+                    ], 404);
+                }
+                $this->sendCouponCode($businessOwner->id, $customerDetail->phone, $coupon->code);
 
                 return response()->json([
                     'success' => true,
@@ -172,6 +191,70 @@ XML;
 
         // Return error if OTP doesn't match
         return response()->json(['success' => false, 'message' => 'Invalid OTP'], 400);
+    }
+
+    public function sendCouponCode($businessOwnerId, $phoneNo, $couponCode)
+    {
+        try {
+            $businessOwner = BusinessOwner::find($businessOwnerId);
+            $xml = <<<XML
+            <?xml version="1.0"?>
+            <mainbody>
+               <header>
+                   <usercode>{$businessOwner->sms_user_code}</usercode>
+                   <password>{$businessOwner->sms_user_password}</password>
+                   <msgheader>{$businessOwner->sms_message_header}</msgheader>
+                    <type>1:n</type>
+                   <appkey>{$businessOwner->app_key}</appkey>
+               </header>
+               <body>
+                   <msg><![CDATA[İndirim Kodunuz: $couponCode]]></msg>
+                   <no>{$phoneNo}</no>
+    
+    
+               </body>
+            </mainbody>
+            XML;
+
+            // Initialize cURL session
+            $ch = curl_init();
+
+            // Set cURL options
+            curl_setopt($ch, CURLOPT_URL, 'https://api.netgsm.com.tr/sms/send/xml'); // The API endpoint
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  // Return response as a string
+            curl_setopt($ch, CURLOPT_POST, true);  // Use POST method
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);  // Send the raw XML data as the body
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/xml',  // Set content type to XML
+            ]);
+
+            // Execute the cURL request
+            $response = curl_exec($ch);
+            Log::info($response);
+
+            // Check for errors
+            // Handle cURL error
+            if ($response === false) {
+                $error = curl_error($ch);
+                curl_close($ch);  // Close the cURL session
+                return response()->json([
+                    'success' => false,
+                    'message' => 'cURL error: ' . $error
+                ], 500);  // Return error response
+            }
+
+            // Close the cURL session
+            curl_close($ch);
+
+
+            return response()->json([
+                'success' => true,
+                'data' => []
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
     }
 
 

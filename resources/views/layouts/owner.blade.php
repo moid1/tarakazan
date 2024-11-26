@@ -109,34 +109,54 @@
 
                     <div class="col-12 chemist-sidebar chemist-top-menubar">
                         <ul class="small-screen-ul">
-                            <li class="active">
-                                <a href="../Admin Portal/adminDashboard.html"><img class="me-2 ms-1 "
-                                        src="{{ asset('images/chemist dashboard.svg') }}"
-                                        alt="" />Dashboard</a>
+                            <!-- Dashboard -->
+                            <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
+                                <a href="{{ route('home') }}">
+                                    <i class="fas fa-tachometer-alt me-2 ms-1"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('campaign.index') ? 'active' : '' }}">
+                                <a href="{{ route('campaign.index') }}">
+                                    <i class="fas fa-bullhorn me-2"></i> Campaigns
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('campaign.sms.*') ? 'active' : '' }}">
+                                <a href="{{ route('campaign.sms.index') }}">
+                                    <i class="fas fa-sms me-2"></i> Schedule SMS
+                                </a>
+                            </li>
+                            <!-- Social Media Insights -->
+                            <li class="{{ request()->routeIs('social-media.index') ? 'active' : '' }}">
+                                <a href="{{ route('social-media.index') }}">
+                                    <i class="fas fa-chart-line me-2"></i> Social Media Insights
+                                </a>
+                            </li>
+
+                            <!-- Gift Management -->
+                            <li class="{{ request()->routeIs('coupon.index') ? 'active' : '' }}">
+                                <a href="{{ route('coupon.index') }}">
+                                    <i class="fas fa-gift me-2"></i> Gift Management
+                                </a>
+                            </li>
+                            <li class="{{ request()->routeIs('business-owner.profile') ? 'active' : '' }}">
+
+                                <a class="nav-link" href="{{ route('business-owner.profile') }}">
+                                    <i class="fas fa-user me-2"></i> Profile
+                                </a>
                             </li>
                             <li>
-                                <a href="../Admin Portal/adminProducts.html"><img class="me-2"
-                                        src="../images/chemist package box 06.svg" alt="" />Products</a>
-                            </li>
-                            <li>
-                                <a href="../Admin Portal/adminOrders.html"><img class="me-2"
-                                        src="../images/chemist shopping bag.svg" alt="" />Orders</a>
-                            </li>
-                            <li>
-                                <a href="../Admin Portal/adminChemists.html"><img class="me-2"
-                                        src="../images/heart-pulse.svg" alt="" />Chemists</a>
-                            </li>
-                            <li>
-                                <a href="../Admin Portal/adminCustomers.html"><img class="me-2"
-                                        src="../images/chemist users 01.svg" alt="" />Customers</a>
-                            </li>
-                            <li>
-                                <a href="../Admin Portal/adminPayment.html"><img class="me-2"
-                                        src="../images/coin-dollar.svg" alt="" />Payments</a>
-                            </li>
-                            <li>
-                                <a href="../Admin Portal/adminSettings.html"><img class="me-2"
-                                        src="../images/chemist setting.svg" alt="" />Settings</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                                    <!-- Font Awesome Logout Icon -->
+                                    <i class="fas fa-sign-out-alt me-2"></i> <!-- Logout icon -->
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <!-- Logout Form -->
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
                             </li>
                         </ul>
                     </div>

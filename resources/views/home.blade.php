@@ -14,7 +14,7 @@
             <div class="detail-container1">
                 <img class="ms-3 mt-3" src="{{ asset('images/dash detail 2.svg') }}" alt="Total Customers" />
                 <span class="detail-h1">Total Customers</span>
-                <div class="detail-h2">0</div>
+                <div class="detail-h2">{{$customerCount}}</div>
             </div>
         </div>
 
@@ -22,7 +22,7 @@
             <div class="detail-container1">
                 <img class="ms-3 mt-3" src="{{ asset('images/dash detail 1.svg') }}" alt="Total Revenue" />
                 <span class="detail-h1">Total Revenue</span>
-                <div class="detail-h2">0</div>
+                <div class="detail-h2">{{$totalRevenue}}</div>
             </div>
         </div>
 
