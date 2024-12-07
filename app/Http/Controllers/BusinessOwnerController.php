@@ -21,7 +21,9 @@ class BusinessOwnerController extends Controller
     public function index()
     {
         $businessOwners = BusinessOwner::all();
-        return view('admin.business_owners.index', compact('businessOwners'));
+        $packages = Package::all();
+
+        return view('admin.business_owners.index', compact('businessOwners','packages'));
     }
 
     /**
@@ -52,10 +54,13 @@ class BusinessOwnerController extends Controller
             'instagram' => 'nullable|url',
             'password' => 'required|string|min:8', // Confirmed password validation,
             'app_key' => 'required',
-            'sms_user_code'=>'required',
-            'sms_user_password'=>'required',
-            'sms_message_header'=>'required',
-            'google_review' => 'required'
+            'sms_user_code' => 'required',
+            'sms_user_password' => 'required',
+            'sms_message_header' => 'required',
+            'google_review' => 'required',
+            'mersis_no' => 'required',
+            'phone_number_netgsm' => 'required',
+            'stop_link' => 'required'
         ]);
 
         // Handle the logo upload (if exists)
@@ -120,20 +125,27 @@ class BusinessOwnerController extends Controller
         // Validate the incoming request data
         $validatedData = $request->validate([
             'business_name' => 'required|string|max:255',
-            'google_review' => 'required|string|max:255',
-            'app_key' => 'required|string|max:255',
-            'business_email' => 'required|email|max:255',
-            'package' => 'required|exists:packages,id',
-            'slug' => 'required|string|max:255',
+            'package' => 'required',
             'address' => 'required|string|max:255',
             'country' => 'required|string|max:255',
             'postal_code' => 'required|string|max:20',
             'facebook' => 'nullable|url',
             'tiktok' => 'nullable|url',
             'instagram' => 'nullable|url',
-            'logo' => 'nullable|image',
-            'password' => 'nullable|string|min:8', // Password is optional during update
+            'password' => 'nullable|string|min:8', // Confirmed password validation,
+            'app_key' => 'required',
+            'sms_user_code' => 'required',
+            'sms_user_password' => 'required',
+            'sms_message_header' => 'required',
+            'google_review' => 'required',
+            'mersis_no' => 'required',
+            'phone_number_netgsm' => 'required',
+            'stop_link' => 'required'
         ]);
+
+
+
+
 
         // If a logo file is uploaded, store it and update the path in the database
         if ($request->hasFile('logo')) {
@@ -151,15 +163,16 @@ class BusinessOwnerController extends Controller
             'business_name' => $validatedData['business_name'],
             'google_review' => $validatedData['google_review'],
             'app_key' => $validatedData['app_key'],
-            'business_email' => $validatedData['business_email'],
             'package' => $validatedData['package'], // Ensure this is correct
-            'slug' => $validatedData['slug'],
             'address' => $validatedData['address'],
             'country' => $validatedData['country'],
             'postal_code' => $validatedData['postal_code'],
             'facebook' => $validatedData['facebook'] ?? null,
             'tiktok' => $validatedData['tiktok'] ?? null,
             'instagram' => $validatedData['instagram'] ?? null,
+            'mersis_no' => $validatedData['mersis_no'] ?? null,
+            'phone_number_netgsm' => $validatedData['phone_number_netgsm'] ?? null,
+            'stop_link' =>$validatedData['stop_link'] ?? null,
             'logo' => $validatedData['logo'] ?? $businessOwner->logo, // Keep the existing logo if not updated
         ]);
 

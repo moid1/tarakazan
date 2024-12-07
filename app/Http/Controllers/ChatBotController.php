@@ -47,6 +47,7 @@ class ChatBotController extends Controller
     public function getNewChatBot($slug){
         // fodays-coffee
         $business = BusinessOwner::where('slug', $slug)->firstOrFail();
+        $business->increment('qr_scan_count');
         return view('chatbot.new.index', compact('business'));
     }
 

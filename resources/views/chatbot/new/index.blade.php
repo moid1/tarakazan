@@ -138,13 +138,22 @@
 <body>
 
     <div class="container">
+        <div class="d-flex flex-column flex-sm-row align-items-center mb-3 mb-sm-0 justify-content-end mt-3">
+            <form id="language-form" action="{{ route('change.lang', ['lang' => 'en']) }}" method="GET" class="form-inline">
+                @csrf
+                <select name="lang" class="form-control" onchange="changeLanguage(this)">
+                    <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>English</option>
+                    <option value="tr" {{ app()->getLocale() == 'tr' ? 'selected' : '' }}>Türkçe</option>
+                </select>
+            </form>
+        </div>
         <div class="header " id="firstBlock">
             <!-- Title and description -->
             <div class="text-center mt-5">
                 <h1 class="heading-bold">
-                    GET YOUR <br> FREE GIFT
+                 {{__('messages.GET YOUR FREE GIFT')}}
                 </h1>
-                <p>From {{ $business->business_name }}</p>
+                <p>{{ $business->business_name }}</p>
             </div>
 
             <!-- Gift Image -->
@@ -155,11 +164,11 @@
             <!-- Get the Gift Button -->
             <div class="text-center mt-4">
                 <a href="#" class="get-gift-btn" id="getTheGift">
-                    <i class="fas fa-shopping-cart mr-2 "></i> &nbsp;GET THE GIFT
+                    <i class="fas fa-shopping-cart mr-2 "></i> &nbsp;{{__('messages.GET THE GIFT')}}
                 </a>
                 <p class="accept-policies">
                     <input type="checkbox" id="firstAcceptPolicies" class="accept-checkbox">
-                    <label for="acceptPolicies">I accept the <a href="#">Policies</a>.</label>
+                    <label for="acceptPolicies">{{__('messages.I ACCEPT THE POLICIES')}}</label>
                 </p>
             </div>
 
@@ -168,7 +177,7 @@
         <div class=" justify-content-center align-items-center" id="secondBlock"
             style="display: none!important; height: 100vh;">
             <div class="text-center mt-5">
-                <h3>How would you rate</h3>
+                <h3>{{__('messages.How would you rate')}}</h3>
                 <p>{{ $business->business_name }} ?</p>
 
                 <div class="row justify-content-center mt-4">
@@ -197,7 +206,7 @@
         <div class="header" id="thirdBlock" style="display: none;">
             <!-- Title and description -->
             <div class="text-center mt-5 " style="">
-                <p>Enter Your Phone Number <br>to get the free code <br> and exclusive offers</p>
+                <p>{{__('messages.Enter your Phone Number to get the free gift code and exclusive offers')}}</p>
             </div>
 
             <!-- Gift Image -->
@@ -211,12 +220,12 @@
 
                 <!-- Name Field -->
                 <div class="d-flex align-items-center ">
-                    <input type="text" id="name" class="form-control" placeholder="Type in your name...">
+                    <input type="text" id="name" class="form-control" placeholder="{{__('messages.Type in your name...')}}">
 
                 </div>
                 <div class="d-flex align-items-center mt-3">
                     <input type="tel" id="phoneNo" class="form-control"
-                        placeholder="Type in your phone number...">
+                        placeholder="{{__('messages.Type in your phone number...')}}">
                     <button class="send-icon-btn">
                         <i class="fas fa-paper-plane send-icon"></i>
                     </button>
@@ -227,7 +236,7 @@
             <div class="text-center ">
                 <p class="accept-policies">
                     <input type="checkbox" id="secondPolicy" class="accept-checkbox">
-                    <label for="acceptPolicies">I accept the <a href="#">Policies</a>.</label>
+                    <label for="acceptPolicies">{{__('messages.I ACCEPT THE POLICIES')}}</a>.</label>
                 </p>
             </div>
         </div>
@@ -237,7 +246,7 @@
         <div class="header" id="fourthBlock" style="display: none;">
             <!-- Title and description -->
             <div class="text-center mt-5 " style="">
-                <p>Enter the code to verify <br> your phone number</p>
+                <p>{{__('messages.Enter the Code to verify your phone number')}}</p>
             </div>
 
             <!-- Gift Image -->
@@ -249,7 +258,7 @@
             <div class=" justify-content-center mt-4">
                 <!-- Name Field -->
                 <div class="d-flex align-items-center ">
-                    <input type="text" id="otpCode" class="form-control" placeholder="Type in your code...">
+                    <input type="text" id="otpCode" class="form-control" placeholder="{{__('messages.Type in the code...')}}">
                     <button class="verification-number">
                         <i class="fas fa-paper-plane send-icon"></i>
                     </button>
@@ -262,14 +271,13 @@
         <div class="header" id="fifthBlock" style="display: none;">
             <!-- Title and description -->
             <div class="text-center mt-5 " style="">
-                <p>Click the button below<br>and give us a feedback.</p>
-                <p>Reopen this window after you finish.</p>
+                <p>{{__('messages.Click the button below and give us a feedback. Reopen this window after you finish')}}</p>
             </div>
 
             <!-- Gift Image -->
             <div class="img-fluid text-center" id="giveFeedBack">
                 <img src="{{ asset('images/bot/feedback.png') }}" alt="Gift Image" class="gift-image">
-                <p>Give a feedback</p>
+                <p>{{__('messages.Give a Feedback')}}</p>
             </div>
 
         </div>
@@ -277,7 +285,7 @@
         <div class="" id="sixthBlock" style="display: none;">
             <!-- Title and description -->
             <div class="text-center mt-5 " style="">
-                <p>Your Discount Code is generating...</p>
+                <p>{{__('messages.Your Discount Code is generating')}}</p>
             </div>
 
             <!-- Gift Image -->
@@ -292,8 +300,8 @@
         <div class="header" id="seventhBlock" style="display: none;justify-content:space-evenly">
             <!-- Title and description -->
             <div class="text-center mt-5 " style="">
-                <p>Get your gift now <br> from one of our team</p>
-                <p>Show the Discount Code.</p>
+                <p>{{__('messages.Get your gift now from one of our team.')}}</p>
+                <p>{{__('messages.Show the Discount Code')}}</p>
             </div>
 
             <!-- Gift Image -->
@@ -305,7 +313,13 @@
 
 
     </div>
-
+    <script>
+        function changeLanguage(select) {
+            // Update the form's action based on the selected language
+            var form = document.getElementById('language-form');
+            form.submit();  // Submit the form
+        }
+    </script>
     <script>
         var businessOwner = @json($business);
 

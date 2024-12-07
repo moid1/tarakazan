@@ -3,7 +3,7 @@
 @section('content')
     <div class="row edit-chemist-parent-row">
         <h4 class="mt-3">
-            Edit Campaign
+            {{ __('messages.Edit Campaign') }}
         </h4>
         <form method="POST" action="{{ route('campaign.update', $campaign->id) }}" class="row edit-chemist-child-row">
             @csrf
@@ -11,7 +11,7 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-12">
-                        <div class="chemist-input-heading">Name</div>
+                        <div class="chemist-input-heading">{{ __('messages.Name') }}</div>
                         <input type="text" name="name" id="name"
                             class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $campaign->name) }}" required />
                         @error('name')
@@ -20,7 +20,7 @@
                     </div>
 
                     <div class="col-12">
-                        <div class="chemist-input-heading">Description</div>
+                        <div class="chemist-input-heading">{{ __('messages.Description') }}</div>
                         <input type="text" name="description" id="description"
                             class="form-control @error('description') is-invalid @enderror" value="{{ old('description', $campaign->description) }}"
                             required />
@@ -34,8 +34,8 @@
                 <div class="row">
                     <!-- Submit Buttons -->
                     <div class="col-12 add-chemist-btn-div mt-3 text-end">
-                        <a href="{{ route('campaign.index') }}" class="chemist-cancel-btn me-2">Cancel</a>
-                        <button class="chemist-add-btn" type="submit">Update Campaign</button>
+                        <a href="{{ route('campaign.index') }}" class="chemist-cancel-btn me-2">{{ __('messages.Cancel') }}</a>
+                        <button class="chemist-add-btn" type="submit">{{ __('messages.Update Campaign') }}</button>
                     </div>
                 </div>
             </div>

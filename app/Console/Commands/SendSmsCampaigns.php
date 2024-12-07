@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Models\BusinessOwnerCampaignSMS;
 use App\Models\CustomerDetail;
 use App\Models\SMSQuota;
+use App\Models\Subscription;
+use App\Models\User;
 use Illuminate\Console\Command;
 use App\Models\BusinessOwner;
 use Carbon\Carbon;
@@ -51,7 +53,9 @@ class SendSmsCampaigns extends Command
             // Fetch verified recipients (only once per campaign's business owner)
             $recipients = CustomerDetail::where('business_owner_id', $campaign->business_owner_id)
                 ->where('is_verified', true)
-                ->pluck('phone');
+                ->pluck('phone') // Pluck the 'phone' column
+                ->unique(); // Ensure uniqueness
+
 
             // Skip campaign if no recipients
             if ($recipients->isEmpty()) {
@@ -122,10 +126,12 @@ class SendSmsCampaigns extends Command
 
         // Perform a single bulk insert into the SMSQuota table
         $data = [];
+        $subscription = Subscription::where('user_id', $businessOwner->user_id)->latest()->first();
         foreach ($recipients as $value) {
             $data[] = [
                 'phone' => $value,
                 'sms' => $message,
+                'subscription_id' => $subscription,
                 'business_owner_id' => $businessOwner->id,
                 'created_at' => now(),
                 'updated_at' => now(),

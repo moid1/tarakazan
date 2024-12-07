@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\BusinessOwner;
 use App\Models\BusinessOwnerCampaignSMS;
 use App\Models\Campaign;
+use App\Models\Package;
+use App\Models\SMSQuota;
+use App\Models\Subscription;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
@@ -27,9 +31,63 @@ class BusinessOwnerCampaignSMSController extends Controller
      */
     public function create()
     {
-        $campaigns = Campaign::where('user_id', Auth::id())->get();
-        return view('business_owners.sms.create', compact('campaigns'));
+        // Fetch the latest subscription for the current user
+        $subscription = Subscription::where('user_id', Auth::id())->latest()->first();
+
+        // Check if the subscription exists and is active within the valid date range
+        if ($subscription && ($subscription->status === 'active' && $subscription->end_date >= now())) {
+            // Subscription is valid, proceed with the logic
+
+            // Retrieve the business owner, package, and SMS count in a more efficient manner
+            $businessOwner = BusinessOwner::where('user_id', Auth::id())->first();
+            if (!$businessOwner) {
+                return back()->with('error', 'Business owner profile not found.');
+            }
+
+            // Get the package details for the business owner
+            $package = $businessOwner->package ? Package::find($businessOwner->package) : null;
+
+            // Ensure package exists before proceeding
+            if (!$package) {
+                return back()->with('error', 'Invalid package associated with your business.');
+            }
+
+            // Calculate the remaining SMS count for the current month
+            $currentMonth = Carbon::now()->month;
+            $currentYear = Carbon::now()->year;
+            $smsCount = SMSQuota::where('business_owner_id', $businessOwner->id)
+                ->whereMonth('created_at', $currentMonth)
+                ->whereYear('created_at', $currentYear)
+                ->count();
+
+            // Calculate total remaining SMS
+            $totalSMSRemaining = max(0, $package->quantity - $smsCount);
+            if ($totalSMSRemaining === 0) {
+                $subscription->update(['status' => 'inactive']); // Efficient status update
+                Auth::user()->update(['is_paid' => false]);
+                return back()->with([
+                    'error' => 'You have no SMS remaining for this month.',
+                    'nextpackage' => true
+                ]);
+            }
+            // Fetch campaigns for the user
+            $campaigns = Campaign::where('user_id', Auth::id())->get();
+
+            return view('business_owners.sms.create', compact('campaigns'));
+        }
+
+        // If the subscription is expired or inactive, update the status and handle the error
+        if ($subscription) {
+            $subscription->update(['status' => 'inactive']); // Efficient status update
+        }
+
+        // Update the user status to reflect inactive subscription
+        Auth::user()->update(['is_paid' => false]);
+
+        // Return with an error message
+        return back()->with('error', 'Your subscription is inactive or has expired, so you are not authorized to access this.');
     }
+
 
     /**
      * Store a newly created resource in storage.

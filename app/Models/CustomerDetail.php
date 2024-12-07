@@ -13,4 +13,8 @@ class CustomerDetail extends Model
     {
         return $this->belongsTo(BusinessOwner::class);
     }
+
+    public function redeemCoupon(){
+        return $this->hasMany(RedeemCode::class, 'customer_details_id');
+    }
 }

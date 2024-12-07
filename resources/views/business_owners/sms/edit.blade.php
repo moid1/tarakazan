@@ -3,7 +3,7 @@
 @section('content')
     <div class="row new-chemist-parent-row">
         <div class="col-lg-12">
-            <h4 class="mt-3">Edit Campaign SMS</h4>
+            <h4 class="mt-3">{{ __('messages.Edit Campaign SMS') }}</h4>
 
             <!-- Display Success Message -->
             @if (session('success'))
@@ -29,9 +29,9 @@
 
                 <!-- Campaign Dropdown -->
                 <div class="form-group mt-3">
-                    <label for="campaign_id">Campaign</label>
+                    <label for="campaign_id">{{ __('messages.Campaign') }}</label>
                     <select name="campaign_id" id="campaign_id" class="form-control @error('campaign_id') is-invalid @enderror" required>
-                        <option value="">Select Campaign</option>
+                        <option value="">{{ __('messages.Select Campaign') }}</option>
                         @foreach ($campaigns as $campaign)
                             <option value="{{ $campaign->id }}" 
                                 {{ old('campaign_id', $campaignSms->id) == $campaign->id ? 'selected' : '' }}>
@@ -48,8 +48,8 @@
 
                 <!-- Message Field -->
                 <div class="form-group mt-3">
-                    <label for="message">Message</label>
-                    <textarea class="form-control @error('message') is-invalid @enderror" id="message" name="message" rows="4" placeholder="Enter your campaign message" required>{{ old('message', $campaignSms->sms) }}</textarea>
+                    <label for="message">{{ __('messages.Message') }}</label>
+                    <textarea class="form-control @error('message') is-invalid @enderror" id="message" name="message" rows="4" placeholder="{{ __('messages.Enter your campaign message') }}" required>{{ old('message', $campaignSms->sms) }}</textarea>
 
                     @error('message')
                         <div class="invalid-feedback">
@@ -60,7 +60,7 @@
 
                 <!-- Delivery Time -->
                 <div class="form-group mt-3">
-                    <label for="delivery_time">Delivery Time</label>
+                    <label for="delivery_time">{{ __('messages.Delivery Time') }}</label>
                     <input type="datetime-local" class="form-control @error('delivery_time') is-invalid @enderror" id="delivery_time" name="delivery_time" required value="{{ old('delivery_time', $campaignSms->delivery_date) }}">
 
                     @error('delivery_time')
@@ -72,7 +72,7 @@
 
                 <!-- Submit Button -->
                 <div class="form-group mt-5">
-                    <button type="submit" class="chemist-add-btn">Update SMS Campaign</button>
+                    <button type="submit" class="chemist-add-btn">{{ __('messages.Update SMS Campaign') }}</button>
                 </div>
             </form>
         </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BusinessOwner;
 use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -129,6 +130,11 @@ class PaymentController extends Controller
             if ($user) {
                 $user->is_paid = true;
                 $user->save();
+            }
+            
+            $busessOwenr = BusinessOwner::where('user_id', $subscription->user_id)->first();
+            if($busessOwenr){
+                $busessOwenr->update(['package'=>$subscription->package_id]);
             }
 
         }

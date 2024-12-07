@@ -1,31 +1,72 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="row dashboard-detail ">
+    <div class="row dashboard-detail">
+        <!-- Total Active and Inactive Businesses -->
         <div class="col-12 col-md-4">
             <div class="detail-container1">
-                <img class="ms-3 mt-3" src="{{ asset('images/dash detail 3.svg') }}" alt="Total Active Businesses" />
-                <span class="detail-h1">Total Active Businesses</span>
-                <div class="detail-h2">{{ $totalActiveBusiness }}</div>
+                <span class="detail-h1">
+                    <i class="fas fa-check-circle text-success me-2"></i>{{ __('messages.Total Active Businesses') }} /
+                    <i class="fas fa-times-circle text-danger me-2"></i>{{ __('messages.Total InActive Businesses') }}
+                </span>
+                <div class="detail-h2">{{ $totalActiveBusiness }} / {{ $totalInActiveBusiness }}</div>
             </div>
         </div>
 
+        <!-- Total Customers -->
         <div class="col-12 col-md-4">
             <div class="detail-container1">
-                <img class="ms-3 mt-3" src="{{ asset('images/dash detail 2.svg') }}" alt="Total Customers" />
-                <span class="detail-h1">Total Customers</span>
-                <div class="detail-h2">{{$customerCount}}</div>
+                <span class="detail-h1">
+                    <i class="fas fa-users me-2"></i>{{ __('messages.Total Customers') }}
+                </span>
+                <div class="detail-h2">{{ $customerCount }}</div>
             </div>
         </div>
 
+        <!-- Total Revenue -->
         <div class="col-12 col-md-4">
             <div class="detail-container1">
-                <img class="ms-3 mt-3" src="{{ asset('images/dash detail 1.svg') }}" alt="Total Revenue" />
-                <span class="detail-h1">Total Revenue</span>
-                <div class="detail-h2">{{$totalRevenue}}</div>
+                <span class="detail-h1">
+                    <i class="fas fa-dollar-sign me-2"></i>{{ __('messages.Total Revenue') }}
+                </span>
+                <div class="detail-h2">{{ number_format($totalRevenue, 2) }}</div>
             </div>
         </div>
 
+        <!-- Total QR Scans -->
+        <div class="col-12 col-md-4">
+            <div class="detail-container1">
+                <span class="detail-h1">
+                    <i class="fas fa-qrcode me-2"></i>{{ __('messages.Total QR Scans') }}
+                </span>
+                <div class="detail-h2">{{ $totalQRScanCount }}</div>
+            </div>
+        </div>
+
+        <!-- Total Reviews -->
+        <div class="col-12 col-md-4">
+            <div class="detail-container1">
+                <span class="detail-h1">
+                    <i class="fas fa-star me-2"></i>{{ __('messages.Total Reviews') }}
+                </span>
+                <div class="detail-h2">{{ $totalReviewsCount }}</div>
+            </div>
+        </div>
+
+        <!-- Monthly Revenue (Current vs Previous Month) -->
+        <div class="col-12 col-md-4">
+            <div class="detail-container1">
+                <span class="detail-h1">
+                    <i class="fas fa-calendar-day me-2"></i>{{ __('Monthly Revenue') }}
+                </span>
+                <div class="">
+                    {{ __('Current Month') }}:
+                    ${{ number_format($monthlyRevenueData['currentMonthRevenue'], 2) }} <br>
+                    {{ __('Previous Month') }}:
+                    ${{ number_format($monthlyRevenueData['previousMonthRevenue'], 2) }}
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row mt-5">
@@ -38,24 +79,69 @@
             <canvas id="packageUsagePieChart"></canvas>
         </div>
     </div>
-@endsection
 
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h5 class="mt-5">Top Performing Business Owners</h5>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Business Name</th>
+                        <th>QR Scans</th>
+                        <th>Google Reviews</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($topPerformers as $business)
+                        <tr>
+                            <td>{{ $business->business_name }}</td>
+                            <td>{{ $business->qr_scan_count }}</td>
+                            <td>{{ $business->google_review_count }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-lg-6">
+            <h5 class="mt-5">Most Frequent Hours When Customer Registered / Scan the QR Code</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th> Hour</th>
+                        <th>Number of Registrations / Scan QRs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($getMostFrequentRegistrationHour as $time)
+                        <tr>
+                            <td>{{ $time->registration_hour }}</td>
+                            <td>{{ $time->count }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+@endsection
 
 @section('customjs')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
         var ctx = document.getElementById('businessOwnersChart').getContext('2d');
-
         var businessOwnersChart = new Chart(ctx, {
-            type: 'bar', // Ensure this is set to 'bar' for bar chart
+            type: 'bar',
             data: {
-                labels: @json($months), // Months from controller
+                labels: @json($months),
                 datasets: [{
-                    label: 'Business Owners Added',
-                    data: @json($counts), // Counts of business owners from controller
-                    backgroundColor: '#ff9600', // Bar color
-                    borderColor: '#ff9600', // Border color of bars
+                    label: {!! json_encode(__('messages.Business Owners Added')) !!},
+                    data: @json($counts),
+                    backgroundColor: '#ff9600',
+                    borderColor: '#ff9600',
                     borderWidth: 1,
                 }]
             },
@@ -76,19 +162,19 @@
         // Package Usage Pie Chart
         var ctx2 = document.getElementById('packageUsagePieChart').getContext('2d');
         var packageUsagePieChart = new Chart(ctx2, {
-            type: 'pie', // Using pie chart for package usage
+            type: 'pie',
             data: {
-                labels: @json($packageNames), // Package names
+                labels: @json($packageNames),
                 datasets: [{
                     label: 'Business Owners Per Package',
-                    data: @json($packageCounts), // Count of business owners for each package
+                    data: @json($packageCounts),
                     backgroundColor: [
-                        'rgba(54, 162, 235, 0.5)', // Blue
-                        'rgba(255, 99, 132, 0.5)', // Red
-                        'rgba(255, 159, 64, 0.5)', // Orange
-                        'rgba(75, 192, 192, 0.5)', // Green
-                        'rgba(153, 102, 255, 0.5)', // Purple
-                        'rgba(255, 159, 64, 0.5)' // Yellow
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(255, 159, 64, 0.5)',
+                        'rgba(75, 192, 192, 0.5)',
+                        'rgba(153, 102, 255, 0.5)',
+                        'rgba(255, 159, 64, 0.5)'
                     ],
                     borderColor: [
                         '#36A2EB',

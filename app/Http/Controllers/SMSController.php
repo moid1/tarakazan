@@ -175,6 +175,7 @@ XML;
                     ], 404);
                 }
                 $this->sendCouponCode($businessOwner->id, $customerDetail->phone, $coupon->code);
+                $businessOwner->increment('google_reviews');
 
                 return response()->json([
                     'success' => true,

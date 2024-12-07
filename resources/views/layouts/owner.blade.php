@@ -30,57 +30,62 @@
         <div class="row w-100 m-0">
             <div class="chemist-sidebar col-lg-3 d-none d-lg-block">
                 <div class="row">
-                    <span class="chemist-logo1 ">
+                    <span class="chemist-logo1">
                         <img src="{{ asset('images/tarakazan_logo.png') }}" alt="" class="img-fluid ">
                     </span>
                     <ul>
                         <!-- Dashboard -->
                         <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
                             <a href="{{ route('home') }}">
-                                <i class="fas fa-tachometer-alt me-2 ms-1"></i> Dashboard
+                                <i class="fas fa-tachometer-alt me-2 ms-1"></i> {{ __('messages.Dashboard') }}
                             </a>
                         </li>
-
 
                         <!-- Campaigns -->
                         <li class="{{ request()->routeIs('campaign.index') ? 'active' : '' }}">
                             <a href="{{ route('campaign.index') }}">
-                                <i class="fas fa-bullhorn me-2"></i> Campaigns
+                                <i class="fas fa-bullhorn me-2"></i> {{ __('messages.Campaigns') }}
                             </a>
                         </li>
 
                         <li class="{{ request()->routeIs('campaign.sms.*') ? 'active' : '' }}">
                             <a href="{{ route('campaign.sms.index') }}">
-                                <i class="fas fa-sms me-2"></i> Schedule SMS
+                                <i class="fas fa-sms me-2"></i> {{ __('messages.Schedule SMS') }}
                             </a>
                         </li>
 
                         <!-- Social Media Insights -->
-                        <li class="{{ request()->routeIs('social-media.index') ? 'active' : '' }}">
+                        {{-- <li class="{{ request()->routeIs('social-media.index') ? 'active' : '' }}">
                             <a href="{{ route('social-media.index') }}">
-                                <i class="fas fa-chart-line me-2"></i> Social Media Insights
+                                <i class="fas fa-chart-line me-2"></i> {{ __('messages.Social Media Insights') }}
+                            </a>
+                        </li> --}}
+
+                        <li class="{{ request()->routeIs('waiter*') ? 'active' : '' }}">
+                            <a href="{{ route('waiter.index') }}">
+                                <i class="fas fa-user me-2"></i> {{ __('messages.Waiter') }}
                             </a>
                         </li>
+
 
                         <!-- Gift Management -->
                         <li class="{{ request()->routeIs('coupon.index') ? 'active' : '' }}">
                             <a href="{{ route('coupon.index') }}">
-                                <i class="fas fa-gift me-2"></i> Gift Management
+                                <i class="fas fa-gift me-2"></i> {{ __('messages.Gift Management') }}
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('business-owner.profile') ? 'active' : '' }}">
 
+                        <li class="{{ request()->routeIs('business-owner.profile') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('business-owner.profile') }}">
-                                <i class="fas fa-user me-2"></i> Profile
+                                <i class="fas fa-user me-2"></i> {{ __('messages.Profile') }}
                             </a>
                         </li>
+
                         <li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">
-                                <!-- Font Awesome Logout Icon -->
-                                <i class="fas fa-sign-out-alt me-2"></i> <!-- Logout icon -->
-                                {{ __('Logout') }}
+                                <i class="fas fa-sign-out-alt me-2"></i> {{ __('messages.Logout') }}
                             </a>
 
                             <!-- Logout Form -->
@@ -88,16 +93,14 @@
                                 @csrf
                             </form>
                         </li>
-
                     </ul>
-
                 </div>
             </div>
 
             <!-- ########################### For Small Screen Menu ######################### -->
-            <div class="col-12 small-screen-nav d-lg-none ">
+            <div class="col-12 small-screen-nav d-lg-none">
                 <div class="row ">
-                    <div class="col-12 hamburger-top  " style="z-index: 100;">
+                    <div class="col-12 hamburger-top" style="z-index: 100;">
                         <div class="hamburger-container" onclick="toggleHamburger(this); toggleclick();">
                             <span onclick="toggleclick();" class="line1 line"></span>
                             <span onclick="toggleclick();" class="line2 line"></span>
@@ -112,45 +115,45 @@
                             <!-- Dashboard -->
                             <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
                                 <a href="{{ route('home') }}">
-                                    <i class="fas fa-tachometer-alt me-2 ms-1"></i> Dashboard
+                                    <i class="fas fa-tachometer-alt me-2 ms-1"></i> {{ __('messages.Dashboard') }}
                                 </a>
                             </li>
                             <li class="{{ request()->routeIs('campaign.index') ? 'active' : '' }}">
                                 <a href="{{ route('campaign.index') }}">
-                                    <i class="fas fa-bullhorn me-2"></i> Campaigns
+                                    <i class="fas fa-bullhorn me-2"></i> {{ __('messages.Campaigns') }}
                                 </a>
                             </li>
                             <li class="{{ request()->routeIs('campaign.sms.*') ? 'active' : '' }}">
                                 <a href="{{ route('campaign.sms.index') }}">
-                                    <i class="fas fa-sms me-2"></i> Schedule SMS
+                                    <i class="fas fa-sms me-2"></i> {{ __('messages.Schedule SMS') }}
                                 </a>
                             </li>
-                            <!-- Social Media Insights -->
-                            <li class="{{ request()->routeIs('social-media.index') ? 'active' : '' }}">
+                            {{-- <li class="{{ request()->routeIs('social-media.index') ? 'active' : '' }}">
                                 <a href="{{ route('social-media.index') }}">
-                                    <i class="fas fa-chart-line me-2"></i> Social Media Insights
+                                    <i class="fas fa-chart-line me-2"></i> {{ __('messages.Social Media Insights') }}
+                                </a>
+                            </li> --}}
+                            <li class="{{ request()->routeIs('waiter*') ? 'active' : '' }}">
+                                <a href="{{ route('waiter.index') }}">
+                                    <i class="fas fa-user me-2"></i> {{ __('messages.Waiter') }}
                                 </a>
                             </li>
-
                             <!-- Gift Management -->
                             <li class="{{ request()->routeIs('coupon.index') ? 'active' : '' }}">
                                 <a href="{{ route('coupon.index') }}">
-                                    <i class="fas fa-gift me-2"></i> Gift Management
+                                    <i class="fas fa-gift me-2"></i> {{ __('messages.Gift Management') }}
                                 </a>
                             </li>
                             <li class="{{ request()->routeIs('business-owner.profile') ? 'active' : '' }}">
-
                                 <a class="nav-link" href="{{ route('business-owner.profile') }}">
-                                    <i class="fas fa-user me-2"></i> Profile
+                                    <i class="fas fa-user me-2"></i> {{ __('messages.Profile') }}
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();">
-                                    <!-- Font Awesome Logout Icon -->
-                                    <i class="fas fa-sign-out-alt me-2"></i> <!-- Logout icon -->
-                                    {{ __('Logout') }}
+                                    <i class="fas fa-sign-out-alt me-2"></i> {{ __('messages.Logout') }}
                                 </a>
 
                                 <!-- Logout Form -->
@@ -162,25 +165,38 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-9 dashboard-right mb-3">
                 <div class="row ">
-                    <div class="col-12 dashboard-top d-none d-lg-flex justify-content-end">
+                    <div class="col-12 dashboard-top d-flex justify-content-between align-items-center flex-wrap">
+                        <!-- Language Selector Dropdown (select option) -->
+                        <div class="d-flex flex-column flex-sm-row align-items-center mb-3 mb-sm-0">
+                            <form id="language-form" action="{{ route('change.lang', ['lang' => 'en']) }}"
+                                method="GET" class="form-inline">
+                                @csrf
+                                <select name="lang" class="form-control" onchange="changeLanguage(this)">
+                                    <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>English
+                                    </option>
+                                    <option value="tr" {{ app()->getLocale() == 'tr' ? 'selected' : '' }}>Türkçe
+                                    </option>
+                                </select>
+                            </form>
+                        </div>
 
+                        <!-- User Info (Business Owner Name and Role) -->
                         <div class="d-flex justify-content-center align-items-center">
-                            <div class="d-flex flex-column">
+                            <div class="d-flex flex-column text-center text-sm-start">
                                 <span class="smith">{{ Auth::user()->name }}</span>
-                                <span>Business Owner</span>
+                                <span>{{ __('messages.Business Owner') }}</span>
                             </div>
-                            {{-- <button class="dashboard-notification">
-                                <i class="fas fa-bell"></i>
-                            </button> --}}
                         </div>
                     </div>
+
                     <div class="col-12 dashboard-morning align-items-md-center ">
-                        <div class="smith-cont " style="margin-right: -1.3rem;">
-                            <span class="smith-heading ">Good Morning, {{ Auth::user()->name }} <img
+                        <div class="smith-cont" style="margin-right: -1.3rem;">
+                            <span class="smith-heading">{{ __('messages.Hey') }}, {{ Auth::user()->name }} <img
                                     src="{{ asset('images/hand_wave-removebg.png') }}" alt=""></span>
-                            <div class="welcome-order mt-3">Welcome, Manage your business</div>
+                            <div class="welcome-order mt-3">{{ __('messages.Welcome, Manage your business') }}</div>
                         </div>
                     </div>
                 </div>
@@ -196,6 +212,12 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     @yield('customjs')
+    <script>
+        function changeLanguage(select) {
+            var form = document.getElementById('language-form');
+            form.submit();
+        }
+    </script>
 </body>
 
 </html>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BusinessOwner;
 use App\Models\Package;
 use Illuminate\Http\Request;
 
@@ -13,6 +14,11 @@ class PackageController extends Controller
     public function index()
     {
         $packages = Package::all();
+        // Attach the total number of business owners using each package
+        $packages->map(function ($package) {
+            $package->total_used = BusinessOwner::where('package', $package->id)->count();
+            return $package;
+        });
         return view("admin.packages.index", compact("packages"));
     }
 

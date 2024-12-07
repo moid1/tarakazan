@@ -3,7 +3,7 @@
 @section('content')
     <div class="row new-chemist-parent-row">
         <h4 class="mt-3">
-            Add New Business
+            {{ __('messages.Add New Business') }} <!-- Translated title -->
         </h4>
 
         <form method="POST" action="{{ route('admin.business.owner.store') }}" class="row new-chemist-child-row"
@@ -13,71 +13,101 @@
                 <div class="row">
                     <!-- Business Name -->
                     <div class="col-12 col-md-6 mb-3">
-                        <div class="chemist-input-heading">Business Name</div>
+                        <div class="chemist-input-heading">{{ __('messages.Business Name') }}</div>
                         <input type="text" name="business_name" id="business_name" required class="form-control" />
                     </div>
 
                     <!-- Google Place Id -->
                     <div class="col-12 col-md-6 mb-3">
-                        <div class="chemist-input-heading">Google Place Id</div>
+                        <div class="chemist-input-heading">{{ __('messages.Google Place Id') }}</div>
+                        <!-- Translated label -->
                         <input type="text" name="google_review" id="google_review" required class="form-control" />
                     </div>
 
                     <!-- SMS App Key -->
                     <div class="col-12 col-md-6 mb-3">
-                        <div class="chemist-input-heading">SMS App Key</div>
+                        <div class="chemist-input-heading">{{ __('messages.SMS App Key') }}</div> <!-- Translated label -->
                         <input type="text" name="app_key" id="app_key" required class="form-control" />
                     </div>
 
                     {{-- SMS User Code --}}
                     <div class="col-12 col-md-6 mb-3">
-                        <div class="chemist-input-heading">SMS User Code</div>
+                        <div class="chemist-input-heading">{{ __('messages.SMS User Code') }}</div>
+                        <!-- Translated label -->
                         <input type="text" name="sms_user_code" id="sms_user_code" required class="form-control" />
                     </div>
 
+                    <!-- SMS User Password -->
                     <div class="col-12 col-md-6 mb-3">
-                        <div class="chemist-input-heading">SMS User Password</div>
-                        <input type="text" name="sms_user_password" id="sms_user_password" required class="form-control" />
+                        <div class="chemist-input-heading">{{ __('messages.SMS User Password') }}</div>
+                        <!-- Translated label -->
+                        <input type="text" name="sms_user_password" id="sms_user_password" required
+                            class="form-control" />
+                    </div>
+
+                    <!-- SMS Message Header -->
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="chemist-input-heading">{{ __('messages.SMS Message Header') }}</div>
+                        <!-- Translated label -->
+                        <input type="text" name="sms_message_header" id="sms_message_header" required
+                            class="form-control" />
                     </div>
 
                     <div class="col-12 col-md-6 mb-3">
-                        <div class="chemist-input-heading">SMS Message Header (Name that is registered on NetGSM)</div>
-                        <input type="text" name="sms_message_header" id="sms_message_header" required class="form-control" />
+                        <div class="chemist-input-heading">{{ __('messages.Mersis No') }}</div>
+                        <!-- Translated label -->
+                        <input type="text" name="mersis_no" id="" required
+                            class="form-control" />
                     </div>
 
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="chemist-input-heading">{{ __('messages.Stop Link') }}</div>
+                        <!-- Translated label -->
+                        <input type="text" name="stop_link" id="" required
+                            class="form-control" />
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="chemist-input-heading">{{ __('messages.Phone No NetGSM') }}</div>
+                        <!-- Translated label -->
+                        <input type="text" name="phone_number_netgsm" id="" required
+                            class="form-control" />
+                    </div>
 
                     <!-- Business Email -->
                     <div class="col-12 col-md-6 mb-3">
-                        <div class="chemist-input-heading">Business Email</div>
+                        <div class="chemist-input-heading">{{ __('messages.Business Email') }}</div>
+                        <!-- Translated label -->
                         <input type="email" name="business_email" id="business_email" required class="form-control" />
                     </div>
 
                     <!-- Package Selection -->
                     <div class="col-12 col-md-6 mb-3">
-                        <div class="chemist-input-heading">Package</div>
+                        <div class="chemist-input-heading">{{ __('messages.Package') }}</div> <!-- Translated label -->
                         <select name="package" id="package" required class="form-control">
-                            <option value="" disabled selected>Select Package</option>
+                            <option value="" disabled selected>{{ __('messages.Select Package') }}</option>
+                            <!-- Translated option -->
                             @foreach ($packages as $package)
-                                <option value={{ $package->id }}>{{ $package->name }}</option>
+                                <option value="{{ $package->id }}">{{ $package->name }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <!-- Logo Upload -->
                     <div class="col-12 col-md-6 mb-3">
-                        <div class="chemist-input-heading">Logo</div>
+                        <div class="chemist-input-heading">{{ __('messages.Logo') }}</div> <!-- Translated label -->
                         <input type="file" name="logo" id="logo" accept="image/*" class="form-control" />
                     </div>
 
                     <!-- Slug -->
                     <div class="col-12 col-md-6 mb-3">
-                        <div class="chemist-input-heading">Slug</div>
+                        <div class="chemist-input-heading">{{ __('messages.Slug') }}</div> <!-- Translated label -->
                         <input type="text" name="slug" id="slug" required class="form-control" />
                     </div>
 
                     <!-- Password Field with Eye Icon and Random Icon -->
                     <div class="col-12 col-md-6 position-relative mb-3">
-                        <div class="chemist-input-heading">Password</div>
+                        <div class="chemist-input-heading">{{ __('messages.Password') }}</div> <!-- Translated label -->
                         <input type="password" name="password" id="password" required class="form-control" />
                         <i class="fas fa-eye" id="toggle-password"
                             style="position: absolute; right: 50px; top: 50%; cursor: pointer;"></i>
@@ -87,41 +117,43 @@
 
                     <!-- Address -->
                     <div class="col-12 col-md-6 mb-3">
-                        <div class="chemist-input-heading">Address</div>
+                        <div class="chemist-input-heading">{{ __('messages.Address') }}</div> <!-- Translated label -->
                         <input type="text" name="address" id="address" required class="form-control" />
                     </div>
 
                     <!-- Country -->
                     <div class="col-12 col-md-6 mb-3">
-                        <div class="chemist-input-heading">Country</div>
+                        <div class="chemist-input-heading">{{ __('messages.Country') }}</div> <!-- Translated label -->
                         <input type="text" name="country" id="country" required class="form-control" />
                     </div>
 
                     <!-- Postal Code -->
                     <div class="col-12 col-md-6 mb-3">
-                        <div class="chemist-input-heading">Postal Code</div>
+                        <div class="chemist-input-heading">{{ __('messages.Postal Code') }}</div> <!-- Translated label -->
                         <input type="text" name="postal_code" id="postal_code" required class="form-control" />
                     </div>
 
                     <!-- Social Media Links -->
                     <div class="col-12 mb-3">
-                        <div class="chemist-input-heading">Social Media Links</div>
-                        <input type="url" name="facebook" id="facebook" placeholder="Facebook URL"
-                            class="form-control mb-2" />
-                        <input type="url" name="tiktok" id="tiktok" placeholder="TikTok URL"
-                            class="form-control mb-2" />
-                        <input type="url" name="instagram" id="instagram" placeholder="Instagram URL"
-                            class="form-control" />
+                        <div class="chemist-input-heading">{{ __('messages.Social Media Links') }}</div>
+                        <!-- Translated label -->
+                        <input type="url" name="facebook" id="facebook"
+                            placeholder="{{ __('messages.Facebook URL') }}" class="form-control mb-2" />
+                        <input type="url" name="tiktok" id="tiktok"
+                            placeholder="{{ __('messages.TikTok URL') }}" class="form-control mb-2" />
+                        <input type="url" name="instagram" id="instagram"
+                            placeholder="{{ __('messages.Instagram URL') }}" class="form-control" />
                     </div>
 
                     <!-- Buttons -->
                     <div class="col-12 text-end mt-3">
                         <div class="d-flex justify-content-end">
-                            <button class="chemist-cancel-btn me-2" type="button">Cancel</button>
-                            <button class="chemist-add-btn" type="submit">Add</button>
+                            <button class="chemist-cancel-btn me-2" type="button">{{ __('messages.Cancel') }}</button>
+                            <!-- Translated -->
+                            <button class="chemist-add-btn" type="submit">{{ __('messages.Add') }}</button>
+                            <!-- Translated -->
                         </div>
                     </div>
-                    
 
                 </div>
             </div>

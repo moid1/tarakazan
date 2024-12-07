@@ -6,12 +6,15 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ChatBotController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\SocialMediaController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\WaiterController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Cookie;
 
 Route::get('migrate', function () {
     \Artisan::call('migrate');
@@ -50,6 +53,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::delete('packages/{package}', [PackageController::class, 'destroy'])->name('packages.destroy');
 
     Route::get('all-subscriptions', [SubscriptionController::class, 'allSubscriptions'])->name('subscription.all');
+    Route::get('/soon-expire', [SubscriptionController::class, 'getSoonExpireBusinessOwners'])->name('soon.expire');
 });
 
 
@@ -96,6 +100,11 @@ Route::delete('/send-campaign-sms/{id}', [BusinessOwnerCampaignSMSController::cl
 Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
 Route::get('customers/export-pdf', [CustomerController::class, 'exportPdf'])->name('admin.customer.pdf.export');
 
+//Busienss-Owners Waiter
+Route::post('/waiter/store', [WaiterController::class, 'store'])->name('waiter.store');
+Route::get('/waiter/create', [WaiterController::class, 'create'])->name('waiter.create');
+Route::get('/waiter', [WaiterController::class, 'index'])->name('waiter.index');
+Route::delete('/waiter/{id}', [WaiterController::class, 'destroy'])->name('waiter.destroy');
 
 Route::post('/save-customer-data', [ChatbotController::class, 'saveCustomerData']);
 
@@ -105,10 +114,22 @@ Route::post('verify-otp', [SMSController::class, 'verifyOTP']);
 
 
 //
-Route::get('payment', [PaymentController::class,'storageeCard']);
-Route::post('payment-test', [PaymentController::class,'test']);
+Route::get('payment', [PaymentController::class, 'storageeCard']);
+Route::post('payment-test', [PaymentController::class, 'test']);
 
 
 // SUBSCRIPTION FOR BUSINESS OWNERS
 Route::get('/subscription/create', [SubscriptionController::class, 'create'])->name('subscription.create');
 Route::post('/subscription', [SubscriptionController::class, 'store'])->name('subscription.store');
+Route::get('/upgrade-subscription', [SubscriptionController::class,'upgradeSMSPackage'])->name('upgrade.sms.package');
+
+Route::get('/block-user', [CustomerController::class, 'toggleBlockUser'])->name('admin.block.user');
+
+Route::get('lang', [LanguageController::class, 'change'])->name("change.lang");
+
+
+// Waiter Verify Code
+
+Route::post('/verify-coupon-code', [WaiterController::class, 'verifyCouponCode'])->name('waiter.verify.code');
+
+

@@ -3,13 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\BusinessOwner;
+use App\Models\Coupon;
 use App\Models\CustomerDetail;
 use App\Models\Package;
+use App\Models\RedeemCode;
 use App\Models\SMSQuota;
 use App\Models\Subscription;
+use App\Models\User;
+use App\Models\Waiter;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -67,12 +72,21 @@ class HomeController extends Controller
             }
             $months = $allMonths;
             $counts = $monthlyCounts;
-            $totalActiveBusiness = BusinessOwner::where('business_status', 'active')->count();
+            $totalActiveBusiness = User::where('user_type', 'business_owner')
+                ->where('is_block', false)
+                ->count();
+
+            $totalInActiveBusiness = User::where('user_type', 'business_owner')
+                ->where('is_block', true)
+                ->count();
 
             $packageData = BusinessOwner::select('package', DB::raw('COUNT(*) as total'))
                 ->groupBy('package')
                 ->join('packages', 'business_owners.package', '=', 'packages.id')
                 ->get();
+
+            $totalQRScanCount = BusinessOwner::sum('qr_scan_count');
+            $totalReviewsCount = BusinessOwner::sum('google_reviews');
 
             // Prepare data for Chart.js
             $packageNames = [];
@@ -87,36 +101,135 @@ class HomeController extends Controller
             $subscriptions = Subscription::all();
             $totalRevenue = 0;
             foreach ($subscriptions as $key => $subscription) {
-              $totalRevenue+=floatval($subscription->package->price);
+                $totalRevenue += floatval($subscription->package->price);
             }
 
             $customerCount = CustomerDetail::count();
-            return view('home', compact('totalActiveBusiness', 'months', 'counts', 'packageNames', 'packageCounts', 'totalRevenue', 'customerCount'));
-        }
+            $monthlyRevenueData = $this->monthlyRevenueReport();
 
-        $userId = \Auth::id(); // Get the logged-in user's ID
-        $businessOwner = BusinessOwner::where('user_id', $userId)->first(); // Get the first matching BusinessOwner
+            $topPerformers = $this->getTopPerformingBusinessOwners();
+            $getMostFrequentRegistrationHour = $this->getMostFrequentRegistrationHour();
+            // dD($getMostFrequentRegistrationHour);
 
-        if ($businessOwner) {
-            $businessOwnerId = $businessOwner->id;
+            return view('home', compact(
+                'totalActiveBusiness',
+                'months',
+                'counts',
+                'packageNames',
+                'packageCounts',
+                'totalRevenue',
+                'customerCount',
+                'totalInActiveBusiness',
+                'totalQRScanCount',
+                'totalReviewsCount',
+                'monthlyRevenueData',
+                'topPerformers',
+                'getMostFrequentRegistrationHour'
+            ));
+        } else if (auth()->user()->user_type === 'business_owner') {
+            $totalSMSRemaining = 0;
+            $userId = \Auth::id(); // Get the logged-in user's ID
+            $businessOwner = BusinessOwner::where('user_id', $userId)->first(); // Get the first matching BusinessOwner
+
+            if ($businessOwner) {
+                $businessOwnerId = $businessOwner->id;
+            } else {
+                $businessOwnerId = null;
+            }
+
+            $customersCount = CustomerDetail::where('business_owner_id', $businessOwnerId)->count();
+
+            $currentMonth = Carbon::now()->month;
+            $currentYear = Carbon::now()->year;
+            $package = Package::find($businessOwner->package);
+            $subscription = Subscription::where('user_id', Auth::id())->latest()->first();
+            if ($subscription) {
+                $smsCount = SMSQuota::where([['business_owner_id', $businessOwnerId], ['subscription_id', $subscription->id]])
+                    ->whereMonth('created_at', $currentMonth)  // Filter by current month
+                    ->whereYear('created_at', $currentYear)    // Filter by current year
+                    ->count();  // Count the records        
+
+                $totalSMSRemaining = intVal($package->quantity) - $smsCount;
+            }
+            $user = auth()->user();
+
+            $couponIds = Coupon::where('user_id', \Auth::id())->pluck('id');
+            $redeemCodeCount = RedeemCode::whereIn('coupon_id', $couponIds)->count();
+
+            return view('business_owners.home', compact('customersCount', 'businessOwner', 'smsCount', 'totalSMSRemaining', 'user', 'redeemCodeCount', 'subscription'));
         } else {
-            $businessOwnerId = null;
+
+            $waiterData = Waiter::where('user_id', Auth::id())->first();
+            $businessOwner = BusinessOwner::find($waiterData->business_owner_id);
+            return view('waiter.verification', compact('businessOwner'));
         }
+    }
 
-        $customersCount = CustomerDetail::where('business_owner_id', $businessOwnerId)->count();
-
+    public function monthlyRevenueReport()
+    {
+        // Get the current month and previous month
         $currentMonth = Carbon::now()->month;
-        $currentYear = Carbon::now()->year;
-        $package = Package::find($businessOwner->package);
+        $previousMonth = Carbon::now()->subMonth()->month;
 
-        $smsCount = SMSQuota::where('business_owner_id', $businessOwnerId)
-            ->whereMonth('created_at', $currentMonth)  // Filter by current month
-            ->whereYear('created_at', $currentYear)    // Filter by current year
-            ->count();  // Count the records        
-        
-        $totalSMSRemaining = intVal($package->quantity) - $smsCount;
-        $user = auth()->user();
+        // Calculate Total Revenue for the current month
+        $currentMonthRevenue = Subscription::whereMonth('subscriptions.created_at', $currentMonth)
+            ->join('packages', 'subscriptions.package_id', '=', 'packages.id')  // Join with packages table
+            ->sum('packages.price');  // Sum the price of the packages
 
-        return view('business_owners.home', compact('customersCount', 'businessOwner', 'smsCount','totalSMSRemaining','user'));
+        $previousMonthRevenue = Subscription::whereMonth('subscriptions.created_at', $previousMonth)
+            ->join('packages', 'subscriptions.package_id', '=', 'packages.id')  // Join with packages table
+            ->sum('packages.price');  // Sum the price of the packages
+
+        // Breakdown revenue by subscription level (package name) for the current month
+        $currentMonthRevenueByLevel = Subscription::whereMonth('subscriptions.created_at', $currentMonth)
+            ->join('packages', 'subscriptions.package_id', '=', 'packages.id')
+            ->selectRaw('packages.name as package_name, SUM(packages.price) as total_revenue')
+            ->groupBy('packages.name')
+            ->get();
+
+        // Breakdown revenue by subscription level (package name) for the previous month
+        $previousMonthRevenueByLevel = Subscription::whereMonth('subscriptions.created_at', $previousMonth)
+            ->join('packages', 'subscriptions.package_id', '=', 'packages.id')
+            ->selectRaw('packages.name as package_name, SUM(packages.price) as total_revenue')
+            ->groupBy('packages.name')
+            ->get();
+
+
+        return [
+            'currentMonthRevenue' => $currentMonthRevenue,
+            'previousMonthRevenue' => $previousMonthRevenue,
+            'currentMonthRevenueByLevel' => $currentMonthRevenueByLevel,
+            'previousMonthRevenueByLevel' => $previousMonthRevenueByLevel
+        ];
+    }
+
+    public function getTopPerformingBusinessOwners()
+    {
+        $topPerformers = BusinessOwner::select('id', 'business_name', 'qr_scan_count', 'google_reviews')
+            ->orderByDesc('qr_scan_count') // Sort by QR scan count in descending order
+            ->orderByDesc('google_reviews') // Sort by Google review count in descending order
+            ->take(10) // Get top 10 business owners
+            ->get();
+        return $topPerformers;
+    }
+
+    public function formatHour($hour)
+    {
+        // Convert 24-hour format to 12-hour format with AM/PM
+        return date("g A", strtotime("$hour:00"));
+    }
+    public function getMostFrequentRegistrationHour()
+    {
+        $registrationTimes = CustomerDetail::selectRaw('HOUR(created_at) as registration_hour, COUNT(*) as count')
+            ->groupByRaw('HOUR(created_at)') // Group by the hour only (not full timestamp)
+            ->orderByDesc('count') // Order by count, descending
+            ->get()
+            ->map(function ($item) {
+                // Convert hour to 12-hour format with AM/PM
+                $item->registration_hour = $this->formatHour($item->registration_hour);
+                return $item;
+            });
+
+        return $registrationTimes;
     }
 }
