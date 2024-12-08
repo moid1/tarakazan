@@ -128,6 +128,7 @@ class HomeController extends Controller
             ));
         } else if (auth()->user()->user_type === 'business_owner') {
             $totalSMSRemaining = 0;
+            $smsCount=0;
             $userId = \Auth::id(); // Get the logged-in user's ID
             $businessOwner = BusinessOwner::where('user_id', $userId)->first(); // Get the first matching BusinessOwner
 

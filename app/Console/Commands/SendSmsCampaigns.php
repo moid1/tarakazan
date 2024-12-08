@@ -27,7 +27,7 @@ class SendSmsCampaigns extends Command
 
     // Execute the console command
     public function handle()
-    {
+    {\Log::info('Into Cron JOB');
         $now = Carbon::now()->format('Y-m-d H:i');  // Get current time formatted to 'YYYY-MM-DD HH:MM'
         echo $now;
 
@@ -38,6 +38,7 @@ class SendSmsCampaigns extends Command
             ->get();
 
         if ($campaigns->isEmpty()) {
+            \Log::info('No campaigns to process at this time');
             $this->info('No campaigns to process at this time.');
             return;
         }
@@ -131,7 +132,7 @@ class SendSmsCampaigns extends Command
             $data[] = [
                 'phone' => $value,
                 'sms' => $message,
-                'subscription_id' => $subscription,
+                'subscription_id' => $subscription->id,
                 'business_owner_id' => $businessOwner->id,
                 'created_at' => now(),
                 'updated_at' => now(),

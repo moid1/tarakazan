@@ -442,7 +442,7 @@
                         $('#fourthBlock').hide();
                         $('#fifthBlock').show();
                     } else {
-                        alert("invalid coupon code");
+                        alert("invalid otp code");
                     }
                 })
                 .catch(error => {

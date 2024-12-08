@@ -166,6 +166,9 @@ class BusinessOwnerController extends Controller
             'package' => $validatedData['package'], // Ensure this is correct
             'address' => $validatedData['address'],
             'country' => $validatedData['country'],
+            'sms_user_code' => $validatedData['sms_user_code'],
+            'sms_user_password' => $validatedData['sms_user_password'],
+            'sms_message_header' =>$validatedData['sms_message_header'],
             'postal_code' => $validatedData['postal_code'],
             'facebook' => $validatedData['facebook'] ?? null,
             'tiktok' => $validatedData['tiktok'] ?? null,
