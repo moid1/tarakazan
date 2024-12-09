@@ -248,8 +248,8 @@
 
                 </div>
                 <div class="d-flex align-items-center mt-3">
-                    <input type="tel" id="phoneNo" class="form-control"
-                        placeholder="{{ __('messages.Type in your phone number...') }}">
+                    <input type="tel" id="phoneNo" class="form-control" inputmode="numeric" pattern="[0-9]*"
+                        placeholder="{{ __('messages.Type in your phone number...') }}" />
                     <button class="send-icon-btn">
                         <i class="fas fa-paper-plane send-icon"></i>
                     </button>
@@ -276,7 +276,7 @@
             <div class=" justify-content-center mt-4">
                 <!-- Name Field -->
                 <div class="d-flex align-items-center ">
-                    <input type="text" id="otpCode" class="form-control"
+                    <input type="text" id="otpCode" inputmode="numeric"  class="form-control"
                         placeholder="{{ __('messages.Type in the code...') }}">
                     <button class="verification-number">
                         <i class="fas fa-paper-plane send-icon"></i>
@@ -485,6 +485,7 @@
                 .catch(error => {
                     console.error('Error sending OTP:', error);
                     isOKK = false;
+                    // alert('You are already verified');
                 });
 
             return isOKK;

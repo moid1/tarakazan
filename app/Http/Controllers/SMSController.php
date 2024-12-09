@@ -33,19 +33,22 @@ class SMSController extends Controller
         // Generate a random OTP (6 digits)
         $otp = rand(100000, 999999);
 
-        $isAlreadyExists = CustomerDetail::where('phone', $request->phoneNo)->exists();
-        if ($isAlreadyExists) {
+        $phoneNo = ltrim($request->phone_no, '0');  // Remove leading zeros
+
+        $isAlreadyExists = CustomerDetail::where([['phone', $phoneNo],['is_verified', true]])->count();
+
+        if ($isAlreadyExists > 0) {
             return response()->json([
                 'success' => false,
                 'message' => 'You are already registered to this business name',
-            ], 200);
+            ], 400);
         }
 
         // Store customer details
         try {
             $customer = CustomerDetail::create([
                 'name' => $request->name,
-                'phone' => $request->phone_no,
+                'phone' => $phoneNo,
                 'business_owner_id' => $request->business_owner_id,
                 'otp' => $otp,  // Optionally, store OTP for later verification
             ]);
@@ -59,13 +62,13 @@ class SMSController extends Controller
         // Send OTP via SMS (Assuming you're using an SMS service like Twilio or Nexmo)
         $netGsmResponse = [];
         $businessOwnerUser = BusinessOwner::find($request->business_owner_id);
-        $netGsmResponse = $this->sendSMSThroughXML($request->phone_no, $otp, $request->business_owner_id);
+        $netGsmResponse = $this->sendSMSThroughXML($phoneNo, $otp, $request->business_owner_id);
         $subscription = Subscription::where('user_id', $businessOwnerUser->user_id)->latest()->first();
 
 
         // Bulk insert
         SMSQuota::create([
-            'phone' => $request->phone_no,
+            'phone' => $phoneNo,
             'sms' => $otp,
             'subscription_id' => $subscription->id,
             'business_owner_id' => $request->business_owner_id,

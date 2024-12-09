@@ -11,7 +11,7 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = CustomerDetail::with('redeemCoupon')->get();
+        $customers = CustomerDetail::where('is_verified', true)->with('redeemCoupon')->get();
         return view('business_owners.customers.index', compact('customers'));
     }
 

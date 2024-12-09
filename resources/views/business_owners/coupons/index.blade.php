@@ -44,33 +44,30 @@
         <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
-                    <th>{{ __('messages.Id') }}</th>
                     <th>{{ __('messages.Name') }}</th>
                     <th>{{ __('messages.Creation Date') }}</th>
                     <th>{{ __('messages.Expiry Date') }}</th>
                     <th>{{ __('messages.Gift') }}</th>
-                    <th>{{ __('messages.Creation Date') }}</th>
+                    <th>{{__('Total Redemption')}}</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($coupons as $coupon)
                     <tr>
-                        <td>{{ $coupon->id }}</td>
                         <td>{{ $coupon->code }}</td>
                         <td>{{ $coupon->created_at->format('d M Y') }}</td>
                         <td>{{ \Carbon\Carbon::parse($coupon->expiry_date)->format('d M Y') }}</td>
                         <td>{{ $coupon->gift }}</td>
-                        <td>{{ $coupon->created_at->format('d M Y | h:m') }}</td>
+                        <td>{{$coupon->total_redemptions}}</td>
                     </tr>
                 @endforeach
             <tfoot>
                 <tr>
-                    <th>{{ __('messages.Id') }}</th>
                     <th>{{ __('messages.Name') }}</th>
                     <th>{{ __('messages.Creation Date') }}</th>
                     <th>{{ __('messages.Expiry Date') }}</th>
                     <th>{{ __('messages.Gift') }}</th>
-                    <th>{{ __('messages.Creation Date') }}</th>
+                    <th>{{__('Total Redemption')}}</th>
                 </tr>
             </tfoot>
             </tbody>
@@ -85,6 +82,8 @@
     <script>
         $(document).ready(function() {
             new DataTable('#example', {
+                responsive:true,
+                
                 initComplete: function() {
                     this.api()
                         .columns()

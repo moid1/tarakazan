@@ -23,7 +23,18 @@ class CouponController extends Controller
             ->orderBy('hour', 'asc')               // Order by hour so that we get data for each hour
             ->get();
 
+        // Calculate total redemptions per coupon
+    $totalRedemptions = $redemptions->groupBy('coupon_id')->map(function ($group) {
+        return $group->sum('total');  // Sum the 'total' count for each coupon
+    });
 
+    // Append total redemptions to each coupon
+    $coupons->each(function ($coupon) use ($totalRedemptions) {
+        // Append the total redemptions count to each coupon object
+        $coupon->total_redemptions = $totalRedemptions[$coupon->id] ?? 0;
+    });
+
+    // dd($coupons);
 
         $mostFrequentRedemptionTimes = $this->getMostFrequentRedemptionTimes($redemptions);
 
