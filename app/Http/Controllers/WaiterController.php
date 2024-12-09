@@ -87,7 +87,7 @@ class WaiterController extends Controller
 
         }
 
-       
+
 
         // Check if the coupon has expired
         if ($coupon->expiry_date && $coupon->expiry_date < now()) {
@@ -101,8 +101,8 @@ class WaiterController extends Controller
 
         // Check if the customer exists in the system
         $customer = CustomerDetail::where('phone', $phoneNo)
-        ->where('business_owner_id', $businessOwner->id)
-        ->first();       
+            ->where('business_owner_id', $businessOwner->id)
+            ->first();
 
         if (!$customer) {
             return back()->with('error', 'You are not in our system');
@@ -117,6 +117,59 @@ class WaiterController extends Controller
 
         // Return a success message
         return back()->with('success', 'Coupon redeemed successfully');
+    }
+
+    public function removeFromBlackList(Request $request)
+    {
+        $waiter = Waiter::where('user_id', Auth::id())->first();
+        if (!$waiter) {
+            return;
+        }
+
+
+        $businessOwner = BusinessOwner::findOrFail($waiter->business_owner_id);
+        $usercode = htmlspecialchars($businessOwner->sms_user_code, ENT_QUOTES, 'UTF-8');
+        $password = htmlspecialchars($businessOwner->sms_user_password, ENT_QUOTES, 'UTF-8');
+        $appkey = htmlspecialchars($businessOwner->app_key, ENT_QUOTES, 'UTF-8');
+        $xml = <<<XML
+<?xml version="1.0"?>
+<mainbody>
+<header>
+   <usercode>{$usercode}</usercode>
+   <password>{$password}</password>
+   <tip>2</tip>
+   <appkey>{$appkey}</appkey>
+</header>
+<body>
+   <number>{$request->phone}</number>
+
+</body>
+</mainbody>
+XML;
+
+
+
+        \Log::info($xml);
+
+        // Initialize cURL session
+        $ch = curl_init();
+
+        // Set cURL options
+        curl_setopt($ch, CURLOPT_URL, 'https://api.netgsm.com.tr/sms/blacklist'); // The API endpoint
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  // Return response as a string
+        curl_setopt($ch, CURLOPT_POST, true);  // Use POST method
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);  // Send the raw XML data as the body
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/xml',  // Set content type to XML
+        ]);
+
+        // Execute the cURL request
+        $response = curl_exec($ch);
+        \Log::info($response);
+
+       
+        return back()->with('successforBlacklist', 'Successfully removed from blacklist');
+
     }
 
 }

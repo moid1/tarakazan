@@ -90,5 +90,6 @@ return [
     'Your Discount Code is generating...' => 'İndirim Kodunuz oluşturuluyor…',
     'Get your gift now from one of our team.' => 'Hediyenizi şimdi ekibimizden alın.',
     'Show the Discount Code' => 'İndirim Kodunu Gösterin',
+    'Id'=>'ID'
 
 ];

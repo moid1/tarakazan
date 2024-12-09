@@ -221,7 +221,7 @@
 
             @if ($businessOwner->qr_code_path)
                 <div class="col-12">
-                    <p>Scan the QR code to access your chatbot:</p>
+                    <p>Scan the QR code to access your qrcode:</p>
                     <img src="{{ asset('storage/' . $businessOwner->qr_code_path) }}" alt="Chatbot QR Code">
                 </div>
             @endif

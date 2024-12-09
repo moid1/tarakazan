@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\BusinessOwner;
 use App\Models\Coupon;
 use App\Models\CustomerDetail;
+use App\Models\SMSQuota;
+use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -56,8 +58,20 @@ class SMSController extends Controller
 
         // Send OTP via SMS (Assuming you're using an SMS service like Twilio or Nexmo)
         $netGsmResponse = [];
+        $businessOwnerUser = BusinessOwner::find($request->business_owner_id);
         $netGsmResponse = $this->sendSMSThroughXML($request->phone_no, $otp, $request->business_owner_id);
+        $subscription = Subscription::where('user_id', $businessOwnerUser->user_id)->latest()->first();
 
+
+        // Bulk insert
+        SMSQuota::create([
+            'phone' => $request->phone_no,
+            'sms' => $otp,
+            'subscription_id' => $subscription->id,
+            'business_owner_id' => $request->business_owner_id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
         // Return a response indicating success
         return response()->json([
             'success' => true,

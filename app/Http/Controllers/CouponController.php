@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coupon;
+use App\Models\RedeemCode;
 use Illuminate\Http\Request;
 
 class CouponController extends Controller
@@ -13,8 +14,58 @@ class CouponController extends Controller
     public function index()
     {
         $coupons = Coupon::where('user_id', \Auth::id())->get();
-        return view('business_owners.coupons.index', compact('coupons'));
+
+        $redemptions = RedeemCode::selectRaw('coupon_id, DATE(created_at) as date, HOUR(created_at) as hour, count(*) as total')
+            ->whereIn('coupon_id', $coupons->pluck('id'))  // Filter by coupon ids
+            ->groupBy('coupon_id', 'date', 'hour') // Group by coupon, date, and hour
+            ->orderBy('coupon_id', 'asc')          // Order by coupon_id
+            ->orderBy('date', 'asc')               // Order by date to ensure we see all days
+            ->orderBy('hour', 'asc')               // Order by hour so that we get data for each hour
+            ->get();
+
+
+
+        $mostFrequentRedemptionTimes = $this->getMostFrequentRedemptionTimes($redemptions);
+
+        return view('business_owners.coupons.index', compact('coupons', 'redemptions', 'mostFrequentRedemptionTimes'));
     }
+
+    private function getMostFrequentRedemptionTimes($redemptions)
+    {
+        // Initialize an array to store the most frequent redemption for each coupon
+        $mostFrequentTimes = [];
+
+        // Loop through each redemption entry
+        foreach ($redemptions as $redemption) {
+            // Check if this coupon_id has already been processed
+            if (!isset($mostFrequentTimes[$redemption->coupon_id])) {
+                // If not, initialize it with the first redemption data
+                $mostFrequentTimes[$redemption->coupon_id] = $redemption;
+            } else {
+                // If it has, check if the current redemption has a higher 'total' count
+                if ($redemption->total > $mostFrequentTimes[$redemption->coupon_id]->total) {
+                    // If so, update it
+                    $mostFrequentTimes[$redemption->coupon_id] = $redemption;
+                }
+            }
+        }
+
+        // Now transform the mostFrequentTimes to a simple indexed array
+        $result = [];
+        foreach ($mostFrequentTimes as $redemption) {
+            // We directly add the formatted result here
+            $result[] = [
+                'coupon' => Coupon::find($redemption->coupon_id)->code,  // Get the coupon code
+                'date' => $redemption->date,                               // Redemption date
+                'hour' => $redemption->hour,                               // Redemption hour
+                'total' => $redemption->total,                             // Redemption count
+            ];
+        }
+
+        // Return the flat result as a simple indexed array
+        return $result;
+    }
+
 
     /**
      * Show the form for creating a new resource.

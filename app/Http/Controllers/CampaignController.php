@@ -12,7 +12,7 @@ class CampaignController extends Controller
      */
     public function index()
     {
-        $campaigns = Campaign::all();
+        $campaigns = Campaign::where('user_id', \Auth::id())->latest()->get();
         return view("business_owners.campaigns.index", compact("campaigns"));
     }
 

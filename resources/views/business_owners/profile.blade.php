@@ -26,18 +26,18 @@
                         @enderror
                     </div>
 
-                    <div class="col-6">
+                    {{-- <div class="col-6">
                         <div class="chemist-input-heading">{{ __('messages.Google Place Id') }}</div>
                         <input readonly type="text" name="google_review" id="google_review"
                             value="{{ old('google_review', $businessOwner->google_review) }}" required />
                         @error('google_review')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <div class="col-6">
                         <div class="chemist-input-heading">{{ __('messages.SMS App Key') }}</div>
-                        <input  type="text" name="app_key" id="app_key"
+                        <input type="text" name="app_key" id="app_key"
                             value="{{ old('app_key', $businessOwner->app_key) }}" required />
                         @error('app_key')
                             <div class="text-danger">{{ $message }}</div>
@@ -46,7 +46,7 @@
 
                     <div class="col-6">
                         <div class="chemist-input-heading">{{ __('messages.SMS User Code') }}</div>
-                        <input  type="text" name="sms_user_code" id="sms_user_code"
+                        <input type="text" name="sms_user_code" id="sms_user_code"
                             value="{{ old('sms_user_code', $businessOwner->sms_user_code) }}" required />
                         @error('sms_user_code')
                             <div class="text-danger">{{ $message }}</div>
@@ -55,7 +55,7 @@
 
                     <div class="col-6">
                         <div class="chemist-input-heading">{{ __('messages.SMS User Password') }}</div>
-                        <input  type="text" name="sms_user_password" id="sms_user_password"
+                        <input type="text" name="sms_user_password" id="sms_user_password"
                             value="{{ old('sms_user_password', $businessOwner->sms_user_password) }}" required />
                         @error('sms_user_password')
                             <div class="text-danger">{{ $message }}</div>
@@ -64,7 +64,7 @@
 
                     <div class="col-6">
                         <div class="chemist-input-heading">{{ __('messages.SMS Message Header') }}</div>
-                        <input  type="text" name="sms_message_header" id="sms_message_header"
+                        <input type="text" name="sms_message_header" id="sms_message_header"
                             value="{{ old('sms_message_header', $businessOwner->sms_message_header) }}" required />
                         @error('sms_message_header')
                             <div class="text-danger">{{ $message }}</div>
@@ -80,23 +80,23 @@
                         @enderror
                     </div>
 
-                    <div class="col-6">
+                    {{-- <div class="col-6">
                         <div class="chemist-input-heading">{{ __('messages.Logo') }}</div>
                         <input type="file" name="logo" id="logo" accept="image/*" />
                         @if ($businessOwner->logo)
                             <img src="{{ asset('storage/' . $businessOwner->logo) }}" alt="Business Logo"
                                 class="img-thumbnail mt-2" width="100">
                         @endif
-                    </div>
+                    </div> --}}
 
-                    <div class="col-6">
+                    {{-- <div class="col-6">
                         <div class="chemist-input-heading">{{ __('messages.Slug') }}</div>
                         <input readonly type="text" name="slug" id="slug"
                             value="{{ old('slug', $businessOwner->slug) }}" required />
                         @error('slug')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <!-- Password Field with Eye Icon -->
                     <div class="col-6 position-relative">
@@ -111,7 +111,8 @@
 
                     <!-- Generate Random Password Button -->
                     <div class="col-6 mt-2 mb-3">
-                        <button type="button" class="btn btn-secondary" id="generate-password">{{ __('messages.Generate Random Password') }}</button>
+                        <button type="button" class="btn btn-secondary"
+                            id="generate-password">{{ __('messages.Generate Random Password') }}</button>
                     </div>
                 </div>
             </div>
@@ -166,9 +167,11 @@
             <div class="col-12 text-end mt-3">
                 @if ($businessOwner->qr_code_path)
                     <a href="{{ asset('storage/' . $businessOwner->qr_code_path) }}"
-                        download="{{ $businessOwner->slug }}-qr-code.png" class="btn btn-success me-2">{{ __('messages.Download QR Code') }}</a>
+                        download="{{ $businessOwner->slug }}-qr-code.png"
+                        class="btn btn-success me-2">{{ __('messages.Download QR Code') }}</a>
                 @endif
-                <button class="btn btn-secondary me-2" type="button" onclick="window.history.back();">{{ __('messages.Cancel') }}</button>
+                <button class="btn btn-secondary me-2" type="button"
+                    onclick="window.history.back();">{{ __('messages.Cancel') }}</button>
                 <button class="btn btn-primary" type="submit">{{ __('messages.Save Changes') }}</button>
             </div>
         </form>

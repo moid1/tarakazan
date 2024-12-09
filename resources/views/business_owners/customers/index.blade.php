@@ -27,6 +27,7 @@
                     <th>{{ __('messages.Business Owner Name') }}</th> <!-- Translated Header -->
                     <th>Interaction Date</th>
                     <th>Total Redemption</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,8 +37,21 @@
                         <td>{{ $customer->name }}</td>
                         <td>{{ $customer->phone }}</td>
                         <td>{{ $customer->businessOwner->business_name }}</td>
-                        <td>{{$customer->created_at->format('d M Y')}}</td>
-                        <td>{{ count($customer->redeemCoupon )}}</td>
+                        <td>{{ $customer->created_at->format('d M Y') }}</td>
+                        <td>{{ count($customer->redeemCoupon) }}</td>
+
+                        <td>
+                            <form class="" action="{{ route('admin.customer.destroy', $customer->id) }}"
+                                method="POST" style="display:inline;"
+                                onsubmit="return confirm('Are you sure you want to delete this Customer?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm mt-1" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </td>
 
                     </tr>
                 @endforeach

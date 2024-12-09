@@ -23,7 +23,7 @@ class BusinessOwnerController extends Controller
         $businessOwners = BusinessOwner::all();
         $packages = Package::all();
 
-        return view('admin.business_owners.index', compact('businessOwners','packages'));
+        return view('admin.business_owners.index', compact('businessOwners', 'packages'));
     }
 
     /**
@@ -84,7 +84,10 @@ class BusinessOwnerController extends Controller
         $chatbotUrl = route('chatbot.show', ['slug' => $business->slug]);
         $qrCodeImage = QrCode::format('png')->size(300)->generate($chatbotUrl);
         // Save the QR code image to the public storage
-        $qrCodePath = 'qrcodes/' . $business->slug . '.png';
+        $timestamp = now()->timestamp;  // or use time() for a UNIX timestamp
+        $qrCodeFileName = $business->slug . '_' . $timestamp . '.png';
+
+        $qrCodePath = 'qrcodes/' . $qrCodeFileName;
         Storage::disk('public')->put($qrCodePath, $qrCodeImage);
         $business->save(); // Save the business to the database
 
@@ -168,14 +171,14 @@ class BusinessOwnerController extends Controller
             'country' => $validatedData['country'],
             'sms_user_code' => $validatedData['sms_user_code'],
             'sms_user_password' => $validatedData['sms_user_password'],
-            'sms_message_header' =>$validatedData['sms_message_header'],
+            'sms_message_header' => $validatedData['sms_message_header'],
             'postal_code' => $validatedData['postal_code'],
             'facebook' => $validatedData['facebook'] ?? null,
             'tiktok' => $validatedData['tiktok'] ?? null,
             'instagram' => $validatedData['instagram'] ?? null,
             'mersis_no' => $validatedData['mersis_no'] ?? null,
             'phone_number_netgsm' => $validatedData['phone_number_netgsm'] ?? null,
-            'stop_link' =>$validatedData['stop_link'] ?? null,
+            'stop_link' => $validatedData['stop_link'] ?? null,
             'logo' => $validatedData['logo'] ?? $businessOwner->logo, // Keep the existing logo if not updated
         ]);
 

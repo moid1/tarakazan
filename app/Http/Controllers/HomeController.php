@@ -103,8 +103,9 @@ class HomeController extends Controller
             foreach ($subscriptions as $key => $subscription) {
                 $totalRevenue += floatval($subscription->package->price);
             }
+            $customerCount = CustomerDetail::where('is_verified', true)->count();
 
-            $customerCount = CustomerDetail::count();
+
             $monthlyRevenueData = $this->monthlyRevenueReport();
 
             $topPerformers = $this->getTopPerformingBusinessOwners();
@@ -128,7 +129,8 @@ class HomeController extends Controller
             ));
         } else if (auth()->user()->user_type === 'business_owner') {
             $totalSMSRemaining = 0;
-            $smsCount=0;
+            $otpSmsRemaining = 0;
+            $smsCount = 0;
             $userId = \Auth::id(); // Get the logged-in user's ID
             $businessOwner = BusinessOwner::where('user_id', $userId)->first(); // Get the first matching BusinessOwner
 
@@ -138,26 +140,65 @@ class HomeController extends Controller
                 $businessOwnerId = null;
             }
 
-            $customersCount = CustomerDetail::where('business_owner_id', $businessOwnerId)->count();
+            $customersCount = CustomerDetail::where([['business_owner_id', $businessOwnerId], ['is_verified', true]])->count();
 
             $currentMonth = Carbon::now()->month;
             $currentYear = Carbon::now()->year;
             $package = Package::find($businessOwner->package);
             $subscription = Subscription::where('user_id', Auth::id())->latest()->first();
             if ($subscription) {
-                $smsCount = SMSQuota::where([['business_owner_id', $businessOwnerId], ['subscription_id', $subscription->id]])
-                    ->whereMonth('created_at', $currentMonth)  // Filter by current month
-                    ->whereYear('created_at', $currentYear)    // Filter by current year
-                    ->count();  // Count the records        
+                $otpSmsCount = SMSQuota::where([
+                    ['business_owner_id', $businessOwnerId],
+                    ['subscription_id', $subscription->id]
+                ])
+                    ->whereMonth('created_at', $currentMonth)
+                    ->whereYear('created_at', $currentYear)
+                    ->whereRaw("sms REGEXP '^[0-9]{6}$'")  // Filter for 6-digit OTP messages
+                    ->count();
+
+
+                $sentSMSBYBO = SMSQuota::where([
+                    ['business_owner_id', $businessOwnerId],
+                    ['subscription_id', $subscription->id]
+                ])
+                    ->whereMonth('created_at', $currentMonth)
+                    ->whereYear('created_at', $currentYear)
+                    ->whereRaw("sms NOT REGEXP '^[0-9]{6}$'")  // Filter for non-OTP messages
+                    ->get();
+
+
+                foreach ($sentSMSBYBO as $key => $value) {
+                    $smsCount += (int) $value->sms_limit;
+                }
+
 
                 $totalSMSRemaining = intVal($package->quantity) - $smsCount;
+                $otpSmsRemaining = max(0, 1000 - $otpSmsCount);
+
             }
             $user = auth()->user();
 
             $couponIds = Coupon::where('user_id', \Auth::id())->pluck('id');
             $redeemCodeCount = RedeemCode::whereIn('coupon_id', $couponIds)->count();
 
-            return view('business_owners.home', compact('customersCount', 'businessOwner', 'smsCount', 'totalSMSRemaining', 'user', 'redeemCodeCount', 'subscription'));
+            $customerGrowth = DB::table('customer_details')
+                ->selectRaw('YEAR(created_at) as year, WEEK(created_at) as week, COUNT(*) as total')
+                ->where('created_at', '>=', now()->subWeeks(6)) // Get the last 6 weeks
+                ->where('business_owner_id', $businessOwnerId)
+                ->groupBy('year', 'week')  // Group by both year and week number
+                ->orderBy('year', 'desc')  // Sort by year and week (most recent first)
+                ->orderBy('week', 'desc')
+                ->get();
+            $weeks = $customerGrowth->map(function ($item) {
+                return $item->week; // Format as Week 1 (2024)
+            });
+
+            // Extract week numbers and totals
+            // $weeks = $customerGrowth->pluck('week');
+            $totals = $customerGrowth->pluck('total');
+
+
+            return view('business_owners.home', compact('customersCount', 'businessOwner', 'smsCount', 'totalSMSRemaining', 'user', 'redeemCodeCount', 'subscription', 'otpSmsRemaining', 'weeks', 'totals', 'package'));
         } else {
 
             $waiterData = Waiter::where('user_id', Auth::id())->first();
@@ -232,5 +273,11 @@ class HomeController extends Controller
             });
 
         return $registrationTimes;
+    }
+
+    public function deleteCustomer($id)
+    {
+        CustomerDetail::find($id)->delete();
+        return back()->with('success', 'Customer Deleted Successfully');
     }
 }

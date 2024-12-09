@@ -21,7 +21,7 @@ class BusinessOwnerCampaignSMSController extends Controller
     public function index()
     {
         $businessOwner = BusinessOwner::where('user_id', \Auth::id())->first();
-        $businessOnwerCampaigns = BusinessOwnerCampaignSMS::where('business_owner_id', $businessOwner->id)->get();
+        $businessOnwerCampaigns = BusinessOwnerCampaignSMS::where('business_owner_id', $businessOwner->id)->latest()->get();
         return view('business_owners.sms.index', compact('businessOnwerCampaigns'));
 
     }
@@ -94,19 +94,24 @@ class BusinessOwnerCampaignSMSController extends Controller
      */
     public function store(Request $request)
     {
+        
+        // dd($request->all());
         // Validation
         $validatedData = $request->validate([
             'message' => 'required|string|max:1600', // max length for SMS
             'delivery_time' => 'required|date|after:now', // Ensure delivery time is in the future
-            'campaign_id' => 'required'
+            'campaign_id' => 'required',
+            'sms_limit'=>'required',
         ]);
+
 
         $businessOwner = BusinessOwner::where('user_id', \Auth::id())->first();
         // You can save the campaign details to the database, if needed
         $campaign = new BusinessOwnerCampaignSMS();
-        $campaign->sms = $validatedData['message'];
+        $campaign->sms = $request->message;
         $campaign->delivery_date = $validatedData['delivery_time'];
         $campaign->campaigns_id = $validatedData['campaign_id'];
+        $campaign->sms_limit = $validatedData['sms_limit'];
         $campaign->business_owner_id = $businessOwner->id;
         $campaign->save();
 

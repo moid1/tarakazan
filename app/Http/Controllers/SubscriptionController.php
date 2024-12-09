@@ -36,7 +36,7 @@ class SubscriptionController extends Controller
         $request->setCurrency(\Iyzipay\Model\Currency::TL);
         // $request->setBasketId("B67832");
         // $request->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
-        $request->setCallbackUrl("http://tarakazan.test/payment-test");
+        $request->setCallbackUrl("https://panel.tarakazan.com.tr/payment-test");
         // $request->setEnabledInstallments(array(2, 3, 6, 9));
 
         $buyer = new \Iyzipay\Model\Buyer();
@@ -213,7 +213,7 @@ class SubscriptionController extends Controller
         $request->setPrice($nextPackage->price);
         $request->setPaidPrice($nextPackage->price);
         $request->setCurrency(\Iyzipay\Model\Currency::TL);
-        $request->setCallbackUrl("http://tarakazan.test/payment-test");
+        $request->setCallbackUrl("https://panel.tarakazan.com.tr/payment-test");
 
         // Buyer and address details
         $buyer = new \Iyzipay\Model\Buyer();

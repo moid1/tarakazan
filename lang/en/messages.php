@@ -91,5 +91,6 @@ return [
     'Your Discount Code is generating…' => 'Your Discount Code is generating…',
     'Get your gift now from one of our team.' => 'Get your gift now from one of our team.',
     'Show the Discount Code' => 'Show the Discount Code',
+    'Id'=>'ID'
 
 ];

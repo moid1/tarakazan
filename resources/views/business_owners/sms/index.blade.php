@@ -48,7 +48,8 @@
                     <tr>
                         <th>{{ __('messages.Id') }}</th>
                         <th>{{ __('messages.Message') }}</th>
-                        <th>{{ __('messages.Delivery Time') }}</th>
+                        <th>{{ __('messages.Planed At') }}</th>
+                        <th>{{ __('messages.Sent At') }}</th>
                         <th>{{ __('messages.Status') }}</th>
                         <th>{{ __('messages.Action') }}</th>
                     </tr>
@@ -57,7 +58,8 @@
                     @foreach ($businessOnwerCampaigns as $campaign)
                         <tr>
                             <td>{{ $campaign->id }}</td>
-                            <td>{{ $campaign->sms }}</td>
+                            <td>{{ \Illuminate\Support\Str::limit($campaign->sms, 50) }}</td>
+                            <td>{{ $campaign->created_at->format('Y-m-d H:i:s') }}</td>
                             <td>{{ \Carbon\Carbon::parse($campaign->delivery_date)->format('Y-m-d H:i:s') }}</td>
                             <td>
                                 @if ($campaign->is_sent == 1)
@@ -76,14 +78,15 @@
                                         title="{{ __('messages.Edit') }}">
                                         <i class="fas fa-edit"></i>
                                     </a>
-
+/
                                     <!-- Delete Button (via form for POST method) -->
                                     <form action="{{ route('campaign.sms.destroy', $campaign->id) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE') <!-- This is needed to simulate a DELETE request -->
                                         <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('{{ __('messages.Are you sure you want to delete this campaign?') }}')">{{ __('messages.Delete') }}</button>
+                                            onclick="return confirm('{{ __('messages.Are you sure you want to delete this campaign?') }}')">
+                                            <i class="fas fa-trash"></i></button>
                                     </form>
                                 @endif
                             </td>
@@ -93,7 +96,8 @@
                     <tr>
                         <th>{{ __('messages.Id') }}</th>
                         <th>{{ __('messages.Message') }}</th>
-                        <th>{{ __('messages.Delivery Time') }}</th>
+                        <th>{{ __('messages.Planed At') }}</th>
+                        <th>{{ __('messages.Sent At') }}</th>
                         <th>{{ __('messages.Status') }}</th>
                     </tr>
                 </tfoot>
@@ -129,10 +133,12 @@
                                 }
                             });
                         });
-                }
+                },
+                order: [
+                    [0, 'desc']
+                ], // Set ordering to descending based on the first column (change the index if needed)
+                responsive: true, // Make the table responsive
             });
-
-
         });
     </script>
 @endsection

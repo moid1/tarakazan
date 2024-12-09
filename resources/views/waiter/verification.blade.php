@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coupon Code Verification</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         /* Basic Reset */
         * {
@@ -106,44 +108,73 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1>{{ $businessOwner->business_name }} </h1>
-        <h2>Coupon Code Verification</h2>
-        <form id="coupon-form" style="margin-top:20px" action="{{ route('waiter.verify.code') }}" method="POST">
-            @csrf
-            <div class="input-group">
-                <label for="coupon-code">Coupon Code:</label>
-                <input type="text" id="coupon-code" name="coupon_code" placeholder="Enter Coupon Code" required>
-            </div>
-            <div class="input-group">
-                <label for="mobile-number">Mobile Number:</label>
-                <input type="tel" id="mobile-number" name="phone_no" placeholder="Enter Mobile Number"
-                    required>
-            </div>
-            <button type="submit" class="verify-btn">Redeem Code</button>
-        </form>
-       
-        @if (session('success'))
-            <div id="status-message" class="status-message success">
-                {{ session('success') }}
-            </div>
-        @elseif(session('error'))
-            <div id="status-message" class="status-message error">
-                {{ session('error') }}
-            </div>
-        @endif
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="container">
+                <h1>{{ $businessOwner->business_name }} </h1>
+                <h2>Coupon Code Verification</h2>
+                <form id="coupon-form" style="margin-top:20px" action="{{ route('waiter.verify.code') }}"
+                    method="POST">
+                    @csrf
+                    <div class="input-group">
+                        <label for="coupon-code">Coupon Code:</label>
+                        <input type="text" id="coupon-code" name="coupon_code" placeholder="Enter Coupon Code"
+                            required>
+                    </div>
+                    <div class="input-group">
+                        <label for="mobile-number">Mobile Number:</label>
+                        <input type="tel" id="mobile-number" name="phone_no" placeholder="Enter Mobile Number"
+                            required>
+                    </div>
+                    <button type="submit" class="verify-btn">Redeem Code</button>
+                </form>
 
-        <a style="margin-top: 20px" class="" href="{{ route('logout') }}"
-            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            <!-- Font Awesome Logout Icon -->
-            <hr style="margin-top: 20px" />
-            <button class="verify-btn" style="background: red;margin-top:20px">Logout</button>
-        </a>
+                @if (session('success'))
+                    <div id="status-message" class="status-message success">
+                        {{ session('success') }}
+                    </div>
+                @elseif(session('error'))
+                    <div id="status-message" class="status-message error">
+                        {{ session('error') }}
+                    </div>
+                @endif
 
-        <!-- Logout Form -->
-        <form id="logout-form" style="" action="{{ route('logout') }}" method="POST" class="d-none">
-            @csrf
-        </form>
+                <a style="margin-top: 20px" class="" href="{{ route('logout') }}"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <!-- Font Awesome Logout Icon -->
+                    <hr style="margin-top: 20px" />
+                    <button class="verify-btn" style="background: red;margin-top:20px">Logout</button>
+                </a>
+
+                <!-- Logout Form -->
+                <form id="logout-form" style="" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-6 mt-3">
+            <div class="container">
+                <h1>{{ $businessOwner->business_name }} </h1>
+                <h2>Remove User From BlackList</h2>
+                <form id="coupon-form" style="margin-top:20px" action="{{ route('waiter.remove.blacklist') }}"
+                    method="POST">
+                    @csrf
+                    <div class="input-group">
+                        <label for="">Enter Phone no:</label>
+                        <input type="text" name="phone" id="" name="number" placeholder="Enter Phone No" required>
+                    </div>
+                    <button type="submit" class="verify-btn">Submit</button>
+                </form>
+
+                @if (session('successforBlacklist'))
+                    <div id="status-message" class="status-message success">
+                        {{ session('successforBlacklist') }}
+                    </div>
+                @endif
+
+
+            </div>
+        </div>
     </div>
 
 

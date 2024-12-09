@@ -58,6 +58,11 @@
 
 @section('customjs')
     <script>
-        new DataTable('#example');
+        new DataTable('#example',{
+            order: [[0, 'desc']], // Set ordering to descending based on the first column (change the index if needed)
+            responsive: true,      // Make the table responsive
+        }
+
+        );
     </script>
 @endsection

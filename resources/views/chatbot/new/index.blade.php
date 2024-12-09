@@ -4,16 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $business->business_name }} - Chatbot</title>
+    <title>{{ $business->business_name }} - QRCode</title>
 
     <!-- Include Bootstrap CSS & Google Fonts -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome Icons (For Social Media Links) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
 
     <!-- Custom CSS -->
     <style>
@@ -26,6 +27,7 @@
             flex-direction: column;
             min-height: 100vh;
         }
+
 
 
 
@@ -48,7 +50,7 @@
         .heading-bold {
             font-weight: bold;
             /* Make text very bold */
-            font-size: 36px;
+            font-size: 26px;
             /* Adjust font size as needed */
             margin-bottom: 15px;
             /* Space below the title */
@@ -132,26 +134,36 @@
             text-decoration: underline;
             /* Underline the link on hover */
         }
+
+        .break-text {
+        display: inline-block;  /* Allows text to wrap */
+        max-width: 46%;        /* Optional: limits text to the available space */
+        word-wrap: break-word;  /* Automatically breaks words that overflow */
+        text-align: center;     /* Keep the text centered */
+        line-height: 1.4;       /* Adjust line spacing */
+    }
     </style>
 </head>
 
 <body>
 
     <div class="container">
-        <div class="d-flex flex-column flex-sm-row align-items-center mb-3 mb-sm-0 justify-content-end mt-3">
-            <form id="language-form" action="{{ route('change.lang', ['lang' => 'en']) }}" method="GET" class="form-inline">
+        {{-- <div class="d-flex flex-column flex-sm-row align-items-center mb-1 mb-sm-0 justify-content-end mt-3">
+            <form id="language-form" action="{{ route('change.lang', ['lang' => 'en']) }}" method="GET"
+                class="form-inline">
                 @csrf
                 <select name="lang" class="form-control" onchange="changeLanguage(this)">
                     <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>English</option>
                     <option value="tr" {{ app()->getLocale() == 'tr' ? 'selected' : '' }}>Türkçe</option>
                 </select>
             </form>
-        </div>
-        <div class="header " id="firstBlock">
+        </div> --}}
+
+        <div class="header text-center" id="firstBlock">
             <!-- Title and description -->
             <div class="text-center mt-5">
                 <h1 class="heading-bold">
-                 {{__('messages.GET YOUR FREE GIFT')}}
+                    {{ __('messages.GET YOUR FREE GIFT') }}
                 </h1>
                 <p>{{ $business->business_name }}</p>
             </div>
@@ -164,20 +176,31 @@
             <!-- Get the Gift Button -->
             <div class="text-center mt-4">
                 <a href="#" class="get-gift-btn" id="getTheGift">
-                    <i class="fas fa-shopping-cart mr-2 "></i> &nbsp;{{__('messages.GET THE GIFT')}}
+                    <i class="fas fa-shopping-cart mr-2 "></i> &nbsp;{{ __('messages.GET THE GIFT') }}
                 </a>
-                <p class="accept-policies">
-                    <input type="checkbox" id="firstAcceptPolicies" class="accept-checkbox">
-                    <label for="acceptPolicies">{{__('messages.I ACCEPT THE POLICIES')}}</label>
-                </p>
             </div>
 
+            <!-- Checkbox Section: Centered container with left-aligned labels -->
+            <div class="d-flex flex-column justify-content-left align-items-left">
+                <p class="accept-policies text-left">
+                    <input type="checkbox" id="firstAcceptPolicies1" class="accept-checkbox">
+                    <label style="text-align: left;text-decoration:underline"
+                        for="firstAcceptPolicies1">{{ __('Verilerimin işlenmesini kabul ediyorum.') }}</label>
+                </p>
+
+                <p class="accept-policies text-left" style="margin-left: -16px">
+                    <input type="checkbox" id="firstAcceptPolicies2" class="accept-checkbox">
+                    <label style="text-align: left"
+                        for="firstAcceptPolicies2">{{ __('Kampanya şartlarını kabul ediyorum.') }}</label>
+                </p>
+            </div>
         </div>
+
 
         <div class=" justify-content-center align-items-center" id="secondBlock"
             style="display: none!important; height: 100vh;">
             <div class="text-center mt-5">
-                <h3>{{__('messages.How would you rate')}}</h3>
+                <h3>{{ __('messages.How would you rate') }}</h3>
                 <p>{{ $business->business_name }} ?</p>
 
                 <div class="row justify-content-center mt-4">
@@ -206,7 +229,7 @@
         <div class="header" id="thirdBlock" style="display: none;">
             <!-- Title and description -->
             <div class="text-center mt-5 " style="">
-                <p>{{__('messages.Enter your Phone Number to get the free gift code and exclusive offers')}}</p>
+                <p>{{ __('messages.Enter your Phone Number to get the free gift code and exclusive offers') }}</p>
             </div>
 
             <!-- Gift Image -->
@@ -220,25 +243,20 @@
 
                 <!-- Name Field -->
                 <div class="d-flex align-items-center ">
-                    <input type="text" id="name" class="form-control" placeholder="{{__('messages.Type in your name...')}}">
+                    <input type="text" id="name" class="form-control"
+                        placeholder="{{ __('messages.Type in your name...') }}">
 
                 </div>
                 <div class="d-flex align-items-center mt-3">
                     <input type="tel" id="phoneNo" class="form-control"
-                        placeholder="{{__('messages.Type in your phone number...')}}">
+                        placeholder="{{ __('messages.Type in your phone number...') }}">
                     <button class="send-icon-btn">
                         <i class="fas fa-paper-plane send-icon"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Accept Policies Checkbox -->
-            <div class="text-center ">
-                <p class="accept-policies">
-                    <input type="checkbox" id="secondPolicy" class="accept-checkbox">
-                    <label for="acceptPolicies">{{__('messages.I ACCEPT THE POLICIES')}}</a>.</label>
-                </p>
-            </div>
+
         </div>
 
         {{-- 4th block --}}
@@ -246,7 +264,7 @@
         <div class="header" id="fourthBlock" style="display: none;">
             <!-- Title and description -->
             <div class="text-center mt-5 " style="">
-                <p>{{__('messages.Enter the Code to verify your phone number')}}</p>
+                <p>{{ __('messages.Enter the Code to verify your phone number') }}</p>
             </div>
 
             <!-- Gift Image -->
@@ -258,7 +276,8 @@
             <div class=" justify-content-center mt-4">
                 <!-- Name Field -->
                 <div class="d-flex align-items-center ">
-                    <input type="text" id="otpCode" class="form-control" placeholder="{{__('messages.Type in the code...')}}">
+                    <input type="text" id="otpCode" class="form-control"
+                        placeholder="{{ __('messages.Type in the code...') }}">
                     <button class="verification-number">
                         <i class="fas fa-paper-plane send-icon"></i>
                     </button>
@@ -271,13 +290,14 @@
         <div class="header" id="fifthBlock" style="display: none;">
             <!-- Title and description -->
             <div class="text-center mt-5 " style="">
-                <p>{{__('messages.Click the button below and give us a feedback. Reopen this window after you finish')}}</p>
+                <p>{{ __('messages.Click the button below and give us a feedback. Reopen this window after you finish') }}
+                </p>
             </div>
 
             <!-- Gift Image -->
             <div class="img-fluid text-center" id="giveFeedBack">
                 <img src="{{ asset('images/bot/feedback.png') }}" alt="Gift Image" class="gift-image">
-                <p>{{__('messages.Give a Feedback')}}</p>
+                <p>{{ __('messages.Give a Feedback') }}</p>
             </div>
 
         </div>
@@ -285,7 +305,7 @@
         <div class="" id="sixthBlock" style="display: none;">
             <!-- Title and description -->
             <div class="text-center mt-5 " style="">
-                <p>{{__('messages.Your Discount Code is generating')}}</p>
+                <p>{{ __('messages.Your Discount Code is generating') }}</p>
             </div>
 
             <!-- Gift Image -->
@@ -300,8 +320,8 @@
         <div class="header" id="seventhBlock" style="display: none;justify-content:space-evenly">
             <!-- Title and description -->
             <div class="text-center mt-5 " style="">
-                <p>{{__('messages.Get your gift now from one of our team.')}}</p>
-                <p>{{__('messages.Show the Discount Code')}}</p>
+                <p>{{ __('messages.Get your gift now from one of our team.') }}</p>
+                <p>{{ __('messages.Show the Discount Code') }}</p>
             </div>
 
             <!-- Gift Image -->
@@ -312,12 +332,61 @@
         </div>
 
 
+        <!-- Modal for Personal Data Information -->
+        <div class="modal fade" id="personalDataModal" tabindex="-1" aria-labelledby="personalDataModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="personalDataModalLabel">Kişisel Verilerin İşlenmesi Hakkında
+                            Bilgilendirme</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <strong>{{ $business->business_name }}</strong> olarak, 6698 sayılı Kişisel Verilerin Korunması Kanunu
+                            (“KVKK”) kapsamında, kişisel verilerinizi şu amaçlarla işliyoruz:
+                        </p>
+                        <ul>
+                            <li>Hediye kodu gönderimi</li>
+                            <li>Kampanya ve özel fırsatlar hakkında bilgilendirme</li>
+                        </ul>
+                        <p>
+                            <strong>Verilerinizin İşlenme Yasal Dayanağı ve Süresi:</strong><br>
+                            Kişisel verileriniz, açık rızanıza dayanarak işlenecek ve yalnızca yukarıdaki amaçlar
+                            doğrultusunda saklanacaktır. Verileriniz kampanya süresi boyunca veya yasal zorunluluklar
+                            gereği saklanacak, ardından imha edilecektir.
+                        </p>
+                        <p>
+                            <strong>Haklarınız:</strong><br>
+                            KVKK’nın 11. maddesi kapsamında şu haklara sahipsiniz:
+                        </p>
+                        <ul>
+                            <li>Kişisel verilerinizin işlenip işlenmediğini öğrenme</li>
+                            <li>İşlenme amacını öğrenme ve amaca uygun kullanılıp kullanılmadığını kontrol etme</li>
+                            <li>Verilerinizin düzeltilmesini, silinmesini veya yok edilmesini talep etme</li>
+                            <li>Kişisel verilerinizin kanuna aykırı işlenmesi durumunda zarara uğrarsanız tazminat talep
+                                etme</li>
+                        </ul>
+                        <p>
+                            Daha fazla bilgi ve talepleriniz için bizimle iletişime geçebilirsiniz: <strong>{{{ $business->business_email }}}</strong>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tamam</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     <script>
         function changeLanguage(select) {
             // Update the form's action based on the selected language
             var form = document.getElementById('language-form');
-            form.submit();  // Submit the form
+            form.submit(); // Submit the form
         }
     </script>
     <script>
@@ -329,32 +398,33 @@
 
 
         $('#getTheGift').on('click', function() {
-            if (!$('#firstAcceptPolicies').prop('checked')) {
+            if (!$('#firstAcceptPolicies1').prop('checked')) {
+                alert('Please accept the policies');
+                return;
+            }
+
+            if (!$('#firstAcceptPolicies2').prop('checked')) {
                 alert('Please accept the policies');
                 return;
             }
 
             $('#firstBlock').hide();
-            $('#secondBlock').show();
+            $('#thirdBlock').show();
         });
 
         $('.star-selection').on('click', function() {
             totalBusinsessRating = $(this).data('star');
             $('#firstBlock').hide();
-            $('#secondBlock').hide();
-            $('#thirdBlock').show();
+            $('#secondBlock').hide();$('#fifthBlock').show();
+            // $('#thirdBlock').show();
         });
 
         $('.send-icon-btn').on('click', function() {
-            if (!$('#secondPolicy').prop('checked')) {
-                alert('Please accept the policies');
-                return;
-            }
 
             name = $('#name').val();
             phoneNo = $('#phoneNo').val();
             sendOTP(phoneNo, name);
-         
+
         });
 
         $('.verification-number').on('click', function() {
@@ -379,7 +449,7 @@
             setTimeout(() => {
                 $('#sixthBlock').hide();
                 $('#seventhBlock').show();
-            }, 2000);
+            }, 10000);
         });
     </script>
 
@@ -437,10 +507,11 @@
                 .then(data => {
                     if (data.success) {
                         couponCode = data.code;
-                        $('#secondBlock').hide();
+                     
                         $('#thirdBlock').hide();
                         $('#fourthBlock').hide();
-                        $('#fifthBlock').show();
+                        $('#secondBlock').show();
+                        // $('#fifthBlock').show();
                     } else {
                         alert("invalid otp code");
                     }
@@ -450,6 +521,17 @@
                 });
 
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const secondCheckbox = document.getElementById('firstAcceptPolicies1');
+
+            secondCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    // Show the modal if checkbox is checked
+                    $('#personalDataModal').modal('show');
+                }
+            });
+        });
     </script>
 
 

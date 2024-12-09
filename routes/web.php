@@ -6,6 +6,7 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ChatBotController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PaymentController;
@@ -43,6 +44,9 @@ Route::delete('business-owners/{businessOwner}', [BusinessOwnerController::class
 Route::get('admin/business-owners/export-pdf', [BusinessOwnerController::class, 'exportPdf'])->name('admin.business.owner.exportPdf');
 Route::get('admin/business-owners/export-csv', [BusinessOwnerController::class, 'exportCsv'])->name('admin.business.owner.exportCsv');
 
+
+Route::delete('/delete-customer/{id}', [HomeController::class, 'deleteCustomer'])->name('admin.customer.destroy');
+
 // Admin packages routes
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('packages', [PackageController::class, 'index'])->name('packages.index');
@@ -59,7 +63,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 
 //ChatBot
-Route::get('/chatbot/{slug}', [ChatBotController::class, 'getNewChatBot'])->name('chatbot.show');
+Route::get('/qrcode/{slug}', [ChatBotController::class, 'getNewChatBot'])->name('chatbot.show');
 Route::get('/bot/{slug}', [ChatBotController::class, 'getNewChatBot'])->name('chatbot.new.show');
 Route::post('/chatbot/{slug}/store', [ChatbotController::class, 'store'])->name('chatbot.store');
 
@@ -121,7 +125,7 @@ Route::post('payment-test', [PaymentController::class, 'test']);
 // SUBSCRIPTION FOR BUSINESS OWNERS
 Route::get('/subscription/create', [SubscriptionController::class, 'create'])->name('subscription.create');
 Route::post('/subscription', [SubscriptionController::class, 'store'])->name('subscription.store');
-Route::get('/upgrade-subscription', [SubscriptionController::class,'upgradeSMSPackage'])->name('upgrade.sms.package');
+Route::get('/upgrade-subscription', [SubscriptionController::class, 'upgradeSMSPackage'])->name('upgrade.sms.package');
 
 Route::get('/block-user', [CustomerController::class, 'toggleBlockUser'])->name('admin.block.user');
 
@@ -131,5 +135,6 @@ Route::get('lang', [LanguageController::class, 'change'])->name("change.lang");
 // Waiter Verify Code
 
 Route::post('/verify-coupon-code', [WaiterController::class, 'verifyCouponCode'])->name('waiter.verify.code');
+Route::post('/remove-from-blacklist', [WaiterController::class, 'removeFromBlackList'])->name('waiter.remove.blacklist');
 
 

@@ -10,6 +10,8 @@ use App\Models\User;
 use Illuminate\Console\Command;
 use App\Models\BusinessOwner;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+
 
 class SendSmsCampaigns extends Command
 {
@@ -27,7 +29,8 @@ class SendSmsCampaigns extends Command
 
     // Execute the console command
     public function handle()
-    {\Log::info('Into Cron JOB');
+    {
+        \Log::info('Into Cron JOB');
         $now = Carbon::now()->format('Y-m-d H:i');  // Get current time formatted to 'YYYY-MM-DD HH:MM'
         echo $now;
 
@@ -63,9 +66,22 @@ class SendSmsCampaigns extends Command
                 $this->info("No verified recipients found for campaign ID: {$campaign->id}");
                 continue;
             }
+            $stringForData = '\nT: {{$businessOwner->phone_number_netgsm}}\nM: {{$businessOwner->mersis_no}}\nSMS iptal için {{$businessOwner->stop_link}}';
+
+            // Replace placeholders with actual data
+            $customMessage = str_replace(
+                ['{{$businessOwner->phone_number_netgsm}}', '{{$businessOwner->mersis_no}}', '{{$businessOwner->stop_link}}'],
+                [$businessOwner->phone_number_netgsm, $businessOwner->mersis_no, $businessOwner->stop_link],
+                $stringForData
+            );
+            $messageWithNewlines = str_replace(['<br>', '<br />'], "\n", $campaign->sms);
+
+
+            $fullMessage = $messageWithNewlines. "\n" . $customMessage;
+
 
             // Call the method to send SMS
-            $this->sendCampaignSMS($recipients, $campaign->sms, $businessOwner);
+            $this->sendCampaignSMS($recipients, $fullMessage, $businessOwner, $campaign->sms_limit);
 
             // Mark campaign as sent
             $campaign->update(['is_sent' => true]);
@@ -79,7 +95,7 @@ class SendSmsCampaigns extends Command
     // Send SMS using the XML payload and cURL (Netgsm API)
 
 
-    public function sendCampaignSMS($recipients, $message, $businessOwner)
+    public function sendCampaignSMS($recipients, $message, $businessOwner, $smsLimit)
     {
         // Escape values to prevent XML injection
         $usercode = htmlspecialchars($businessOwner->sms_user_code, ENT_QUOTES, 'UTF-8');
@@ -134,6 +150,7 @@ class SendSmsCampaigns extends Command
                 'sms' => $message,
                 'subscription_id' => $subscription->id,
                 'business_owner_id' => $businessOwner->id,
+                'sms_limit'=>$smsLimit,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
