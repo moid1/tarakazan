@@ -1,4 +1,5 @@
 @extends('layouts.owner')
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
 @section('content')
     <div class="row new-chemist-parent-row">
@@ -62,12 +63,12 @@
                         <td>{{ $coupon->gift }}</td>
                         <td>{{$coupon->is_default ? 'YES' : 'No'}}</td>
                         <td>{{$coupon->total_redemptions}}</td>
-                        <th>
-                            <a href="{{ route('coupon.default', $coupon->id) }}" class="btn btn-sm {{ $coupon->is_default ? 'btn-primary' : 'btn-secondary' }}">
+                        <td>
+                            <a href="{{ route('coupon.default', $coupon->id) }}" class="btn btn-sm {{ $coupon->is_default ? 'btn-success' : 'btn-secondary' }}">
                                 Default Coupon
                             </a>
-                        </th>
-                                            </tr>
+                        </td>
+                        </tr>
                 @endforeach
             <tfoot>
                 <tr>
@@ -75,6 +76,7 @@
                     <th>{{ __('messages.Creation Date') }}</th>
                     <th>{{ __('messages.Expiry Date') }}</th>
                     <th>{{ __('messages.Gift') }}</th>
+                    <th>{{__('IS Default')}}</th>
                     <th>{{__('Total Redemption')}}</th>
                 </tr>
             </tfoot>
@@ -84,13 +86,62 @@
 @endsection
 
 @section('customjs')
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         $(document).ready(function() {
+            const redemptionData = @json($redemptions);
+
+            console.log(redemptionData);
+
+const dates = redemptionData.map(item => item.date);
+const totals = redemptionData.map(item => item.total);
+
+// Chart.js Configuration
+const ctx = document.getElementById('redemptionChart').getContext('2d');
+const redemptionChart = new Chart(ctx, {
+    type: 'line', // Line chart
+    data: {
+        labels: dates, // Dates as labels
+        datasets: [{
+            label: 'Redemptions per Day',
+            data: totals, // Redemption counts
+            borderColor: '#FF5733', // Line color
+            backgroundColor: 'rgba(255, 87, 51, 0.2)', // Fill color
+            fill: true,
+            tension: 0.1 // Smooth curve
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Date'
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Total Redemptions'
+                },
+                beginAtZero: true
+            }
+        },
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            tooltip: {
+                mode: 'index',
+                intersect: false
+            }
+        }
+    }
+});
+
             new DataTable('#example', {
-                responsive:true,
                 
                 initComplete: function() {
                     this.api()
@@ -113,57 +164,12 @@
                         });
                 }
             });
+            console.log('wa');
+
 
             // Prepare Redemption Chart Data
-            const redemptionData = @json($redemptions);
-            console.log(redemptionData);
-
-            const dates = redemptionData.map(item => item.date);
-            const totals = redemptionData.map(item => item.total);
-
-            // Chart.js Configuration
-            const ctx = document.getElementById('redemptionChart').getContext('2d');
-            const redemptionChart = new Chart(ctx, {
-                type: 'line', // Line chart
-                data: {
-                    labels: dates, // Dates as labels
-                    datasets: [{
-                        label: 'Redemptions per Day',
-                        data: totals, // Redemption counts
-                        borderColor: '#FF5733', // Line color
-                        backgroundColor: 'rgba(255, 87, 51, 0.2)', // Fill color
-                        fill: true,
-                        tension: 0.1 // Smooth curve
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Date'
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Total Redemptions'
-                            },
-                            beginAtZero: true
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false
-                        }
-                    }
-                }
-            });
+         
+    
         });
     </script>
 @endsection
