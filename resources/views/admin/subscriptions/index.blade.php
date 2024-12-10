@@ -30,7 +30,7 @@
                         <tr>
                             <td>{{ $subscription->id }}</td>
                             <td>{{ $subscription->user->name }}</td>
-                            <td>{{ $subscription->package->name }}</td>
+                            <td>{{ $subscription->package ? $subscription->package->name : 'No Package' }}</td>
                             <td>{{ $subscription->end_date }}</td>
                             <td>{{ $subscription->status }}</td>
                         </tr>

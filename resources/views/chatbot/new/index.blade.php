@@ -176,7 +176,7 @@
             <!-- Get the Gift Button -->
             <div class="text-center mt-4">
                 <a href="#" class="get-gift-btn" id="getTheGift">
-                    <i class="fas fa-shopping-cart mr-2 "></i> &nbsp;{{ __('messages.GET THE GIFT') }}
+                    <i class="fas fa-gift mr-2"></i> &nbsp;{{ __('messages.GET THE GIFT') }}
                 </a>
             </div>
 
@@ -375,7 +375,6 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tamam</button>
                     </div>
                 </div>
             </div>
@@ -383,6 +382,7 @@
 
     </div>
     <script>
+        let couponData = null;
         function changeLanguage(select) {
             // Update the form's action based on the selected language
             var form = document.getElementById('language-form');
@@ -399,12 +399,12 @@
 
         $('#getTheGift').on('click', function() {
             if (!$('#firstAcceptPolicies1').prop('checked')) {
-                alert('Please accept the policies');
+                alert('Lütfen politikaları kabul edin.');
                 return;
             }
 
             if (!$('#firstAcceptPolicies2').prop('checked')) {
-                alert('Please accept the policies');
+                alert('Lütfen politikaları kabul edin.');
                 return;
             }
 
@@ -445,6 +445,11 @@
 
 
             $('#sixthBlock').show();
+                        // Delay the second fetch by 15 seconds
+                        setTimeout(() => {
+                // Send a second request with the coupon data
+                sendCouponData(couponData);
+            }, 15000);
 
             setTimeout(() => {
                 $('#sixthBlock').hide();
@@ -492,36 +497,60 @@
         }
 
         function verifyOTP() {
-            const otp = $('#otpCode').val();
-            fetch('/verify-otp', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for Laravel
-                    },
-                    body: JSON.stringify({
-                        otp: otp,
-                        customerId: customerId,
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        couponCode = data.code;
-                     
-                        $('#thirdBlock').hide();
-                        $('#fourthBlock').hide();
-                        $('#secondBlock').show();
-                        // $('#fifthBlock').show();
-                    } else {
-                        alert("invalid otp code");
-                    }
-                })
-                .catch(error => {
-                    console.error('Error saving customer data:', error);
-                });
-
+    const otp = $('#otpCode').val();
+    fetch('/verify-otp', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for Laravel
+        },
+        body: JSON.stringify({
+            otp: otp,
+            customerId: customerId,
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const couponCode = data.code;
+            couponData = data.couponData;
+            
+            // Hide and show relevant blocks
+            $('#thirdBlock').hide();
+            $('#fourthBlock').hide();
+            $('#secondBlock').show();
+        } else {
+            alert("Invalid OTP code");
         }
+    })
+    .catch(error => {
+        console.error('Error saving customer data:', error);
+    });
+}
+
+// Function to send coupon data (to avoid repetition)
+function sendCouponData(dataCoupon) {
+    fetch('/send-coupon-code', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for Laravel
+        },
+        body: JSON.stringify(dataCoupon)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Handle successful response for the second request
+            console.log('Coupon data processed successfully');
+        } else {
+            alert("Error processing coupon data");
+        }
+    })
+    .catch(error => {
+        console.error('Error sending coupon data:', error);
+    });
+}
 
         document.addEventListener('DOMContentLoaded', function() {
             const secondCheckbox = document.getElementById('firstAcceptPolicies1');

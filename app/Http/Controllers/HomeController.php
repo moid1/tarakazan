@@ -100,9 +100,18 @@ class HomeController extends Controller
 
             $subscriptions = Subscription::all();
             $totalRevenue = 0;
+
             foreach ($subscriptions as $key => $subscription) {
-                $totalRevenue += floatval($subscription->package->price);
+                // Check if the subscription has a valid package
+                if ($subscription->package) {
+                    // Add the package price to the total revenue
+                    $totalRevenue += floatval($subscription->package->price);
+                } else {
+                    // If no package is available, add 0
+                    $totalRevenue += 0;
+                }
             }
+            
             $customerCount = CustomerDetail::where('is_verified', true)->count();
 
 

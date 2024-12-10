@@ -6,6 +6,7 @@ use App\Models\BusinessOwner;
 use App\Models\ChatBot;
 use App\Models\CustomerDetail;
 use Illuminate\Http\Request;
+use Session;
 
 class ChatBotController extends Controller
 {
@@ -45,6 +46,8 @@ class ChatBotController extends Controller
     }
 
     public function getNewChatBot($slug){
+        Session::put('locale', 'tr');
+
         // fodays-coffee
         $business = BusinessOwner::where('slug', $slug)->firstOrFail();
         $business->increment('qr_scan_count');

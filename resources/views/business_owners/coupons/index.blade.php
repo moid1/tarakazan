@@ -48,7 +48,9 @@
                     <th>{{ __('messages.Creation Date') }}</th>
                     <th>{{ __('messages.Expiry Date') }}</th>
                     <th>{{ __('messages.Gift') }}</th>
+                    <th>{{__('IS Default')}}</th>
                     <th>{{__('Total Redemption')}}</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,8 +60,14 @@
                         <td>{{ $coupon->created_at->format('d M Y') }}</td>
                         <td>{{ \Carbon\Carbon::parse($coupon->expiry_date)->format('d M Y') }}</td>
                         <td>{{ $coupon->gift }}</td>
+                        <td>{{$coupon->is_default ? 'YES' : 'No'}}</td>
                         <td>{{$coupon->total_redemptions}}</td>
-                    </tr>
+                        <th>
+                            <a href="{{ route('coupon.default', $coupon->id) }}" class="btn btn-sm {{ $coupon->is_default ? 'btn-primary' : 'btn-secondary' }}">
+                                Default Coupon
+                            </a>
+                        </th>
+                                            </tr>
                 @endforeach
             <tfoot>
                 <tr>

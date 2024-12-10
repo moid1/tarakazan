@@ -24,17 +24,17 @@ class CouponController extends Controller
             ->get();
 
         // Calculate total redemptions per coupon
-    $totalRedemptions = $redemptions->groupBy('coupon_id')->map(function ($group) {
-        return $group->sum('total');  // Sum the 'total' count for each coupon
-    });
+        $totalRedemptions = $redemptions->groupBy('coupon_id')->map(function ($group) {
+            return $group->sum('total');  // Sum the 'total' count for each coupon
+        });
 
-    // Append total redemptions to each coupon
-    $coupons->each(function ($coupon) use ($totalRedemptions) {
-        // Append the total redemptions count to each coupon object
-        $coupon->total_redemptions = $totalRedemptions[$coupon->id] ?? 0;
-    });
+        // Append total redemptions to each coupon
+        $coupons->each(function ($coupon) use ($totalRedemptions) {
+            // Append the total redemptions count to each coupon object
+            $coupon->total_redemptions = $totalRedemptions[$coupon->id] ?? 0;
+        });
 
-    // dd($coupons);
+        // dd($coupons);
 
         $mostFrequentRedemptionTimes = $this->getMostFrequentRedemptionTimes($redemptions);
 
@@ -133,5 +133,18 @@ class CouponController extends Controller
     public function destroy(Coupon $coupon)
     {
         //
+    }
+
+    public function makeDefault($id)
+    {
+        // Set all coupons of the current user to 'is_default' = false
+        Coupon::where('user_id', \Auth::id())->update(['is_default' => false]);
+
+        // Set the specified coupon's 'is_default' to true
+        $coupon = Coupon::find($id);
+        if ($coupon && $coupon->user_id == \Auth::id()) { // Check if coupon exists and belongs to the user
+            $coupon->update(['is_default' => true]);
+        }
+        return back();
     }
 }

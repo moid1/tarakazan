@@ -35,7 +35,7 @@ class SMSController extends Controller
 
         $phoneNo = ltrim($request->phone_no, '0');  // Remove leading zeros
 
-        $isAlreadyExists = CustomerDetail::where([['phone', $phoneNo],['is_verified', true]])->count();
+        $isAlreadyExists = CustomerDetail::where([['phone', $phoneNo], ['is_verified', true], ['business_owner_id', $request->business_owner_id]])->count();
 
         if ($isAlreadyExists > 0) {
             return response()->json([
@@ -184,21 +184,27 @@ XML;
 
             if ($businessOwner) {
                 // Get coupon codes associated with the business owner's user_id
-                $coupon = Coupon::where('user_id', $businessOwner->user_id)->first();
+                $coupon = Coupon::where([['user_id', $businessOwner->user_id],['is_default', true]])->first();
                 if (!$coupon) {
                     return response()->json([
                         'success' => false,
                         'message' => 'No Coupon Code Available'
                     ], 404);
                 }
-                $this->sendCouponCode($businessOwner->id, $customerDetail->phone, $coupon->code);
+                // $this->sendCouponCode($businessOwner->id, $customerDetail->phone, $coupon->code);
                 $businessOwner->increment('google_reviews');
 
                 return response()->json([
                     'success' => true,
                     'message' => 'OTP verified successfully',
-                    'code' => $coupon->code // Return the coupon codes
+                    'code' => $coupon->code, // Return the coupon codes
+                    'couponData' => [
+                        'businessOwnerId' => $businessOwner->id,
+                        'phoneNo' => $customerDetail->phone,
+                        'couponCode' => $coupon->code,
+                    ]
                 ]);
+
             } else {
                 return response()->json([
                     'success' => false,
@@ -211,8 +217,11 @@ XML;
         return response()->json(['success' => false, 'message' => 'Invalid OTP'], 400);
     }
 
-    public function sendCouponCode($businessOwnerId, $phoneNo, $couponCode)
+    public function sendCouponCode(Request $request)
     {
+        $businessOwnerId = $request->businessOwnerId;
+        $phoneNo = $request->phoneNo;
+        $couponCode = $request->couponCode;
         try {
             $businessOwner = BusinessOwner::find($businessOwnerId);
             $xml = <<<XML

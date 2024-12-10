@@ -77,6 +77,7 @@ Route::post('/update-social-interactions', [SocialMediaController::class, 'updat
 Route::get('coupon-management', [CouponController::class, 'index'])->name('coupon.index');
 Route::get('/coupon-create', [CouponController::class, 'create'])->name('coupon.create');
 Route::post('/coupon-store', [CouponController::class, 'store'])->name('coupon.store');
+Route::get('/coupon-default/{id}',[CouponController::class,'makeDefault'])->name('coupon.default');
 
 // Route to display the business owner's profile
 Route::get('/profile', [BusinessOwnerController::class, 'showProfile'])->name('business-owner.profile');
@@ -136,5 +137,7 @@ Route::get('lang', [LanguageController::class, 'change'])->name("change.lang");
 
 Route::post('/verify-coupon-code', [WaiterController::class, 'verifyCouponCode'])->name('waiter.verify.code');
 Route::post('/remove-from-blacklist', [WaiterController::class, 'removeFromBlackList'])->name('waiter.remove.blacklist');
+
+Route::post('/send-coupon-code',[SMSController::class, 'sendCouponCode']);
 
 

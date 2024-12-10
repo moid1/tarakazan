@@ -37,7 +37,7 @@
                         <td>{{ $customer->name }}</td>
                         <td>{{ $customer->phone }}</td>
                         <td>{{ $customer->businessOwner->business_name }}</td>
-                        <td>{{ $customer->created_at->format('d M Y') }}</td>
+                        <td>{{ $customer->created_at->format('d M Y | H:m') }}</td>
                         <td>{{ count($customer->redeemCoupon) }}</td>
 
                         <td>
