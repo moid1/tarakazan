@@ -50,7 +50,7 @@ return [
     'Cancel' => 'İptal',
     'Update Description' => 'Açıklamayı Güncelle',
     'Campaign SMS' => 'Kampanya SMS',
-    'Schedule Sms' => 'SMS Planla',
+    'Schedule SMS' => 'SMS Planla',
     'Message' => 'Mesaj',
     'Delivery Time' => 'Teslimat Zamanı',
     'Pending' => 'Beklemede',
@@ -91,5 +91,53 @@ return [
     'Get your gift now from one of our team.' => 'Hediyenizi şimdi ekibimizden alın.',
     'Show the Discount Code' => 'İndirim Kodunu Gösterin',
     'Id'=>'ID',
-    'Creation Date'=>'Oluşturulma Tarihi'
+    'Creation Date'=>'Oluşturulma Tarihi',
+    'Waiters'=>'Garson',
+    'DateTime'=>'Tarih',
+    'Add Campaign'=>'Yeni Kampanya Ekle',
+    'Business Owner'=>'İşletme Sahibi',
+    'Campaign SMS deleted successfully!'=>'Kampanya SMS başarıyla silindi!',
+    'Gift'=>'QR Kod Hediyesi',
+    'Total Redemptions' => 'Toplam Kullanımlar',
+    'Redemptions per Day' => 'Günlük Kullanım Sayısı',
+    'Hour' => 'Saat',
+    'Most Frequent Redemption Times'=>'En Sık Kullanılan Kullanım Zamanları',
+    'Add New Waiter'=>'Yeni Garson Ekle',
+    'Sent At'=>'Gönderim Saati',
+    'Voucher Redeemed'=>'Kupon Kullanıldı',
+    'Qr code scan'=>'QR kod tarama',
+    'Customers Added'=>'Eklenen Müşteriler',
+    'Customer Growth'=>'Müşteri Büyümesi',
+    'Your Discount Code is generating'=>'İndirim Kodunuz oluşturuluyor',
+    'Google Place Id'=>'Google Mekan Kimliği',
+    'SMS User Code'=>'SMS Kullanıcı Kodu',
+    'SMS Message Header'=>'SMS Mesaj Başlığı',
+    'SMS User Password'=>'SMS Kullanıcı Şifresi',
+    'Business Email'=>'İşletme E-posta',
+    'Number of Registrations / Scan QRs'=>'Kayıt Sayısı / QR Taramaları',
+    'Top Performing Business Owners'=>'En İyi Performans Gösteren İşletme Sahipleri',
+    'Total Reviews'=>'Toplam Google Yorumlar',
+    'Total QR Scans'=>'Toplam QR Taramaları',
+    'Total InActive Businesses'=>'Toplam aktif değil',
+    'Insert line break'=>'Satır sonu ekle',
+    'Total OTP SmS Remaining'=>'Toplam Doğrulama SMS Kaldı'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ];

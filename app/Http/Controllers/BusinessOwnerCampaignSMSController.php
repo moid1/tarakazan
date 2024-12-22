@@ -179,7 +179,7 @@ class BusinessOwnerCampaignSMSController extends Controller
             $campaignSms->delete();
 
             // Flash a success message
-            Session::flash('success', 'Campaign SMS deleted successfully!');
+            Session::flash('success', trans('messages.Campaign SMS deleted successfully!'));
         } catch (\Exception $e) {
             // If something goes wrong, flash an error message
             Session::flash('error', 'Something went wrong. Please try again.');

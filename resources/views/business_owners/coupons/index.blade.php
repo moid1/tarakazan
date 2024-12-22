@@ -19,14 +19,14 @@
             <canvas id="redemptionChart"></canvas>
         </div>
         <div class="col-lg-6 mt-4">
-            <h4 class="">{{ __('Most Frequent Redemption Times') }}</h4>
+            <h4 class="">{{ __('messages.Most Frequent Redemption Times') }}</h4>
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>{{ __('Coupon Code') }}</th>
-                        <th>{{ __('Date') }}</th>
-                        <th>{{ __('Hour') }}</th>
-                        <th>{{ __('Total Redemptions') }}</th>
+                        <th>{{ __('messages.Coupon Code') }}</th>
+                        <th>{{ __('messages.Date') }}</th>
+                        <th>{{ __('messages.Hour') }}</th>
+                        <th>{{ __('messages.Total Redemptions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -104,7 +104,7 @@ const redemptionChart = new Chart(ctx, {
     data: {
         labels: dates, // Dates as labels
         datasets: [{
-            label: 'Redemptions per Day',
+            label: @json(__('messages.Redemptions per Day')),
             data: totals, // Redemption counts
             borderColor: '#FF5733', // Line color
             backgroundColor: 'rgba(255, 87, 51, 0.2)', // Fill color

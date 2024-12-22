@@ -60,9 +60,9 @@
                     <i class="fas fa-calendar-day me-2"></i>{{ __('Monthly Revenue') }}
                 </span>
                 <div class="">
-                    {{ __('Current Month') }}:
+                    {{ __('messages.Current Month') }}:
                     ${{ number_format($monthlyRevenueData['currentMonthRevenue'], 2) }} <br>
-                    {{ __('Previous Month') }}:
+                    {{ __('messages.Previous Month') }}:
                     ${{ number_format($monthlyRevenueData['previousMonthRevenue'], 2) }}
                 </div>
             </div>
@@ -83,14 +83,14 @@
 
     <div class="row">
         <div class="col-lg-6">
-            <h5 class="mt-5">Top Performing Business Owners</h5>
+            <h5 class="mt-5">{{__('messages.Top Performing Business Owners')}}</h5>
 
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Business Name</th>
-                        <th>QR Scans</th>
-                        <th>Google Reviews</th>
+                        <th>{{__('messages.Business Name')}}</th>
+                        <th>{{__('messages.QR Scans')}}</th>
+                        <th>{{__('messages.Google Reviews')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -110,8 +110,9 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th> Hour</th>
-                        <th>Number of Registrations / Scan QRs</th>
+                        <th>
+                            {{ __('messages.Hour') }}
+                        <th>{{__('messages.Number of Registrations / Scan QRs')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -125,7 +126,6 @@
             </table>
         </div>
     </div>
-
 @endsection
 
 @section('customjs')

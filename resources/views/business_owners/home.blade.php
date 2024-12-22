@@ -107,7 +107,7 @@
             data: {
                 labels: weeks.map(week => `Week ${weeks}`), // Display months as labels
                 datasets: [{
-                    label: 'Customers Added',
+                    label: trans('messages.Customers Added'),
                     data: totals, // Total customers per month
                     borderColor: '#4CAF50', // Line color
                     backgroundColor: 'rgba(76, 175, 80, 0.2)', // Background color (semi-transparent)

@@ -1,9 +1,9 @@
 <?php
 
 return [
-'Hey'=>'Hey',
+    'Hey' => 'Hey',
     'Dashboard' => 'Dashboard',
-    'Business Owners'=>'Business Owners',
+    'Business Owners' => 'Business Owners',
     'Good Morning,' => 'Good Morning,',
     'Welcome, Manage your business' => 'Welcome, Manage your business',
     'Total Active Businesses' => 'Total Active Businesses',
@@ -91,7 +91,39 @@ return [
     'Your Discount Code is generating…' => 'Your Discount Code is generating…',
     'Get your gift now from one of our team.' => 'Get your gift now from one of our team.',
     'Show the Discount Code' => 'Show the Discount Code',
-    'Id'=>'ID',
-    'Creation Date'=>'Creation Date'
+    'Id' => 'ID',
+    'Creation Date' => 'Creation Date',
+    'Waiters' => 'Waiters',
+    'DateTime' => 'DateTime',
+    'Add Campaign' => 'Add Campaign',
+    'Campaign SMS deleted successfully!' => 'Campaign SMS deleted successfully!',
+    'Gift' => 'Gift',
+    'Total Redemptions' => 'Total Redemptions',
+    'Redemptions per Day' => 'Redemptions per Day',
+    'Hour' => 'Hour',
+    'Most Frequent Redemption Times'=>'Most Frequent Redemption Times',
+    'Add New Waiter'=>'Add New Waiter',
+    'Sent At'=>'Sent At',
+    'Voucher Redeemed'=>'Voucher Redeemed',
+    'Qr code scan'=>'Qr code scan',
+    'Customers Added'=>'Customers Added',
+    'Customer Growth'=>'Customer Growth',
+    'Your Discount Code is generating'=>'Your Discount Code is generating',
+    'Google Place Id'=>'Google Place Id',
+    'SMS User Code'=>'SMS User Code',
+    'SMS Message Header'=>'SMS Message Header',
+    'SMS User Password'=>'SMS User Password',
+    'Business Email'=>'Business Email',
+    'Number of Registrations / Scan QRs'=>'Number of Registrations / Scan QRs',
+    'Top Performing Business Owners'=>'Top Performing Business Owners',
+    'Total Reviews'=>'Total Reviews',
+    'Total QR Scans'=>'Total QR Scans',
+    'Total InActive Businesses'=>'Total InActive Businesses',
+    'Insert line break'=>'Insert line break',
+    'Total OTP SmS Remaining'=>'Total OTP SmS Remaining'
+
+
+
+
 
 ];
