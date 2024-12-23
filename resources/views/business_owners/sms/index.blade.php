@@ -21,7 +21,7 @@
 
             @if (session('nextpackage') === true)
                 <div class="alert alert-danger">
-                    <span>You have no SMS remaining for this month. <a href="{{ route('upgrade.sms.package') }}">Upgrade Your
+                    <span>{{session('error')}} &nbsp;<a href="{{ route('upgrade.sms.package') }}">Upgrade Your
                             Package</a></span>
                 </div>
             @elseif(session('error'))

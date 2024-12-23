@@ -235,8 +235,11 @@ XML;
                    <appkey>{$businessOwner->app_key}</appkey>
                </header>
                <body>
-                   <msg><![CDATA[İndirim Kodunuz: $couponCode]]></msg>
-                   <no>{$phoneNo}</no>
+               <msg><![CDATA[İndirim Kodunuz:\n {$couponCode}\n\n
+                Hediyenizi almak için bu kupon kodunu bir garsona gösterin.
+                Kod, yalnızca size ait telefon numarasıyla bir kez kullanılabilir.]]>
+                </msg>
+                <no>{$phoneNo}</no>
     
     
                </body>

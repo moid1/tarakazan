@@ -31,7 +31,7 @@
                 <!-- Font Awesome Icon for SMS Remaining -->
                 <i class="fas fa-clock ms-3 mt-3 detail-icon"></i>
                 <span class="detail-h1">{{ __('messages.Total SmS Remaining') }}</span>
-                <div class="detail-h2">{{$package->quantity}}/{{ $totalSMSRemaining }}</div>
+                <div class="detail-h2">{{ $package->quantity }}/{{ $totalSMSRemaining }}</div>
             </div>
         </div>
 
@@ -49,7 +49,7 @@
                 <!-- Font Awesome Icon for Customers -->
                 <i class="fas fa-users ms-3 mt-3 detail-icon"></i>
                 <span class="detail-h1">{{ __('messages.Total Customers') }}</span>
-                <div class="detail-h2"> {{$package->customers}} / {{ $customersCount }}</div>
+                <div class="detail-h2"> {{ $package->customers }} / {{ $customersCount }}</div>
             </div>
         </div>
 
@@ -72,6 +72,16 @@
             </div>
         </div>
 
+        @if ($businessOwner->google_review_path)
+            <div class="col-12 col-sm-6 col-md-6 mb-4">
+                <div class="mt-3">
+                    <p class="mb-3">{{ __('messages.Scan QR code for qrcode access') }}</p>
+                    <img class="img-fluid" src="{{ asset('storage/' . $businessOwner->google_review_path) }}"
+                        alt="{{ __('messages.Chatbot QR Code') }}">
+                </div>
+            </div>
+        @endif
+
 
         <div class="col-12 col-sm-12 col-md-6 mb-4">
             <!-- QR Code Section (If Exists) -->
@@ -90,6 +100,11 @@
                 <canvas id="customerGrowthChart" class="mt-4"></canvas>
             </div>
         </div>
+        <div class="col-12 col-sm-12 col-md-6 mb-4">
+            <div class="detail-container1">
+                <div id="heatmapContainer"></div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -99,6 +114,7 @@
         // Data for the chart
         const weeks = @json($weeks); // PHP array to JS array
         const totals = @json($totals); // PHP array to JS array
+        const customersAdded = @json(trans('messages.Customers Added'));
 
         // Create the chart
         const ctx = document.getElementById('customerGrowthChart').getContext('2d');
@@ -107,7 +123,7 @@
             data: {
                 labels: weeks.map(week => `Week ${weeks}`), // Display months as labels
                 datasets: [{
-                    label: trans('messages.Customers Added'),
+                    label: customersAdded,
                     data: totals, // Total customers per month
                     borderColor: '#4CAF50', // Line color
                     backgroundColor: 'rgba(76, 175, 80, 0.2)', // Background color (semi-transparent)

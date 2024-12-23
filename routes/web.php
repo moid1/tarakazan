@@ -78,6 +78,7 @@ Route::get('coupon-management', [CouponController::class, 'index'])->name('coupo
 Route::get('/coupon-create', [CouponController::class, 'create'])->name('coupon.create');
 Route::post('/coupon-store', [CouponController::class, 'store'])->name('coupon.store');
 Route::get('/coupon-default/{id}',[CouponController::class,'makeDefault'])->name('coupon.default');
+Route::get('/coupon/delete/{id}',[CouponController::class, 'destroy'])->name('coupon.delete');
 
 // Route to display the business owner's profile
 Route::get('/profile', [BusinessOwnerController::class, 'showProfile'])->name('business-owner.profile');

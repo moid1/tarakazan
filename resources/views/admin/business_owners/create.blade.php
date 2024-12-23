@@ -56,22 +56,36 @@
                     <div class="col-12 col-md-6 mb-3">
                         <div class="chemist-input-heading">{{ __('messages.Mersis No') }}</div>
                         <!-- Translated label -->
-                        <input type="text" name="mersis_no" id="" required
-                            class="form-control" />
+                        <input type="text" name="mersis_no" id="" required class="form-control" />
                     </div>
 
                     <div class="col-12 col-md-6 mb-3">
                         <div class="chemist-input-heading">{{ __('messages.Stop Link') }}</div>
                         <!-- Translated label -->
-                        <input type="text" name="stop_link" id="" required
-                            class="form-control" />
+                        <input type="text" name="stop_link" id="" required class="form-control" />
                     </div>
 
                     <div class="col-12 col-md-6 mb-3">
                         <div class="chemist-input-heading">{{ __('messages.Phone No NetGSM') }}</div>
                         <!-- Translated label -->
-                        <input type="text" name="phone_number_netgsm" id="" required
-                            class="form-control" />
+                        <input type="text" name="phone_number_netgsm" id="" required class="form-control" />
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="chemist-input-heading">{{ __('messages.Google Reviews Before') }}</div>
+                        <!-- Translated label -->
+                        <input type="number" name="google_review_before" id="" required class="form-control" />
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="chemist-input-heading">{{ __('messages.Google Reviews After') }}</div>
+                        <!-- Translated label -->
+                        <input type="number" name="google_review_after" id="" required class="form-control" />
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="chemist-input-heading">{{ __('messages.Google Reviews') }}</div> <!-- Translated label -->
+                        <input type="file" name="google_review_path" id="logo" accept="image/*" class="form-control" />
                     </div>
 
                     <!-- Business Email -->
@@ -92,6 +106,7 @@
                             @endforeach
                         </select>
                     </div>
+
 
                     <!-- Logo Upload -->
                     <div class="col-12 col-md-6 mb-3">
@@ -129,7 +144,8 @@
 
                     <!-- Postal Code -->
                     <div class="col-12 col-md-6 mb-3">
-                        <div class="chemist-input-heading">{{ __('messages.Postal Code') }}</div> <!-- Translated label -->
+                        <div class="chemist-input-heading">{{ __('messages.Postal Code') }}</div>
+                        <!-- Translated label -->
                         <input type="text" name="postal_code" id="postal_code" required class="form-control" />
                     </div>
 

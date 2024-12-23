@@ -130,9 +130,13 @@ class CouponController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Coupon $coupon)
+    public function destroy($id)
     {
-        //
+        $coupon = Coupon::find($id);
+        if ($coupon && $coupon->user_id == \Auth::id()) { // Check if coupon exists and belongs to the user
+            $coupon->delete();
+        }
+        return back();
     }
 
     public function makeDefault($id)

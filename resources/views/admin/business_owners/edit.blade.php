@@ -101,11 +101,34 @@
                         @enderror
                     </div>
 
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="chemist-input-heading">{{ __('messages.Google Reviews Before') }}</div>
+                        <!-- Translated label -->
+                        <input type="number" name="google_review_before" id=""
+                            value="{{ old('google_review_before', $businessOwner->google_review_before) }}" required
+                            class="form-control" />
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="chemist-input-heading">{{ __('messages.Google Reviews After') }}</div>
+                        <!-- Translated label -->
+                        <input type="number" name="google_review_after" id=""
+                            value="{{ old('google_review_before', $businessOwner->google_review_after) }}" required
+                            class="form-control" />
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-3">
+                        <div class="chemist-input-heading">{{ __('messages.Google Reviews') }}</div>
+                        <!-- Translated label -->
+                        <input type="file" name="google_review_path" id="logo" accept="image/*"
+                            class="form-control" />
+                    </div>
+
                     <!-- Business Email -->
                     <div class="col-12 col-md-6">
                         <div class="chemist-input-heading">Business Email</div>
                         <input type="email" name="business_email"
-                            value="{{ old('business_email', $businessOwner->business_email) }}" required disabled/>
+                            value="{{ old('business_email', $businessOwner->business_email) }}" required disabled />
                         @error('business_email')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -160,8 +183,8 @@
                         <i class="fas fa-eye" id="toggle-password"
                             style="position: absolute; right: 50px; top: 50%; cursor: pointer;"></i>
                         <!-- Generate Random Password Icon -->
-                        <i class="fas fa-random" id="generate-password" 
-                            style="position: absolute; right: 25px; top: 50%; cursor: pointer;" 
+                        <i class="fas fa-random" id="generate-password"
+                            style="position: absolute; right: 25px; top: 50%; cursor: pointer;"
                             title="Generate Random Password"></i>
                         @error('password')
                             <div class="text-danger">{{ $message }}</div>
@@ -171,7 +194,8 @@
                     <!-- Address -->
                     <div class="col-12 col-md-6">
                         <div class="chemist-input-heading">Address</div>
-                        <input type="text" name="address" value="{{ old('address', $businessOwner->address) }}" required />
+                        <input type="text" name="address" value="{{ old('address', $businessOwner->address) }}"
+                            required />
                         @error('address')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -180,7 +204,8 @@
                     <!-- Country -->
                     <div class="col-12 col-md-6">
                         <div class="chemist-input-heading">Country</div>
-                        <input type="text" name="country" value="{{ old('country', $businessOwner->country) }}" required />
+                        <input type="text" name="country" value="{{ old('country', $businessOwner->country) }}"
+                            required />
                         @error('country')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -189,8 +214,8 @@
                     <!-- Postal Code -->
                     <div class="col-12 col-md-6">
                         <div class="chemist-input-heading">Postal Code</div>
-                        <input type="text" name="postal_code" value="{{ old('postal_code', $businessOwner->postal_code) }}"
-                            required />
+                        <input type="text" name="postal_code"
+                            value="{{ old('postal_code', $businessOwner->postal_code) }}" required />
                         @error('postal_code')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror

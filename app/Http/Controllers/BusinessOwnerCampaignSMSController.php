@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BusinessOwner;
 use App\Models\BusinessOwnerCampaignSMS;
 use App\Models\Campaign;
+use App\Models\CustomerDetail;
 use App\Models\Package;
 use App\Models\SMSQuota;
 use App\Models\Subscription;
@@ -67,6 +68,17 @@ class BusinessOwnerCampaignSMSController extends Controller
                 Auth::user()->update(['is_paid' => false]);
                 return back()->with([
                     'error' => 'You have no SMS remaining for this month.',
+                    'nextpackage' => true
+                ]);
+            }
+
+            //checkk if Customer Count exceeds
+            $customersCount = CustomerDetail::where([['business_owner_id', $businessOwner->id], ['is_verified', true]])->count();
+            if ($package->customers >= $customersCount) {
+                $subscription->update(['status' => 'inactive']); // Efficient status update
+                Auth::user()->update(['is_paid' => false]);
+                return back()->with([
+                    'error' => 'You have Exceed Customer Limits',
                     'nextpackage' => true
                 ]);
             }

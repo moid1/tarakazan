@@ -4627,7 +4627,6 @@ input[type="checkbox"]:checked + .custom-checkbox::after {
 canvas {
     display: block;
     width: 100% !important;
-    height: 100% !important;
 }
 
 .chart-heading {

@@ -120,9 +120,8 @@ return [
     'Total QR Scans'=>'Total QR Scans',
     'Total InActive Businesses'=>'Total InActive Businesses',
     'Insert line break'=>'Insert line break',
-    'Total OTP SmS Remaining'=>'Total OTP SmS Remaining'
-
-
+    'Total OTP SmS Remaining'=>'Total OTP SmS Remaining',
+'Business Owner'=>'Business Owner'
 
 
 

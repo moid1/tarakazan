@@ -60,6 +60,8 @@ class BusinessOwnerController extends Controller
             'google_review' => 'required',
             'mersis_no' => 'required',
             'phone_number_netgsm' => 'required',
+            'google_review_before'=>'required',
+            'google_review_after'=>'required',
             'stop_link' => 'required'
         ]);
 
@@ -67,6 +69,12 @@ class BusinessOwnerController extends Controller
         if ($request->hasFile('logo')) {
             $logoPath = $request->file('logo')->store('logos', 'public'); // Store in public/logos
             $validatedData['logo'] = $logoPath; // Add the path of the uploaded file
+        }
+
+
+        if ($request->hasFile('google_review_path')) {
+            $google_review_path = $request->file('google_review_path')->store('google_review_path', 'public'); // Store in public/logos
+            $validatedData['google_review_path'] = $google_review_path; // Add the path of the uploaded file
         }
 
         // Create the user first (this is where the password is hashed)
@@ -143,7 +151,9 @@ class BusinessOwnerController extends Controller
             'google_review' => 'required',
             'mersis_no' => 'required',
             'phone_number_netgsm' => 'required',
-            'stop_link' => 'required'
+            'stop_link' => 'required',
+            'google_review_before'=>'required',
+            'google_review_after'=>'required'
         ]);
 
 
@@ -153,6 +163,11 @@ class BusinessOwnerController extends Controller
         // If a logo file is uploaded, store it and update the path in the database
         if ($request->hasFile('logo')) {
             $validatedData['logo'] = $request->file('logo')->store('logos', 'public');
+        }
+
+        if ($request->hasFile('google_review_path')) {
+            $google_review_path = $request->file('google_review_path')->store('google_review_path', 'public'); // Store in public/logos
+            $validatedData['google_review_path'] = $google_review_path; // Add the path of the uploaded file
         }
 
         // If a new password is provided, hash it
@@ -180,6 +195,9 @@ class BusinessOwnerController extends Controller
             'phone_number_netgsm' => $validatedData['phone_number_netgsm'] ?? null,
             'stop_link' => $validatedData['stop_link'] ?? null,
             'logo' => $validatedData['logo'] ?? $businessOwner->logo, // Keep the existing logo if not updated
+            'google_review_before'=>$validatedData['google_review_before'],
+            'google_review_after'=>$validatedData['google_review_after'],
+            'google_review_path' => $validatedData['google_review_path'] ?? $businessOwner->google_review_path, // Keep the existing logo if not updated
         ]);
 
         // Redirect to the business owners index with a success message

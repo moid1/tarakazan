@@ -36,7 +36,6 @@
             display: flex;
             flex-direction: column;
             /* Stack the sections vertically */
-            justify-content: space-between;
             /* Distribute space evenly between the sections */
             height: 80vh;
             /* Set a specific height for the container */
@@ -107,8 +106,6 @@
             /* Smaller font size for the policy text */
             color: #28a745;
             /* Green text color */
-            margin-top: 15px;
-            /* Space above the policy text */
         }
 
         .accept-policies input[type="checkbox"] {
@@ -174,11 +171,7 @@
             </div>
 
             <!-- Get the Gift Button -->
-            <div class="text-center mt-4">
-                <a href="#" class="get-gift-btn" id="getTheGift">
-                    <i class="fas fa-gift mr-2"></i> &nbsp;{{ __('messages.GET THE GIFT') }}
-                </a>
-            </div>
+           
 
             <!-- Checkbox Section: Centered container with left-aligned labels -->
             <div class="d-flex flex-column justify-content-left align-items-left">
@@ -193,6 +186,11 @@
                     <label style="text-align: left"
                         for="firstAcceptPolicies2">{{ __('Kampanya şartlarını kabul ediyorum.') }}</label>
                 </p>
+            </div>
+            <div class="text-center">
+                <a href="#" class="get-gift-btn" id="getTheGift">
+                    <i class="fas fa-gift mr-2"></i> &nbsp;{{ __('messages.GET THE GIFT') }}
+                </a>
             </div>
         </div>
 
@@ -229,7 +227,7 @@
         <div class="header" id="thirdBlock" style="display: none;">
             <!-- Title and description -->
             <div class="text-center mt-5 " style="">
-                <p>{{ __('messages.Enter your Phone Number to get the free gift code and exclusive offers') }}</p>
+                <p style="font-weight: bold">{{ __('messages.Enter your Phone Number to get the free gift code and exclusive offers') }}</p>
             </div>
 
             <!-- Gift Image -->
@@ -520,7 +518,7 @@
             $('#fourthBlock').hide();
             $('#secondBlock').show();
         } else {
-            alert("Invalid OTP code");
+            alert("Doğrulama kodu geçersiz, lütfen tekrar deneyin");
         }
     })
     .catch(error => {

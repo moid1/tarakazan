@@ -49,8 +49,8 @@
                     <th>{{ __('messages.Creation Date') }}</th>
                     <th>{{ __('messages.Expiry Date') }}</th>
                     <th>{{ __('messages.Gift') }}</th>
-                    <th>{{__('IS Default')}}</th>
-                    <th>{{__('Total Redemption')}}</th>
+                    <th>{{ __('IS Default') }}</th>
+                    <th>{{ __('Total Redemption') }}</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -61,14 +61,18 @@
                         <td>{{ $coupon->created_at->format('d M Y') }}</td>
                         <td>{{ \Carbon\Carbon::parse($coupon->expiry_date)->format('d M Y') }}</td>
                         <td>{{ $coupon->gift }}</td>
-                        <td>{{$coupon->is_default ? 'YES' : 'No'}}</td>
-                        <td>{{$coupon->total_redemptions}}</td>
+                        <td>{{ $coupon->is_default ? 'YES' : 'No' }}</td>
+                        <td>{{ $coupon->total_redemptions }}</td>
                         <td>
-                            <a href="{{ route('coupon.default', $coupon->id) }}" class="btn btn-sm {{ $coupon->is_default ? 'btn-success' : 'btn-secondary' }}">
+                            <a href="{{ route('coupon.default', $coupon->id) }}"
+                                class="btn btn-sm {{ $coupon->is_default ? 'btn-success' : 'btn-secondary' }}">
                                 Default Coupon
+                            </a>/
+                            <a href="{{ route('coupon.delete', $coupon->id) }}">
+                                <i class="btn btn-danger btn-sm mt-2">{{ __('messages.Delete') }}</i>
                             </a>
                         </td>
-                        </tr>
+                    </tr>
                 @endforeach
             <tfoot>
                 <tr>
@@ -76,8 +80,8 @@
                     <th>{{ __('messages.Creation Date') }}</th>
                     <th>{{ __('messages.Expiry Date') }}</th>
                     <th>{{ __('messages.Gift') }}</th>
-                    <th>{{__('IS Default')}}</th>
-                    <th>{{__('Total Redemption')}}</th>
+                    <th>{{ __('IS Default') }}</th>
+                    <th>{{ __('Total Redemption') }}</th>
                 </tr>
             </tfoot>
             </tbody>
@@ -94,55 +98,55 @@
 
             console.log(redemptionData);
 
-const dates = redemptionData.map(item => item.date);
-const totals = redemptionData.map(item => item.total);
+            const dates = redemptionData.map(item => item.date);
+            const totals = redemptionData.map(item => item.total);
 
-// Chart.js Configuration
-const ctx = document.getElementById('redemptionChart').getContext('2d');
-const redemptionChart = new Chart(ctx, {
-    type: 'line', // Line chart
-    data: {
-        labels: dates, // Dates as labels
-        datasets: [{
-            label: @json(__('messages.Redemptions per Day')),
-            data: totals, // Redemption counts
-            borderColor: '#FF5733', // Line color
-            backgroundColor: 'rgba(255, 87, 51, 0.2)', // Fill color
-            fill: true,
-            tension: 0.1 // Smooth curve
-        }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Date'
-                }
-            },
-            y: {
-                title: {
-                    display: true,
-                    text: 'Total Redemptions'
+            // Chart.js Configuration
+            const ctx = document.getElementById('redemptionChart').getContext('2d');
+            const redemptionChart = new Chart(ctx, {
+                type: 'line', // Line chart
+                data: {
+                    labels: dates, // Dates as labels
+                    datasets: [{
+                        label: @json(__('messages.Redemptions per Day')),
+                        data: totals, // Redemption counts
+                        borderColor: '#FF5733', // Line color
+                        backgroundColor: 'rgba(255, 87, 51, 0.2)', // Fill color
+                        fill: true,
+                        tension: 0.1 // Smooth curve
+                    }]
                 },
-                beginAtZero: true
-            }
-        },
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            tooltip: {
-                mode: 'index',
-                intersect: false
-            }
-        }
-    }
-});
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Total Redemptions'
+                            },
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    }
+                }
+            });
 
             new DataTable('#example', {
-                
+
                 initComplete: function() {
                     this.api()
                         .columns()
@@ -168,8 +172,8 @@ const redemptionChart = new Chart(ctx, {
 
 
             // Prepare Redemption Chart Data
-         
-    
+
+
         });
     </script>
 @endsection

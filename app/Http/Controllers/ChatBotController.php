@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\BusinessOwner;
 use App\Models\ChatBot;
 use App\Models\CustomerDetail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Session;
+use Illuminate\Support\Facades\Request as IPREQUEST;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\App;
 
 
@@ -47,12 +49,22 @@ class ChatBotController extends Controller
         return view('chatbot.index', compact('business'));
     }
 
-    public function getNewChatBot($slug){
+    public function getNewChatBot($slug)
+    {
         Session::put('locale', 'tr');
         App::setLocale('tr');
         // fodays-coffee
         $business = BusinessOwner::where('slug', $slug)->firstOrFail();
-        $business->increment('qr_scan_count');
+        $userIp = IPREQUEST::ip();
+        $lastScan = Session::get('last_scan_at_' . $userIp);
+
+        if (!$lastScan || Carbon::parse($lastScan)->diffInDays(Carbon::now()) >= 2) {
+            // It's been 2 days or more, so we can increment the scan count
+            $business->increment('qr_scan_count');
+
+            // Store the new scan time in the session
+            Session::put('last_scan_at_' . $userIp, Carbon::now());
+        }
         return view('chatbot.new.index', compact('business'));
     }
 
