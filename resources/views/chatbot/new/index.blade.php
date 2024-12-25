@@ -35,6 +35,7 @@
         .header {
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             /* Stack the sections vertically */
             /* Distribute space evenly between the sections */
             height: 80vh;
@@ -199,8 +200,8 @@
         <div class=" justify-content-center align-items-center" id="secondBlock"
             style="display: none!important; height: 100vh;">
             <div class="text-center mt-5">
-                <p>{{ __('messages.How would you rate') }}</p>
-                <h3>{{ $business->business_name }} ?</h3>
+              <p> {{ $business->business_name }} </p>
+               <h3>{{ __('messages.How would you rate') }}</h3>
 
                 <div class="row justify-content-center mt-4">
                     <div class="col-6 text-center">
@@ -249,10 +250,16 @@
                 <div class="d-flex align-items-center mt-3">
                     <input type="tel" id="phoneNo" class="form-control" inputmode="numeric" pattern="[0-9]*"
                         placeholder="{{ __('messages.Type in your phone number...') }}" />
-                    <button class="send-icon-btn">
-                        <i class="fas fa-paper-plane send-icon"></i>
-                    </button>
+                       
                 </div>
+                <button class="get-gift-btn send-icon-btn" style="margin: 0 auto;
+                align-items: center;
+                justify-content: center;
+                display: flex;
+                margin-top: 20px;
+            }">
+                                <i class="fas fa-gift mr-2"></i> &nbsp;{{ __('DOGRULA') }}
+                            </button>
             </div>
 
 
@@ -296,14 +303,22 @@
         <div class="header" id="fifthBlock" style="display: none;">
             <!-- Title and description -->
             <div class="text-center mt-5 " style="">
-                <p>{{ __('messages.Click the button below and give us a feedback. Reopen this window after you finish') }}
-                </p>
+                <p>Aşağıdaki butona tıklayarak <br> bize Google değerlendirmesi biraku.</p>
             </div>
 
             <!-- Gift Image -->
-            <div class="img-fluid text-center" id="giveFeedBack">
+            <div class="img-fluid text-center" id="giveFeedBack" style="border: 2px solid black;
+    border: 1;
+    margin: 20px;
+    padding-top: 25px;
+    padding-bottom: 25px;">
                 <img src="{{ asset('images/bot/feedback.png') }}" alt="Gift Image" class="gift-image">
-                <p>{{ __('messages.Give a Feedback') }}</p>
+                <p style="margin-top: 18px">{{ __('messages.Give a Feedback') }}</p>
+            </div>
+            <div>
+                <p style="color: #6c757d;
+    font-weight: bold;
+    text-align: center;"</p>
             </div>
 
         </div>
@@ -318,6 +333,7 @@
             <div class="img-fluid text-center mt-5" id="giveFeedBack">
                 <img src="{{ asset('images/bot/discount_screen.png') }}" alt="Gift Image" class="gift-image">
             </div>
+
 
         </div>
 
@@ -508,7 +524,7 @@
                         $('#thirdBlock').hide();
                         $('#fourthBlock').show();
                     } else if (data.success === false) {
-                        alert('You are already registered to this business owner')
+                        alert(data.message)
                         isOKK = false;
                     }
                 })

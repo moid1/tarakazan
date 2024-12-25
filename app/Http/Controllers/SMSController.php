@@ -64,25 +64,31 @@ class SMSController extends Controller
         $businessOwnerUser = BusinessOwner::find($request->business_owner_id);
         $netGsmResponse = $this->sendSMSThroughXML($phoneNo, $otp, $request->business_owner_id);
         $subscription = Subscription::where('user_id', $businessOwnerUser->user_id)->latest()->first();
+        try {
 
-
-        // Bulk insert
-        SMSQuota::create([
-            'phone' => $phoneNo,
-            'sms' => $otp,
-            'subscription_id' => $subscription->id,
-            'business_owner_id' => $request->business_owner_id,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        // Return a response indicating success
-        return response()->json([
-            'success' => true,
-            'customer' => $customer,
-            'message' => 'OTP sent successfully to your phone.',
-            'otp' => $otp,  // You may or may not want to send the OTP in the response for security reasons,
-            '$netGsmResponse' => $netGsmResponse
-        ]);
+            // Bulk insert
+            SMSQuota::create([
+                'phone' => $phoneNo,
+                'sms' => $otp,
+                'subscription_id' => $subscription->id,
+                'business_owner_id' => $request->business_owner_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+            // Return a response indicating success
+            return response()->json([
+                'success' => true,
+                'customer' => $customer,
+                'message' => 'OTP sent successfully to your phone.',
+                'otp' => $otp,  // You may or may not want to send the OTP in the response for security reasons,
+                '$netGsmResponse' => $netGsmResponse
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No Subscription Available'
+            ], 500);
+        }
     }
 
     public function sendSMSThroughXML($phoneNO, $otp, $businessOwnerId)
@@ -185,8 +191,8 @@ XML;
             if ($businessOwner) {
                 // Get coupon codes associated with the business owner's user_id
                 $coupon = Coupon::where('user_id', $businessOwner->user_id)
-                ->where('is_default', true)
-                ->first();
+                    ->where('is_default', true)
+                    ->first();
                 if (!$coupon) {
                     return response()->json([
                         'success' => false,

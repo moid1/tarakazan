@@ -86,7 +86,7 @@ return [
     'Type in the code...' => 'Kodu girin…',
     'Error Message: You already got your first gift' => 'İlk hediyenizi zaten aldınız.',
     'Click the button below and give us a feedback. Reopen this window after you finish' => 'Aşağıdaki butona tıklayarak bize geri bildirim verin. Bitirdiğinizde bu pencereyi yeniden açın.',
-    'Give a Feedback' => 'Google Yorumu Bırak',
+    'Give a Feedback' => 'Googleda Bizi Degerlendirin',
     'Your Discount Code is generating...' => 'İndirim Kodunuz oluşturuluyor…',
     'Get your gift now from one of our team.' => 'Hediyenizi şimdi ekibimizden alın.',
     'Show the Discount Code' => 'İndirim Kodunu Gösterin',
