@@ -54,7 +54,7 @@ class ChatBotController extends Controller
         Session::put('locale', 'tr');
         App::setLocale('tr');
         // fodays-coffee
-        $business = BusinessOwner::where('slug', $slug)->firstOrFail();
+        $business = BusinessOwner::where('slug', $slug)->first(['id', 'business_name']);
         $userIp = IPREQUEST::ip();
         $lastScan = Session::get('last_scan_at_' . $userIp);
 

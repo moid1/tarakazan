@@ -5,7 +5,7 @@
         <!-- Upgrade Reminder (If Paid is 0) -->
         @if ($user->is_paid === 0 || ($subscription && $subscription->status !== 'active'))
             <div class="alert alert-danger mt-3">
-                {{ __('Upgrade package reminder') }} <a href="{{ route('subscription.create') }}">{{ __('Click here') }}</a>
+                {{ __('messages.Upgrade package reminder') }} <a href="{{ route('subscription.create') }}">{{ __('messages.Click here') }}</a>
             </div>
         @endif
 
@@ -83,6 +83,14 @@
         @endif
 
 
+        
+        <div class="col-12 col-sm-12 col-md-6 mb-4">
+            <div class="detail-container1">
+                <i class="fas fa-chart-line ms-3 mt-3 detail-icon"></i>
+                <span class="detail-h1">{{ __('messages.Customer Growth') }}</span>
+                <canvas id="customerGrowthChart" class="mt-4"></canvas>
+            </div>
+        </div>
         <div class="col-12 col-sm-12 col-md-6 mb-4">
             <!-- QR Code Section (If Exists) -->
             @if ($businessOwner->qr_code_path)
@@ -92,13 +100,6 @@
                         alt="{{ __('messages.Chatbot QR Code') }}">
                 </div>
             @endif
-        </div>
-        <div class="col-12 col-sm-12 col-md-6 mb-4">
-            <div class="detail-container1">
-                <i class="fas fa-chart-line ms-3 mt-3 detail-icon"></i>
-                <span class="detail-h1">{{ __('messages.Customer Growth') }}</span>
-                <canvas id="customerGrowthChart" class="mt-4"></canvas>
-            </div>
         </div>
         <div class="col-12 col-sm-12 col-md-6 mb-4">
             <div class="detail-container1">
@@ -121,7 +122,7 @@
         const customerGrowthChart = new Chart(ctx, {
             type: 'line', // Line chart type
             data: {
-                labels: weeks.map(week => `Week ${weeks}`), // Display months as labels
+                labels: weeks.map(week => `Hafta ${weeks}`), // Display months as labels
                 datasets: [{
                     label: customersAdded,
                     data: totals, // Total customers per month

@@ -184,7 +184,9 @@ XML;
 
             if ($businessOwner) {
                 // Get coupon codes associated with the business owner's user_id
-                $coupon = Coupon::where([['user_id', $businessOwner->user_id],['is_default', true]])->first();
+                $coupon = Coupon::where('user_id', $businessOwner->user_id)
+                ->where('is_default', true)
+                ->first();
                 if (!$coupon) {
                     return response()->json([
                         'success' => false,
@@ -235,13 +237,10 @@ XML;
                    <appkey>{$businessOwner->app_key}</appkey>
                </header>
                <body>
-               <msg><![CDATA[İndirim Kodunuz:\n {$couponCode}\n\n
-                Hediyenizi almak için bu kupon kodunu bir garsona gösterin.
-                Kod, yalnızca size ait telefon numarasıyla bir kez kullanılabilir.]]>
-                </msg>
+               <msg><![CDATA[
+                İndirim Kodunuz:\\n{$couponCode}\\n\\nHediyenizi almak için bu kupon kodunu bir garsona gösterin.\\nKod, yalnızca size ait telefon numarasıyla bir kez kullanılabilir.
+                ]]></msg>
                 <no>{$phoneNo}</no>
-    
-    
                </body>
             </mainbody>
             XML;

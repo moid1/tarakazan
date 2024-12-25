@@ -191,6 +191,7 @@
                 <a href="#" class="get-gift-btn" id="getTheGift">
                     <i class="fas fa-gift mr-2"></i> &nbsp;{{ __('messages.GET THE GIFT') }}
                 </a>
+                <p id="bankToListBtn" class="" style="color: #6c757d;font-style:italic">YENIDEN KAYDOL</p>
             </div>
         </div>
 
@@ -198,8 +199,8 @@
         <div class=" justify-content-center align-items-center" id="secondBlock"
             style="display: none!important; height: 100vh;">
             <div class="text-center mt-5">
-                <h3>{{ __('messages.How would you rate') }}</h3>
-                <p>{{ $business->business_name }} ?</p>
+                <p>{{ __('messages.How would you rate') }}</p>
+                <h3>{{ $business->business_name }} ?</h3>
 
                 <div class="row justify-content-center mt-4">
                     <div class="col-6 text-center">
@@ -276,10 +277,17 @@
                 <div class="d-flex align-items-center ">
                     <input type="text" id="otpCode" inputmode="numeric"  class="form-control"
                         placeholder="{{ __('messages.Type in the code...') }}">
-                    <button class="verification-number">
-                        <i class="fas fa-paper-plane send-icon"></i>
-                    </button>
+                   
                 </div>
+                <button class="verification-number get-gift-btn" style="margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+    display: flex
+;
+    margin-top: 20px;
+}">
+                    <i class="fas fa-gift mr-2"></i> &nbsp;{{ __('DOGRULA') }}
+                </button>
             </div>
         </div>
 
@@ -378,6 +386,21 @@
             </div>
         </div>
 
+        <div class="modal fade" id="backToList" tabindex="-1" aria-labelledby="backToList" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <!-- Modal Header with Close Button -->
+                   
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <p>Tekrar kayit olmak icin lütfen bir garsona danisin. Size yardimci olmaktan memnuniyet duyariz!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+
     </div>
     <script>
         let couponData = null;
@@ -408,6 +431,8 @@
 
             $('#firstBlock').hide();
             $('#thirdBlock').show();
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
+
         });
 
         $('.star-selection').on('click', function() {
@@ -415,6 +440,7 @@
             $('#firstBlock').hide();
             $('#secondBlock').hide();$('#fifthBlock').show();
             // $('#thirdBlock').show();
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
         });
 
         $('.send-icon-btn').on('click', function() {
@@ -452,6 +478,7 @@
             setTimeout(() => {
                 $('#sixthBlock').hide();
                 $('#seventhBlock').show();
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
             }, 10000);
         });
     </script>
@@ -517,6 +544,7 @@
             $('#thirdBlock').hide();
             $('#fourthBlock').hide();
             $('#secondBlock').show();
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
         } else {
             alert("Doğrulama kodu geçersiz, lütfen tekrar deneyin");
         }
@@ -549,6 +577,10 @@ function sendCouponData(dataCoupon) {
         console.error('Error sending coupon data:', error);
     });
 }
+
+$("#bankToListBtn").on('click', function(){
+    $('#backToList').modal('show');
+})
 
         document.addEventListener('DOMContentLoaded', function() {
             const secondCheckbox = document.getElementById('firstAcceptPolicies1');

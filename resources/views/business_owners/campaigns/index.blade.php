@@ -33,7 +33,7 @@
                         <td>{{ $campaign->id }}</td>
                         <td>{{ $campaign->name }}</td>
                         <td>{{ $campaign->description }}</td>
-                        <td>{{ $campaign->created_at->format('d M Y') }}</td>
+                        <td>{{ $campaign->created_at->format('d.m.Y') }}</td>
                         <td>
                             <!-- Edit Button -->
                             <a href="{{ route('campaign.edit', $campaign->id) }}" class="btn btn-warning btn-sm">

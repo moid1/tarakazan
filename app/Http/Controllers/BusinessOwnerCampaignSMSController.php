@@ -74,7 +74,7 @@ class BusinessOwnerCampaignSMSController extends Controller
 
             //checkk if Customer Count exceeds
             $customersCount = CustomerDetail::where([['business_owner_id', $businessOwner->id], ['is_verified', true]])->count();
-            if ($package->customers >= $customersCount) {
+            if (intval($package->customers) <= $customersCount) {
                 $subscription->update(['status' => 'inactive']); // Efficient status update
                 Auth::user()->update(['is_paid' => false]);
                 return back()->with([
@@ -97,7 +97,7 @@ class BusinessOwnerCampaignSMSController extends Controller
         Auth::user()->update(['is_paid' => false]);
 
         // Return with an error message
-        return back()->with('error', 'Your subscription is inactive or has expired, so you are not authorized to access this.');
+        return back()->with('error', trans('messages.Your subscription is inactive or has expired, so you are not authorized to access this.'));
     }
 
 

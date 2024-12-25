@@ -49,9 +49,9 @@
                     <th>{{ __('messages.Creation Date') }}</th>
                     <th>{{ __('messages.Expiry Date') }}</th>
                     <th>{{ __('messages.Gift') }}</th>
-                    <th>{{ __('IS Default') }}</th>
-                    <th>{{ __('Total Redemption') }}</th>
-                    <th>Action</th>
+                    <th>{{ __('messages.IS Default') }}</th>
+                    <th>{{ __('messages.Total Redemptions') }}</th>
+                    <th>{{ __('messages.Action') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,7 +66,7 @@
                         <td>
                             <a href="{{ route('coupon.default', $coupon->id) }}"
                                 class="btn btn-sm {{ $coupon->is_default ? 'btn-success' : 'btn-secondary' }}">
-                                Default Coupon
+                                {{ __('messages.Default Coupon') }}
                             </a>/
                             <a href="{{ route('coupon.delete', $coupon->id) }}">
                                 <i class="btn btn-danger btn-sm mt-2">{{ __('messages.Delete') }}</i>
@@ -128,7 +128,7 @@
                         y: {
                             title: {
                                 display: true,
-                                text: 'Total Redemptions'
+                                text:  @json(__('messages.Total Redemptions')),
                             },
                             beginAtZero: true
                         }
