@@ -139,6 +139,11 @@
         word-wrap: break-word;  /* Automatically breaks words that overflow */
         text-align: center;     /* Keep the text centered */
         line-height: 1.4;       /* Adjust line spacing */
+
+    }
+
+    .display-flex{
+        display: flex;
     }
     </style>
 </head>
@@ -197,7 +202,7 @@
         </div>
 
 
-        <div class=" justify-content-center align-items-center" id="secondBlock"
+        <div class="display-flex justify-content-center align-items-center" id="secondBlock"
             style="display: none!important; height: 100vh;">
             <div class="text-center mt-5">
               <p> {{ $business->business_name }} </p>
@@ -229,7 +234,7 @@
         <div class="header" id="thirdBlock" style="display: none;">
             <!-- Title and description -->
             <div class="text-center mt-5 " style="">
-                <p style="font-weight: bold">{{ __('messages.Enter your Phone Number to get the free gift code and exclusive offers') }}</p>
+                <p>{{ __('messages.Enter your Phone Number to get the free gift code and exclusive offers') }}</p>
             </div>
 
             <!-- Gift Image -->
@@ -258,7 +263,7 @@
                 display: flex;
                 margin-top: 20px;
             }">
-                                <i class="fas fa-gift mr-2"></i> &nbsp;{{ __('DOGRULA') }}
+                                <i class="fas fa-gift mr-2"></i> &nbsp;{{ __('DOĞRULA') }}
                             </button>
             </div>
 
@@ -318,7 +323,7 @@
             <div>
                 <p style="color: #6c757d;
     font-weight: bold;
-    text-align: center;"</p>
+    text-align: center;">Bitirdiğinizde bu pencereyi yeniden açın</p>
             </div>
 
         </div>
@@ -454,7 +459,8 @@
         $('.star-selection').on('click', function() {
             totalBusinsessRating = $(this).data('star');
             $('#firstBlock').hide();
-            $('#secondBlock').hide();$('#fifthBlock').show();
+            $('#secondBlock').hide();
+            $('#fifthBlock').show();
             // $('#thirdBlock').show();
             $('html, body').animate({ scrollTop: 0 }, 'slow');
         });
@@ -464,7 +470,7 @@
             name = $('#name').val();
             phoneNo = $('#phoneNo').val();
             sendOTP(phoneNo, name);
-
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
         });
 
         $('.verification-number').on('click', function() {
@@ -486,16 +492,13 @@
 
             $('#sixthBlock').show();
                         // Delay the second fetch by 15 seconds
-                        setTimeout(() => {
+                setTimeout(() => {
                 // Send a second request with the coupon data
                 sendCouponData(couponData);
-            }, 15000);
-
-            setTimeout(() => {
                 $('#sixthBlock').hide();
                 $('#seventhBlock').show();
                 $('html, body').animate({ scrollTop: 0 }, 'slow');
-            }, 10000);
+            }, 15000);
         });
     </script>
 
@@ -560,7 +563,6 @@
             $('#thirdBlock').hide();
             $('#fourthBlock').hide();
             $('#secondBlock').show();
-            $('html, body').animate({ scrollTop: 0 }, 'slow');
         } else {
             alert("Doğrulama kodu geçersiz, lütfen tekrar deneyin");
         }
@@ -568,6 +570,7 @@
     .catch(error => {
         console.error('Error saving customer data:', error);
     });
+    $('html, body').animate({ scrollTop: 0 }, 'slow');
 }
 
 // Function to send coupon data (to avoid repetition)
