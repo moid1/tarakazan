@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Campaign;
 use App\Models\Coupon;
 use App\Models\RedeemCode;
 use Illuminate\Http\Request;
@@ -83,7 +84,8 @@ class CouponController extends Controller
      */
     public function create()
     {
-        return view('business_owners.coupons.create');
+        $campaigns = Campaign::where('user_id', \Auth::id())->get();
+        return view('business_owners.coupons.create',compact('campaigns'));
     }
 
     /**
@@ -96,6 +98,7 @@ class CouponController extends Controller
             'code' => 'required|string|max:255|unique:coupons,code', // Ensure code is unique in the packages table
             'expiry_date' => 'required|date|after_or_equal:today',  // Ensure it's a valid date and not in the past
             'gift' => 'required|string|max:255',
+            'campaign_id'=>'required'
         ]);
         $validatedData['user_id'] = auth()->id(); // Assuming you're using Laravel's built-in authentication
 

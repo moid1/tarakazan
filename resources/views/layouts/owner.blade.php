@@ -171,7 +171,7 @@
                     <div class="col-12 dashboard-top d-flex justify-content-between align-items-center flex-wrap">
                         <!-- Language Selector Dropdown (select option) -->
                         <div class="d-flex flex-column flex-sm-row align-items-center mb-3 mb-sm-0">
-                            <form id="language-form" action="{{ route('change.lang', ['lang' => 'en']) }}"
+                            <form id="language-form" action="{{ route('change.lang', ['lang' => 'tr']) }}"
                                 method="GET" class="form-inline">
                                 @csrf
                                 <select name="lang" class="form-control" onchange="changeLanguage(this)">

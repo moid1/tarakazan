@@ -9,4 +9,7 @@ class Coupon extends Model
 {
     use SoftDeletes;
     protected $guarded = [];
+    public function RedeemCode(){
+        return $this->hasMany(RedeemCode::class);
+    }
 }

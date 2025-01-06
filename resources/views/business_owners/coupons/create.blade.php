@@ -17,22 +17,31 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="col-12">
+                        <div class="chemist-input-heading">{{ __('messages.Campaigns') }}</div>
+                        <select name="campaign_id" id="" class="form-control mb-3">
+                            @foreach ($campaigns as $campaign)
+                                <option value="{{ $campaign->id }}">{{ $campaign->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
                     <div class="col-12">
                         <div class="chemist-input-heading">{{ __('messages.Expiry Date') }}</div>
                         <input type="datetime-local" name="expiry_date" id="expiry_date"
-                            class="form-control @error('expiry_date') is-invalid @enderror" 
-                            value="{{ old('expiry_date') }}" required />
+                            class="form-control @error('expiry_date') is-invalid @enderror" value="{{ old('expiry_date') }}"
+                            required />
                         @error('expiry_date')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    
+
 
                     <div class="col-12">
                         <div class="chemist-input-heading">{{ __('messages.Gift Description') }}</div>
                         <input type="text" name="gift" id="gift"
-                            class="form-control @error('gift') is-invalid @enderror" value="{{ old('gift') }}" required />
+                            class="form-control @error('gift') is-invalid @enderror" value="{{ old('gift') }}"
+                            required />
                         @error('gift')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

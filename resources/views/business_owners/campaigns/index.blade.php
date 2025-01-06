@@ -24,6 +24,8 @@
                     <th>{{ __('messages.Name') }}</th>
                     <th>{{ __('messages.Description') }}</th>
                     <th>{{ __('messages.DateTime') }}</th>
+                    <th>{{ __('messages.SMS Sent') }}</th>
+                    <th>{{ __('messages.Redeemed') }}</th>
                     <th>{{ __('messages.Action') }}</th>
                 </tr>
             </thead>
@@ -34,6 +36,21 @@
                         <td>{{ $campaign->name }}</td>
                         <td>{{ $campaign->description }}</td>
                         <td>{{ $campaign->created_at->format('d.m.Y') }}</td>
+                        <td>{{ $campaign->sms ? $campaign->sms->count() : 0 }}</td>
+                        @php
+                            $totalRedeemed = 0;
+                            if ($campaign->coupons) {
+                                foreach ($campaign->coupons as $key => $value) {
+                                    // Ensure that RedeemCode is counted correctly, assuming it's a collection or array.
+                                    if ($value->RedeemCode) {
+                                        $totalRedeemed += count($value->RedeemCode);
+                                    }
+                                }
+                            }
+                        @endphp
+
+                        <td>{{ $totalRedeemed }}</td>
+
                         <td>
                             <!-- Edit Button -->
                             <a href="{{ route('campaign.edit', $campaign->id) }}" class="btn btn-warning btn-sm">
@@ -58,10 +75,12 @@
 
 @section('customjs')
     <script>
-        new DataTable('#example',{
-            order: [[0, 'desc']], // Set ordering to descending based on the first column (change the index if needed)
-            responsive: true,      // Make the table responsive
-        }
+        new DataTable('#example', {
+                order: [
+                    [0, 'desc']
+                ], // Set ordering to descending based on the first column (change the index if needed)
+                responsive: true, // Make the table responsive
+            }
 
         );
     </script>

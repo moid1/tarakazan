@@ -27,12 +27,36 @@
                 @csrf
 
                 <div class="form-group mt-3">
-                    <label for="campaign_id">{{ __('messages.Campaign') }}</label>
+                    <label for="campaign_id">{{ __('messages.Customer') }}</label>
                     <select name="campaign_id" id="campaign_id" class="form-control" required>
                         <option value="" disabled selected>{{ __('messages.Select Campaign') }}</option>
                         @foreach ($campaigns as $campaign)
                             <option value="{{ $campaign->id }}">{{ $campaign->name }}</option>
                         @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="campaign_id">{{ __('messages.Campaign') }}</label>
+                    <select name="customers_type" id="Customers" class="form-control" required>
+                        <option value="all" selected>All</option>
+                        <option value="1">QR Code + Verified their numbers</option>
+                        <option value="2">Customers who redeemed</option>
+                        <option value="3">Customer who are inactive</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group mt-3">
+                    <label for="">{{ __('messages.Duration') }}</label>
+                    <select name="duration" id="" class="form-control" required>
+                        <option value="all" selected>All</option>
+                        <option value="7">7</option>
+                        <option value="14">14</option>
+                        <option value="30">30</option>
+                        <option value="90">90</option>
+                        <option value="180">180</option>
+
                     </select>
                 </div>
 

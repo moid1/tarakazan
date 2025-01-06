@@ -12,7 +12,8 @@ class CampaignController extends Controller
      */
     public function index()
     {
-        $campaigns = Campaign::where('user_id', \Auth::id())->latest()->get();
+        $campaigns = Campaign::where('user_id', \Auth::id())->with(['coupons','sms'])->latest()->get();
+        // dd($campaigns);
         return view("business_owners.campaigns.index", compact("campaigns"));
     }
 

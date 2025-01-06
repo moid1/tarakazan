@@ -114,6 +114,8 @@ class BusinessOwnerCampaignSMSController extends Controller
             'delivery_time' => 'required|date|after:now', // Ensure delivery time is in the future
             'campaign_id' => 'required',
             'sms_limit'=>'required',
+            'duration'=>'required',
+            'customers_type'=>'required'
         ]);
 
 
@@ -125,6 +127,8 @@ class BusinessOwnerCampaignSMSController extends Controller
         $campaign->campaigns_id = $validatedData['campaign_id'];
         $campaign->sms_limit = $validatedData['sms_limit'];
         $campaign->business_owner_id = $businessOwner->id;
+        $campaign->duration = $validatedData['duration'];
+        $campaign->customers_type = $validatedData['customers_type'];
         $campaign->save();
 
         // $this->sendCampaignSMS();

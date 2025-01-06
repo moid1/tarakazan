@@ -48,17 +48,24 @@ class SendSmsCampaigns extends Command
 
         // Fetch all business owners needed for the campaigns at once
         $businessOwners = BusinessOwner::find($campaigns->pluck('business_owner_id')->unique()->toArray())->keyBy('id');
+        $recipients = collect();  // Initialize recipients collection
 
         // Iterate over each campaign
         foreach ($campaigns as $campaign) {
+            $duration = $campaign->duration;
+
             // Get business owner
             $businessOwner = $businessOwners[$campaign->business_owner_id];
+            // Fetch recipients based on duration and customer type
+            $query = CustomerDetail::where('business_owner_id', $campaign->business_owner_id)
+                ->where('is_verified', true);
+            if ($duration != 'all') {
+                // Apply duration filter (e.g., for last 7, 30 days, etc.)
+                $query->where('updated_at', '>=', Carbon::now()->subDays($duration));
+            }
 
-            // Fetch verified recipients (only once per campaign's business owner)
-            $recipients = CustomerDetail::where('business_owner_id', $campaign->business_owner_id)
-                ->where('is_verified', true)
-                ->pluck('phone') // Pluck the 'phone' column
-                ->unique(); // Ensure uniqueness
+            $campaignRecipients = $query->pluck('phone')->unique(); // Fetch unique phone numbers
+            $recipients = $recipients->merge($campaignRecipients);
 
 
             // Skip campaign if no recipients
@@ -77,7 +84,7 @@ class SendSmsCampaigns extends Command
             $messageWithNewlines = str_replace(['<br>', '<br />'], "\n", $campaign->sms);
 
 
-            $fullMessage = $messageWithNewlines. "\n" . $customMessage;
+            $fullMessage = $messageWithNewlines . "\n" . $customMessage;
 
 
             // Call the method to send SMS
@@ -150,7 +157,7 @@ class SendSmsCampaigns extends Command
                 'sms' => $message,
                 'subscription_id' => $subscription->id,
                 'business_owner_id' => $businessOwner->id,
-                'sms_limit'=>$smsLimit,
+                'sms_limit' => $smsLimit,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
