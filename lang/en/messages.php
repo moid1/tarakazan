@@ -2,6 +2,7 @@
 
 return [
     'Hey' => 'Hey',
+    'Hello'=>'Hello',
     'Dashboard' => 'Dashboard',
     'Business Owners' => 'Business Owners',
     'Good Morning,' => 'Good Morning,',

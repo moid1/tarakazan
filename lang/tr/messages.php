@@ -2,6 +2,7 @@
 
 return [
     'Hey' => 'Hey',
+    'Hello'=>'Merhaba',
     'Dashboard' => 'Gösterge Paneli',
     'Good Morning,' => 'Günaydın,',
     'Welcome, Manage your business' => 'Hoş geldiniz, İşletmenizi yönetin',

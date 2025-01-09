@@ -152,7 +152,7 @@
                                             src="{{ asset('images/tarakazan_logo.png') }}" width="300" height="80"
                                             alt="Tarakazan Logo">
                                         <div class="mb-5 text-center">
-                                            <h4>Hello!</h4>
+                                            <h4>{{__('messages.Hello')}}!</h4>
                                             <h3>{{ __('messages.Sign in to your account') }}</h3>
                                         </div>
                                     </div>
@@ -170,7 +170,7 @@
                                                 <span class="input-icon"><i class="fas fa-envelope"></i></span>
                                                 <input type="email"
                                                     class="form-control @error('email') is-invalid @enderror" name="email"
-                                                    id="email" placeholder="name@example.com"
+                                                    id="email" placeholder="isim@mail.com"
                                                     value="{{ old('email') }}" required>
                                             </div>
                                             @error('email')
@@ -186,7 +186,7 @@
                                                 <span class="input-icon"><i class="fas fa-lock"></i></span>
                                                 <input type="password"
                                                     class="form-control @error('password') is-invalid @enderror"
-                                                    name="password" placeholder="password" id="password" value="{{ old('password') }}" required>
+                                                    name="password" placeholder="Şifre" id="password" value="{{ old('password') }}" required>
                                             </div>
                                             @error('password')
                                                 <div class="invalid-feedback">{{ $message }}</div>
