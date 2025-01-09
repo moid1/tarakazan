@@ -153,7 +153,7 @@
                                             alt="Tarakazan Logo">
                                         <div class="mb-5 text-center">
                                             <h4>Hello!</h4>
-                                            <h3>{{ __('Sign in to your account') }}</h3>
+                                            <h3>{{ __('messages.Sign in to your account') }}</h3>
                                         </div>
                                     </div>
                                 </div>

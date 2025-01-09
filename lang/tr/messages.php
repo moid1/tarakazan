@@ -137,7 +137,10 @@ return [
     'Redeem Code' => 'Kodu Kullan',
     'Remove User From BlackList' => 'Kullanıcıyı Kara Listeden Çıkar',
     'Enter Phone no:' => 'Telefon Numarasını Girin:',
-    'Submit' => 'Gönder'
+    'Submit' => 'Gönder',
+    'Sign in to your account'=>'Hesabınıza giriş yapın',
+    'Log in now'=>'Şimdi giriş yapın',
+    'Forgot password?'=>'Şifrenizi mi unuttunuz?'
 
 
 

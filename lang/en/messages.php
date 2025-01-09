@@ -138,6 +138,9 @@ return [
     'Redeem Code' => 'Redeem Code',
     'Remove User From BlackList' => 'Remove User From BlackList',
     'Enter Phone no:' => 'Enter Phone no:',
-    'Submit' => 'Submit'
+    'Submit' => 'Submit',
+    'Sign in to your account'=>'Sign in to your account',
+    'Log in now'=>'Log in now',
+    'Forgot password?'=>'Forgot password?'
 
 ];
