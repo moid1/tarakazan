@@ -48,6 +48,13 @@
                             </a>
                         </li>
 
+                           <!-- Gift Management -->
+                           <li class="{{ request()->routeIs('coupon.index') ? 'active' : '' }}">
+                            <a href="{{ route('coupon.index') }}">
+                                <i class="fas fa-gift me-2"></i> {{ __('messages.Gift Management') }}
+                            </a>
+                        </li>
+
                         <li class="{{ request()->routeIs('campaign.sms.*') ? 'active' : '' }}">
                             <a href="{{ route('campaign.sms.index') }}">
                                 <i class="fas fa-sms me-2"></i> {{ __('messages.Schedule SMS') }}
@@ -68,12 +75,7 @@
                         </li>
 
 
-                        <!-- Gift Management -->
-                        <li class="{{ request()->routeIs('coupon.index') ? 'active' : '' }}">
-                            <a href="{{ route('coupon.index') }}">
-                                <i class="fas fa-gift me-2"></i> {{ __('messages.Gift Management') }}
-                            </a>
-                        </li>
+                     
 
                         <li class="{{ request()->routeIs('business-owner.profile') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('business-owner.profile') }}">
@@ -123,6 +125,12 @@
                                     <i class="fas fa-bullhorn me-2"></i> {{ __('messages.Campaigns') }}
                                 </a>
                             </li>
+                             <!-- Gift Management -->
+                             <li class="{{ request()->routeIs('coupon.index') ? 'active' : '' }}">
+                                <a href="{{ route('coupon.index') }}">
+                                    <i class="fas fa-gift me-2"></i> {{ __('messages.Gift Management') }}
+                                </a>
+                            </li>
                             <li class="{{ request()->routeIs('campaign.sms.*') ? 'active' : '' }}">
                                 <a href="{{ route('campaign.sms.index') }}">
                                     <i class="fas fa-sms me-2"></i> {{ __('messages.Schedule SMS') }}
@@ -138,12 +146,7 @@
                                     <i class="fas fa-user me-2"></i> {{ __('messages.Waiter') }}
                                 </a>
                             </li>
-                            <!-- Gift Management -->
-                            <li class="{{ request()->routeIs('coupon.index') ? 'active' : '' }}">
-                                <a href="{{ route('coupon.index') }}">
-                                    <i class="fas fa-gift me-2"></i> {{ __('messages.Gift Management') }}
-                                </a>
-                            </li>
+                           
                             <li class="{{ request()->routeIs('business-owner.profile') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('business-owner.profile') }}">
                                     <i class="fas fa-user me-2"></i> {{ __('messages.Profile') }}
