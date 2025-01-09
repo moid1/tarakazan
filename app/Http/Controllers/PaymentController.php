@@ -106,20 +106,15 @@ class PaymentController extends Controller
 
     }
 
-    public function test(Request $requestsss)
+    public function test(Request $request)
     {
+        
+        echo 'OK';
+        \Log::info($request->all());
 
-        $options = new \Iyzipay\Options();
-        $options->setApiKey("sandbox-dmNi1v7gmMFbuEicQwc4Tps7Dl7Oy9ar");
-        $options->setSecretKey("sandbox-Mb0gTEuF0y4u38oC9EBjUeOTHdPA3nQR");
-        $options->setBaseUrl("https://sandbox-api.iyzipay.com");
-        $request = new \Iyzipay\Request\RetrieveCheckoutFormRequest();
-        $request->setLocale(\Iyzipay\Model\Locale::TR);
-        $request->setToken($requestsss->token);
 
-        # make request
-        $checkoutForm = \Iyzipay\Model\CheckoutForm::retrieve($request, $options);
-        $subscription = Subscription::where('token', $checkoutForm->getToken())->first();
+       
+        $subscription = Subscription::where('token', $request->hash)->first();
         if ($subscription) {
             $subscription->start_date = now();
             $subscription->end_date = now()->addMonth();

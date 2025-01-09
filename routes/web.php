@@ -141,4 +141,6 @@ Route::post('/remove-from-blacklist', [WaiterController::class, 'removeFromBlack
 
 Route::post('/send-coupon-code',[SMSController::class, 'sendCouponCode']);
 
+Route::view('/custom-payment', 'payment.iframe');
+
 

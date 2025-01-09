@@ -21,67 +21,88 @@ class SubscriptionController extends Controller
         $package = Package::find($businessOwner->package);
         $user = auth()->user();
 
-        // return view('business_owners.subscriptions.create', compact('package'));
+        $merchant_id = '528114';
+        $merchant_key = 'UpCe6QKAd5Uij91h';
+        $merchant_salt = 'bqAnpBwgMs8qPFAb';
 
-        $options = new \Iyzipay\Options();
-        $options->setApiKey("sandbox-dmNi1v7gmMFbuEicQwc4Tps7Dl7Oy9ar");
-        $options->setSecretKey("sandbox-Mb0gTEuF0y4u38oC9EBjUeOTHdPA3nQR");
-        $options->setBaseUrl("https://sandbox-api.iyzipay.com");
-
-        $request = new \Iyzipay\Request\CreateCheckoutFormInitializeRequest();
-        $request->setLocale(\Iyzipay\Model\Locale::EN);
-        $request->setConversationId("123456789");
-        $request->setPrice($package->price);
-        $request->setPaidPrice($package->price);
-        $request->setCurrency(\Iyzipay\Model\Currency::TL);
-        // $request->setBasketId("B67832");
-        // $request->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
-        $request->setCallbackUrl("https://panel.tarakazan.com.tr/payment-test");
-        // $request->setEnabledInstallments(array(2, 3, 6, 9));
-
-        $buyer = new \Iyzipay\Model\Buyer();
-        $buyer->setId($user->id);
-        $buyer->setName($user->name);
-        $buyer->setSurname($user->name);
-        $buyer->setEmail(auth()->user()->email);
-        $buyer->setIdentityNumber('000000000' . $user->id);
-        $buyer->setRegistrationAddress($businessOwner->address);
-        $buyer->setCity("Istanbul");
-        $buyer->setCountry($businessOwner->country);
-        $request->setBuyer($buyer);
-
-        $shippingAddress = new \Iyzipay\Model\Address();
-        $shippingAddress->setContactName($user->name);
-        $shippingAddress->setCity("Istanbul");
-        $shippingAddress->setCountry($businessOwner->country);
-        $shippingAddress->setAddress($businessOwner->address);
-        $request->setShippingAddress($shippingAddress);
-
-        $billingAddress = new \Iyzipay\Model\Address();
-        $billingAddress->setContactName($user->name);
-        $billingAddress->setCity("Istanbul");
-        $billingAddress->setCountry($businessOwner->country);
-        $billingAddress->setAddress($businessOwner->address);
-        $request->setBillingAddress($billingAddress);
-
-        $basketItems = array();
-        $firstBasketItem = new \Iyzipay\Model\BasketItem();
-        $firstBasketItem->setId("BI101");
-        $firstBasketItem->setName($package->name);
-        $firstBasketItem->setCategory1($package->name);
-        $firstBasketItem->setItemType(\Iyzipay\Model\BasketItemType::VIRTUAL);
-        $firstBasketItem->setPrice($package->price);
-        $basketItems[0] = $firstBasketItem;
+        $email = $user->email;
+        $payment_amount = floatval($package->price);
+        $merchant_oid = rand(100000, 999999);
+        $user_name = $user->name;
+        $merchant_ok_url = "http://panel.tarakazan.com.tr/home";
+        $merchant_fail_url = "http://panel.tarakazan.com.tr/home";
+        $user_basket = "";
+        #
+        // EXAMPLE $user_basket creation - You can duplicate arrays per each product
+        $user_basket = base64_encode(json_encode(array(
+            array($package->name, $package->price, 1),
+        )));
 
 
-        $request->setBasketItems($basketItems);
+        if (isset($_SERVER["HTTP_CLIENT_IP"])) {
+            $ip = $_SERVER["HTTP_CLIENT_IP"];
+        } elseif (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
+            $ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+        } else {
+            $ip = $_SERVER["REMOTE_ADDR"];
+        }
 
-        # make request
-        $checkoutFormInitialize = \Iyzipay\Model\CheckoutFormInitialize::create($request, $options);
+        $user_ip = $ip;
+        $timeout_limit = "30";
+        $debug_on = 1;
+        $test_mode = 0;
+        $no_installment = 0;
+        $max_installment = 0;
+        $currency = "TL";
 
-        $token = $checkoutFormInitialize->getToken();
-        // dd($checkoutFormInitialize['paymentPageUrl']);
-        $result = $checkoutFormInitialize->getPaymentPageUrl(); // Example method
+        $hash_str = $merchant_id . $user_ip . $merchant_oid . $email . $payment_amount . $user_basket . $no_installment . $max_installment . $currency . $test_mode;
+        $paytr_token = base64_encode(hash_hmac('sha256', $hash_str . $merchant_salt, $merchant_key, true));
+        $post_vals = array(
+            'merchant_id' => $merchant_id,
+            'user_ip' => $user_ip,
+            'merchant_oid' => $merchant_oid,
+            'email' => $email,
+            'payment_amount' => floatval($payment_amount),
+            'paytr_token' => $paytr_token,
+            'user_basket' => $user_basket,
+            'debug_on' => $debug_on,
+            'no_installment' => $no_installment,
+            'max_installment' => 0,
+            'user_name' => $user_name,
+            'user_address' => 'test',
+            'user_phone' => 'test',
+            'merchant_ok_url' => $merchant_ok_url,
+            'merchant_fail_url' => $merchant_fail_url,
+            'timeout_limit' => $timeout_limit,
+            'currency' => $currency,
+            'test_mode' => $test_mode
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://www.paytr.com/odeme/api/get-token");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_vals);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+
+        //XXX: DİKKAT: lokal makinanızda "SSL certificate problem: unable to get local issuer certificate" uyarısı alırsanız eğer
+        //aşağıdaki kodu açıp deneyebilirsiniz. ANCAK, güvenlik nedeniyle sunucunuzda (gerçek ortamınızda) bu kodun kapalı kalması çok önemlidir!
+        //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
+        $result = @curl_exec($ch);
+
+        if (curl_errno($ch))
+            die("PAYTR IFRAME connection error. err:" . curl_error($ch));
+
+        curl_close($ch);
+
+        $result = json_decode($result, 1);
+
+        if ($result['status'] == 'success')
+            $token = $result['token'];
+        else
+            die("PAYTR IFRAME failed. reason:" . $result['reason']);
 
         Subscription::create([
             'user_id' => Auth::id(),
@@ -89,9 +110,17 @@ class SubscriptionController extends Controller
             'status' => 'inactive',
             'start_date' => now(),
             'end_date' => now()->addMonth(), // Adds 1 month to the current date
-            'token' => $token
+            'token' => $merchant_oid
         ]);
-        return redirect()->to($result);
+
+
+        return view('business_owners.subscriptions.create', compact('package', 'token'));
+
+
+
+
+
+
 
 
 
@@ -182,6 +211,7 @@ class SubscriptionController extends Controller
     {
         // Get the business owner for the authenticated user
         $businessOwner = BusinessOwner::where('user_id', Auth::id())->first();
+        $user = auth()->user();
 
         // Check if the user already has an active subscription
         $isAlreadyHaveSubscription = Subscription::where([['user_id', auth()->user()->id], ['status', 'active']])->exists();
@@ -200,70 +230,100 @@ class SubscriptionController extends Controller
             return back()->with('error', 'No higher package available for upgrade.');
         }
 
-        // Prepare payment options (for Iyzipay integration)
-        $options = new \Iyzipay\Options();
-        $options->setApiKey("sandbox-dmNi1v7gmMFbuEicQwc4Tps7Dl7Oy9ar");
-        $options->setSecretKey("sandbox-Mb0gTEuF0y4u38oC9EBjUeOTHdPA3nQR");
-        $options->setBaseUrl("https://sandbox-api.iyzipay.com");
+        $merchant_id = '528114';
+        $merchant_key = 'UpCe6QKAd5Uij91h';
+        $merchant_salt = 'bqAnpBwgMs8qPFAb';
 
-        // Create a new checkout request
-        $request = new \Iyzipay\Request\CreateCheckoutFormInitializeRequest();
-        $request->setLocale(\Iyzipay\Model\Locale::EN);
-        $request->setConversationId("123456789");
-        $request->setPrice($nextPackage->price);
-        $request->setPaidPrice($nextPackage->price);
-        $request->setCurrency(\Iyzipay\Model\Currency::TL);
-        $request->setCallbackUrl("https://panel.tarakazan.com.tr/payment-test");
+        $email = $user->email;
+        $payment_amount = floatval($nextPackage->price);
+        $merchant_oid = rand(100000, 999999);
+        $user_name = $user->name;
+        $merchant_ok_url = "http://panel.tarakazan.com.tr/home";
+        $merchant_fail_url = "http://panel.tarakazan.com.tr/home";
+        $user_basket = "";
+        #
+        // EXAMPLE $user_basket creation - You can duplicate arrays per each product
+        $user_basket = base64_encode(json_encode(array(
+            array($nextPackage->name, $nextPackage->price, 1),
+        )));
 
-        // Buyer and address details
-        $buyer = new \Iyzipay\Model\Buyer();
-        $buyer->setId(auth()->user()->id);
-        $buyer->setName(auth()->user()->name);
-        $buyer->setSurname(auth()->user()->name);
-        $buyer->setEmail(auth()->user()->email);
-        $buyer->setIdentityNumber('000000000' . auth()->user()->id);
-        $buyer->setRegistrationAddress($businessOwner->address);
-        $buyer->setCity("Istanbul");
-        $buyer->setCountry($businessOwner->country);
-        $request->setBuyer($buyer);
 
-        // Shipping and billing address (same for both)
-        $address = new \Iyzipay\Model\Address();
-        $address->setContactName(auth()->user()->name);
-        $address->setCity("Istanbul");
-        $address->setCountry($businessOwner->country);
-        $address->setAddress($businessOwner->address);
-        $request->setShippingAddress($address);
-        $request->setBillingAddress($address);
+        if (isset($_SERVER["HTTP_CLIENT_IP"])) {
+            $ip = $_SERVER["HTTP_CLIENT_IP"];
+        } elseif (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
+            $ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+        } else {
+            $ip = $_SERVER["REMOTE_ADDR"];
+        }
 
-        // Basket item (the package being upgraded to)
-        $basketItems = array();
-        $basketItem = new \Iyzipay\Model\BasketItem();
-        $basketItem->setId("BI101");
-        $basketItem->setName($nextPackage->name);
-        $basketItem->setCategory1($nextPackage->name);
-        $basketItem->setItemType(\Iyzipay\Model\BasketItemType::VIRTUAL);
-        $basketItem->setPrice($nextPackage->price);
-        $basketItems[0] = $basketItem;
-        $request->setBasketItems($basketItems);
+        $user_ip = $ip;
+        $timeout_limit = "30";
+        $debug_on = 1;
+        $test_mode = 0;
+        $no_installment = 0;
+        $max_installment = 0;
+        $currency = "TL";
 
-        // Make the request to Iyzipay API
-        $checkoutFormInitialize = \Iyzipay\Model\CheckoutFormInitialize::create($request, $options);
-        $token = $checkoutFormInitialize->getToken();
-        $paymentPageUrl = $checkoutFormInitialize->getPaymentPageUrl();
+        $hash_str = $merchant_id . $user_ip . $merchant_oid . $email . $payment_amount . $user_basket . $no_installment . $max_installment . $currency . $test_mode;
+        $paytr_token = base64_encode(hash_hmac('sha256', $hash_str . $merchant_salt, $merchant_key, true));
+        $post_vals = array(
+            'merchant_id' => $merchant_id,
+            'user_ip' => $user_ip,
+            'merchant_oid' => $merchant_oid,
+            'email' => $email,
+            'payment_amount' => floatval($payment_amount),
+            'paytr_token' => $paytr_token,
+            'user_basket' => $user_basket,
+            'debug_on' => $debug_on,
+            'no_installment' => $no_installment,
+            'max_installment' => 0,
+            'user_name' => $user_name,
+            'user_address' => 'test',
+            'user_phone' => 'test',
+            'merchant_ok_url' => $merchant_ok_url,
+            'merchant_fail_url' => $merchant_fail_url,
+            'timeout_limit' => $timeout_limit,
+            'currency' => $currency,
+            'test_mode' => $test_mode
+        );
 
-        // Create the new subscription
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://www.paytr.com/odeme/api/get-token");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_vals);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+
+        //XXX: DİKKAT: lokal makinanızda "SSL certificate problem: unable to get local issuer certificate" uyarısı alırsanız eğer
+        //aşağıdaki kodu açıp deneyebilirsiniz. ANCAK, güvenlik nedeniyle sunucunuzda (gerçek ortamınızda) bu kodun kapalı kalması çok önemlidir!
+        //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
+        $result = @curl_exec($ch);
+
+        if (curl_errno($ch))
+            die("PAYTR IFRAME connection error. err:" . curl_error($ch));
+
+        curl_close($ch);
+
+        $result = json_decode($result, 1);
+
+        if ($result['status'] == 'success')
+            $token = $result['token'];
+        else
+            die("PAYTR IFRAME failed. reason:" . $result['reason']);
+
         Subscription::create([
             'user_id' => Auth::id(),
             'package_id' => $nextPackage->id,
-            'status' => 'inactive', // Initially inactive until payment is completed
+            'status' => 'inactive',
             'start_date' => now(),
-            'end_date' => now()->addMonth(), // Set end date for 1 month from now
-            'token' => $token
+            'end_date' => now()->addMonth(), // Adds 1 month to the current date
+            'token' => $merchant_oid
         ]);
 
         // Redirect the user to the payment page
-        return redirect()->to($paymentPageUrl);
+        return view('business_owners.subscriptions.create', compact('package', 'token'));
     }
 
 }
