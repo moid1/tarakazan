@@ -112,21 +112,21 @@
         <div class="col-lg-6">
             <div class="container">
                 <h1>{{ $businessOwner->business_name }} </h1>
-                <h2>Coupon Code Verification</h2>
+                <h2>{{ __('messages.Coupon Code Verification') }}</h2>
                 <form id="coupon-form" style="margin-top:20px" action="{{ route('waiter.verify.code') }}"
                     method="POST">
                     @csrf
                     <div class="input-group">
-                        <label for="coupon-code">Coupon Code:</label>
+                        <label for="coupon-code">{{ __('messages.Coupon Code:') }}</label>
                         <input type="text" id="coupon-code" name="coupon_code" placeholder="Enter Coupon Code"
                             required>
                     </div>
                     <div class="input-group">
-                        <label for="mobile-number">Mobile Number:</label>
+                        <label for="mobile-number">{{ __('messages.Mobile Number:') }}</label>
                         <input type="tel" id="mobile-number" name="phone_no" placeholder="Enter Mobile Number"
                             required>
                     </div>
-                    <button type="submit" class="verify-btn">Redeem Code</button>
+                    <button type="submit" class="verify-btn">{{ __('messages.Redeem Code') }}</button>
                 </form>
 
                 @if (session('success'))
@@ -143,7 +143,8 @@
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <!-- Font Awesome Logout Icon -->
                     <hr style="margin-top: 20px" />
-                    <button class="verify-btn" style="background: red;margin-top:20px">Logout</button>
+                    <button class="verify-btn"
+                        style="background: red;margin-top:20px">{{ __('messages.Logout') }}</button>
                 </a>
 
                 <!-- Logout Form -->
@@ -155,15 +156,16 @@
         <div class="col-lg-6 mt-3">
             <div class="container">
                 <h1>{{ $businessOwner->business_name }} </h1>
-                <h2>Remove User From BlackList</h2>
+                <h2>{{ __('messages.Remove User From BlackList') }}</h2>
                 <form id="coupon-form" style="margin-top:20px" action="{{ route('waiter.remove.blacklist') }}"
                     method="POST">
                     @csrf
                     <div class="input-group">
-                        <label for="">Enter Phone no:</label>
-                        <input type="text" name="phone" id="" name="number" placeholder="Enter Phone No" required>
+                        <label for="">{{ __('messages.Enter Phone no:') }}</label>
+                        <input type="text" name="phone" id="" name="number"
+                            placeholder="{{ __('messages.Enter Phone No') }}" required>
                     </div>
-                    <button type="submit" class="verify-btn">Submit</button>
+                    <button type="submit" class="verify-btn">{{ __('messages.Submit') }}</button>
                 </form>
 
                 @if (session('successforBlacklist'))

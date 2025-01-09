@@ -131,7 +131,13 @@ return [
     'Add New Campaign' => 'Add New Campaign',
     'Upgrade package reminder' => 'Upgrade package reminder',
     'Click here' => 'Click here',
-    'Your subscription is inactive or has expired, so you are not authorized to access this.' => 'Your subscription is inactive or has expired, so you are not authorized to access this.'
-
+    'Your subscription is inactive or has expired, so you are not authorized to access this.' => 'Your subscription is inactive or has expired, so you are not authorized to access this.',
+    'Coupon Code Verification' => 'Coupon Code Verification',
+    'Coupon Code:' => 'Coupon Code:',
+    'Mobile Number:' => 'Mobile Number:',
+    'Redeem Code' => 'Redeem Code',
+    'Remove User From BlackList' => 'Remove User From BlackList',
+    'Enter Phone no:' => 'Enter Phone no:',
+    'Submit' => 'Submit'
 
 ];

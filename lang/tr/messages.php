@@ -130,7 +130,14 @@ return [
     'Add New Campaign' => 'Yeni Kampanya Ekle',
     'Upgrade package reminder' => 'Paketinizi hemen yükseltin!',
     'Click here' => 'Buraya Tiklayin',
-    'Your subscription is inactive or has expired, so you are not authorized to access this.' => 'Aboneliginiz aktif degil veya süresi dolmus, bu nedenle buna erisim yetkiniz yok'
+    'Your subscription is inactive or has expired, so you are not authorized to access this.' => 'Aboneliginiz aktif degil veya süresi dolmus, bu nedenle buna erisim yetkiniz yok',
+    'Coupon Code Verification' => 'Kupon Kodu Doğrulama',
+    'Coupon Code:' => 'Kupon Kodu:',
+    'Mobile Number:' => 'Telefon Numarası:',
+    'Redeem Code' => 'Kodu Kullan',
+    'Remove User From BlackList' => 'Kullanıcıyı Kara Listeden Çıkar',
+    'Enter Phone no:' => 'Telefon Numarasını Girin:',
+    'Submit' => 'Gönder'
 
 
 
