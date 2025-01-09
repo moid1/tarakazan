@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\BusinessOwnerCampaignSMS;
 use App\Models\CustomerDetail;
+use App\Models\RedeemCode;
 use App\Models\SMSQuota;
 use App\Models\Subscription;
 use App\Models\User;
@@ -53,20 +54,62 @@ class SendSmsCampaigns extends Command
         // Iterate over each campaign
         foreach ($campaigns as $campaign) {
             $duration = $campaign->duration;
+            $customerType = $campaign->customers_type;
 
             // Get business owner
             $businessOwner = $businessOwners[$campaign->business_owner_id];
             // Fetch recipients based on duration and customer type
             $query = CustomerDetail::where('business_owner_id', $campaign->business_owner_id)
                 ->where('is_verified', true);
+
             if ($duration != 'all') {
-                // Apply duration filter (e.g., for last 7, 30 days, etc.)
+                // Apply duration filter (e.g., for the last 7, 30 days, etc.)
                 $query->where('updated_at', '>=', Carbon::now()->subDays($duration));
             }
 
-            $campaignRecipients = $query->pluck('phone')->unique(); // Fetch unique phone numbers
-            $recipients = $recipients->merge($campaignRecipients);
+            if ($customerType === '2') {
+                // Assuming $duration here needs to be a date or interval
+                // You are using $duration in a filter for RedeemCode but it's not clear if it is correct.
+                // If $duration is meant to be a number of days, then modify the query accordingly.
+                $redeemCodes = RedeemCode::where('created_at', '>=', Carbon::now()->subDays($duration))->get();
 
+                // Creating a collection of customer detail IDs to merge
+                $customerDetailsIds = [];
+
+                foreach ($redeemCodes as $redeemCode) {
+                    if ($redeemCode && $redeemCode->customer_details_id) {
+                        $customerDetailsIds[] = $redeemCode->customer_details_id;
+                    }
+                }
+
+                // Apply the filter for customer details based on redeem codes
+                if (!empty($customerDetailsIds)) {
+                    $query->whereIn('id', $customerDetailsIds);
+                }
+            } else if ($customerType === '3') {
+                // Fetch redeem codes created within the given duration
+                $redeemCodes = RedeemCode::where('created_at', '>=', Carbon::now()->subDays($duration))->get();
+
+                // Collect the IDs of customers who redeemed codes
+                $redeemCustomerDetailsIds = [];
+                foreach ($redeemCodes as $redeemCode) {
+                    if ($redeemCode && $redeemCode->customer_details_id) {
+                        $redeemCustomerDetailsIds[] = $redeemCode->customer_details_id;
+                    }
+                }
+
+                // If there are customers who redeemed codes, filter those out by excluding them
+                if (!empty($redeemCustomerDetailsIds)) {
+                    $query->whereNotIn('id', $redeemCustomerDetailsIds);
+                }
+            }
+
+
+            // Fetch unique phone numbers
+            $campaignRecipients = $query->pluck('phone')->unique();
+
+            // Assuming $recipients is a collection, merge it with campaign recipients
+            $recipients = $recipients->merge($campaignRecipients);
 
             // Skip campaign if no recipients
             if ($recipients->isEmpty()) {
@@ -88,7 +131,7 @@ class SendSmsCampaigns extends Command
 
 
             // Call the method to send SMS
-            $this->sendCampaignSMS($recipients, $fullMessage, $businessOwner, $campaign->sms_limit);
+            $this->sendCampaignSMS($recipients, $fullMessage, $businessOwner, $campaign->sms_limit, $campaign->campaigns_id);
 
             // Mark campaign as sent
             $campaign->update(['is_sent' => true]);
@@ -102,7 +145,7 @@ class SendSmsCampaigns extends Command
     // Send SMS using the XML payload and cURL (Netgsm API)
 
 
-    public function sendCampaignSMS($recipients, $message, $businessOwner, $smsLimit)
+    public function sendCampaignSMS($recipients, $message, $businessOwner, $smsLimit, $campaignId)
     {
         // Escape values to prevent XML injection
         $usercode = htmlspecialchars($businessOwner->sms_user_code, ENT_QUOTES, 'UTF-8');
@@ -160,6 +203,7 @@ class SendSmsCampaigns extends Command
                 'sms_limit' => $smsLimit,
                 'created_at' => now(),
                 'updated_at' => now(),
+                'campaign_id' => $campaignId
             ];
         }
 

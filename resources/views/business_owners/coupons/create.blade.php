@@ -2,6 +2,17 @@
 
 @section('content')
     <div class="row new-chemist-parent-row">
+        @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
         <h4 class="mt-3">
             {{ __('messages.Add New Coupon') }}
         </h4>
