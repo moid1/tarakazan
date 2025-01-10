@@ -21,7 +21,7 @@
 
             @if (session('nextpackage') === true)
                 <div class="alert alert-danger">
-                    <span>{{session('error')}} &nbsp;<a href="{{ route('upgrade.sms.package') }}">Upgrade Your
+                    <span>{{ session('error') }} &nbsp;<a href="{{ route('upgrade.sms.package') }}">Upgrade Your
                             Package</a></span>
                 </div>
             @elseif(session('error'))
@@ -51,6 +51,7 @@
                         <th>{{ __('messages.Planed At') }}</th>
                         <th>{{ __('messages.Sent At') }}</th>
                         <th>{{ __('messages.Status') }}</th>
+                        <th>{{ __('messages.Filter') }}</th>
                         <th>{{ __('messages.Action') }}</th>
                     </tr>
                 </thead>
@@ -71,6 +72,18 @@
                                 @endif
                             </td>
                             <td>
+                                @if ($campaign->customers_type == '1')
+                                    QR Code + Verified their numbers
+                                @elseif($campaign->customers_type == '2')
+                                    Customers who redeemed
+                                @elseif($campaign->customers_type == '3')
+                                    Customer who are inactive
+                                    @else
+                                  {{  $campaign->customers_type}}
+                                @endif
+                                &nbsp;-  &nbsp;{{$campaign->duration}}
+                            </td>
+                            <td>
                                 <!-- Edit Icon -->
                                 @if ($campaign->is_sent == 0)
                                     <a href="{{ route('campaign.sms.edit', $campaign->id) }}"
@@ -78,7 +91,7 @@
                                         title="{{ __('messages.Edit') }}">
                                         <i class="fas fa-edit"></i>
                                     </a>
-/
+                                    /
                                     <!-- Delete Button (via form for POST method) -->
                                     <form action="{{ route('campaign.sms.destroy', $campaign->id) }}" method="POST"
                                         style="display:inline;">
