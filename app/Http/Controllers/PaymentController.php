@@ -109,7 +109,6 @@ class PaymentController extends Controller
     public function test(Request $request)
     {
         
-        echo 'OK';
         \Log::info($request->all());
 
 
@@ -133,7 +132,7 @@ class PaymentController extends Controller
             }
 
         }
-        return redirect()->route('home')->with('success','Your subscription has been successfully activated!');
+        echo 'OK';
 
     }
 }

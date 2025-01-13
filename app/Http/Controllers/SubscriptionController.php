@@ -26,7 +26,7 @@ class SubscriptionController extends Controller
         $merchant_salt = 'bqAnpBwgMs8qPFAb';
 
         $email = $user->email;
-        $payment_amount = floatval($package->price);
+        $payment_amount = floatval($package->price) * 100;
         $merchant_oid = rand(100000, 999999);
         $user_name = $user->name;
         $merchant_ok_url = "http://panel.tarakazan.com.tr/home";
@@ -62,7 +62,7 @@ class SubscriptionController extends Controller
             'user_ip' => $user_ip,
             'merchant_oid' => $merchant_oid,
             'email' => $email,
-            'payment_amount' => floatval($payment_amount),
+            'payment_amount' => $payment_amount,
             'paytr_token' => $paytr_token,
             'user_basket' => $user_basket,
             'debug_on' => $debug_on,
@@ -235,7 +235,7 @@ class SubscriptionController extends Controller
         $merchant_salt = 'bqAnpBwgMs8qPFAb';
 
         $email = $user->email;
-        $payment_amount = floatval($nextPackage->price);
+        $payment_amount = floatval($nextPackage->price)*100;
         $merchant_oid = rand(100000, 999999);
         $user_name = $user->name;
         $merchant_ok_url = "http://panel.tarakazan.com.tr/home";
@@ -271,7 +271,7 @@ class SubscriptionController extends Controller
             'user_ip' => $user_ip,
             'merchant_oid' => $merchant_oid,
             'email' => $email,
-            'payment_amount' => floatval($payment_amount),
+            'payment_amount' =>$payment_amount,
             'paytr_token' => $paytr_token,
             'user_basket' => $user_basket,
             'debug_on' => $debug_on,
@@ -323,7 +323,7 @@ class SubscriptionController extends Controller
         ]);
 
         // Redirect the user to the payment page
-        return view('business_owners.subscriptions.create', compact('package', 'token'));
+        return view('business_owners.subscriptions.create', compact('nextPackage', 'token'));
     }
 
 }

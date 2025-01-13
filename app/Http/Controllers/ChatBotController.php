@@ -65,7 +65,7 @@ class ChatBotController extends Controller
             // Store the new scan time in the session
             Session::put('last_scan_at_' . $userIp, Carbon::now());
         }
-        return view('chatbot.new.index', compact('business'));
+        return view('chatbot.new.custom', compact('business'));
     }
 
 
