@@ -40,7 +40,7 @@ class SMSController extends Controller
         if ($isAlreadyExists > 0) {
             return response()->json([
                 'success' => false,
-                'message' => 'You are already registered to this business name',
+                'message' => 'Bu işletmeye zaten kayıtlısın.',
             ], 400);
         }
 
@@ -104,7 +104,7 @@ class SMSController extends Controller
        <appkey>{$businessOwner->app_key}</appkey>
    </header>
    <body>
-       <msg><![CDATA[Doğrulama Şifre: $otp]]></msg>
+       <msg><![CDATA[Onay Kodu: $otp]]></msg>
        <no>{$phoneNO}</no>
    </body>
 </mainbody>

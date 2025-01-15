@@ -34,9 +34,9 @@
         <div class="welcome-img"><img class="bg-img" src="{{ asset('images/bg_pic.svg') }}" alt=""><img
                 src="{{ asset('images/welcome_page_pic.svg') }}" alt=""></div>
 
-        <div class="welcome-section-heading">Claim
-            Your Free
-            Gift...
+        <div class="welcome-section-heading">ÜCRETSİZ
+            HEDİYENİ
+            KAP
         </div>
 
         <div class="welcome-section-sub-heading">{{ $business->business_name }}</div>
@@ -46,23 +46,22 @@
             <label class="checkbox-wrapper">
                 <input type="checkbox" class="custom-checkbox" id="firstAcceptPolicies1" />
                 <span class="custom-circle"></span>
-                I agree to the processing of my personal data.</label>
+                Verilerimin işlenmesini kabul ediyorum.</label>
 
             <label class="checkbox-wrapper">
                 <input type="checkbox" checked class="custom-checkbox" id="firstAcceptPolicies2" />
                 <span class="custom-circle"></span>
-                I accept the terms of the campaign. </label>
+                Kampanya şartlarını kabul ediyorum.</label>
         </div>
 
 
         <div class="welcome-btn">
             <button id="get-gift"><img class="welcome-btn-gift" src="{{ asset('images/welcome_btn_gift.svg') }}"
-                    alt="">GET
-                YOUR GIFT <img class="welcome-btn-arrow" src="{{ asset('images/welcome_arrow.svg') }}"
+                    alt="">HEDİYENİ AL<img class="welcome-btn-arrow" src="{{ asset('images/welcome_arrow.svg') }}"
                     alt=""></button>
         </div>
 
-        <div id="bankToListBtn" class="welcome-section-bottom">REGISTER AGAIN</div>
+        <div id="bankToListBtn" class="welcome-section-bottom">YENIDEN KAYDOL</div>
 
     </div>
 
@@ -73,52 +72,44 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Information on the Processing of Personal Data
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Kişisel Verilerin İşlenmesi Hakkında
+                            Bilgilendirme
                     </h1>
                 </div>
 
                 <div class="modal-body">
-                    As <strong>{{ $business->business_name }}</strong>, we process your personal data within the scope
-                    of the Personal
-                    Data Protection Law No. 6698 ("KVKK") for the following purposes:
-                    <ul>
-                        <li>Sending gift codes</li>
-                        <li>Providing information about the campaign and special offers</li>
-                    </ul>
-                </div>
-
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Legal Basis and Duration of Processing Your
-                        Data:</h1>
-                </div>
-
-                <div class="modal-body">
-                    Your personal data will be processed based on your explicit consent and solely for the purposes
-                    mentioned above. Your data will be retained during the campaign period or as required by legal
-                    obligations and will then be destroyed.
-                </div>
-
-
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Your Rights:</h1>
-                </div>
-
-                <div class="modal-body">
-                    Under Article 11 of the KVKK, you have the following rights:
-                    <ul>
-                        <li>To learn whether your personal data is processed or not</li>
-                        <li>To request information if your data has been processed</li>
-                        <li>To learn the purpose of processing and whether it is used in accordance with its purpose
-                        </li>
-                        <li>To request the correction, deletion, or destruction of your data if it is incomplete, </li>
-                        <li>inaccurate, or improperly processed</li>
-                        <li>To demand compensation if you suffer damages due to unlawful processing of your data</li>
-                    </ul>
-                    To demand compensation if you suffer damages due to unlawful processing of your data
-                </div>
+                        <p>
+                            <strong>{{ $business->business_name }}</strong> olarak, 6698 sayılı Kişisel Verilerin Korunması Kanunu
+                            (“KVKK”) kapsamında, kişisel verilerinizi şu amaçlarla işliyoruz:
+                        </p>
+                        <ul>
+                            <li>Hediye kodu gönderimi</li>
+                            <li>Kampanya ve özel fırsatlar hakkında bilgilendirme</li>
+                        </ul>
+                        <p>
+                            <strong>Verilerinizin İşlenme Yasal Dayanağı ve Süresi:</strong><br>
+                            Kişisel verileriniz, açık rızanıza dayanarak işlenecek ve yalnızca yukarıdaki amaçlar
+                            doğrultusunda saklanacaktır. Verileriniz kampanya süresi boyunca veya yasal zorunluluklar
+                            gereği saklanacak, ardından imha edilecektir.
+                        </p>
+                        <p>
+                            <strong>Haklarınız:</strong><br>
+                            KVKK’nın 11. maddesi kapsamında şu haklara sahipsiniz:
+                        </p>
+                        <ul>
+                            <li>Kişisel verilerinizin işlenip işlenmediğini öğrenme</li>
+                            <li>İşlenme amacını öğrenme ve amaca uygun kullanılıp kullanılmadığını kontrol etme</li>
+                            <li>Verilerinizin düzeltilmesini, silinmesini veya yok edilmesini talep etme</li>
+                            <li>Kişisel verilerinizin kanuna aykırı işlenmesi durumunda zarara uğrarsanız tazminat talep
+                                etme</li>
+                        </ul>
+                        <p>
+                            Daha fazla bilgi ve talepleriniz için bizimle iletişime geçebilirsiniz: <strong>{{ $business->business_email }}</strong>
+                        </p>
+                    </div>
                 <div class="close-btn">
-                    <button data-bs-dismiss="modal"> <img class="popup-close" src="./images/popup_close.svg"
-                            alt="">CLOSE <img class="popup-arrow" src="./images/popup_arrow.svg"
+                    <button data-bs-dismiss="modal"> <img class="popup-close" src="{{asset('images/popup_close.svg')}}"
+                            alt="">Kapat <img class="popup-arrow" src="{{asset('images/popup_arrow.svg')}}"
                             alt=""></button>
                 </div>
 
@@ -140,20 +131,19 @@
             <div class="verify-bottom">
                 <div class="verify-bottom-content">
 
-                    <div class="verify-bottom-heading">Enter your phone number for a free <strong>gift code</strong> and
-                        <strong>exclusive offers.</strong>
+                    <div class="verify-bottom-heading">Ücretsiz hediye kodu ve özel fırsatlar için telefon numaranı gir, fırsatlardan hemen faydalan!
                     </div>
 
                     <div class="input1-div"><img src="{{ asset('images/verify_input1.svg') }}" alt=""><input
-                            placeholder="First Name" type="text" id="name"></div>
+                            placeholder="İsim" type="text" id="name"></div>
                     <div class="input2-div"><img src="{{ asset('images/verify_input2.svg') }}" alt=""><input
-                            placeholder="Phone Number" type="tel" id="phoneNo" inputmode="numeric"
+                            placeholder="Telefon Numara" type="tel" id="phoneNo" inputmode="numeric"
                             pattern="[0-9]*">
                     </div>
 
                     <div class="close-btn w-100">
                         <button id="verify-btn"> <img class="popup-close"
-                                src="{{ asset('images/verify_button_lock.svg') }}" alt="">VERIFY <img
+                                src="{{ asset('images/verify_button_lock.svg') }}" alt=""> DOĞRULA <img
                                 class="popup-arrow" src="{{ asset('images/popup_arrow.svg') }}"
                                 alt=""></button>
                     </div>
@@ -180,30 +170,39 @@
         <div class="verify-bottom">
             <div class="verify-bottom-content">
 
-                <div class="verify-bottom-heading">Enter the code to verify your phone number.</div>
-
+                <div class="verify-bottom-heading">Telefon numaranı doğrulamak için SMS ile gelen kodu gir.</div>
 
                 <div class="otp-input-div">
-                    <input maxlength="1" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="-"
-                        type="tel" class="otp-input">
-                    <input maxlength="1" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="-"
-                        type="tel" class="otp-input">
-                    <input maxlength="1" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="-"
-                        type="tel" class="otp-input">
-                    <input maxlength="1" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="-"
-                        type="tel" class="otp-input">
-                    <input maxlength="1" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="-"
-                        type="tel" class="otp-input">
-                    <input maxlength="1" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="-"
-                        type="tel" class="otp-input">
+                    <input maxlength="1" oninput="moveFocus(this, event)" placeholder="-" type="tel" class="otp-input">
+                    <input maxlength="1" oninput="moveFocus(this, event)" placeholder="-" type="tel" class="otp-input">
+                    <input maxlength="1" oninput="moveFocus(this, event)" placeholder="-" type="tel" class="otp-input">
+                    <input maxlength="1" oninput="moveFocus(this, event)" placeholder="-" type="tel" class="otp-input">
+                    <input maxlength="1" oninput="moveFocus(this, event)" placeholder="-" type="tel" class="otp-input">
+                    <input maxlength="1" oninput="moveFocus(this, event)" placeholder="-" type="tel" class="otp-input">
                 </div>
+                
+                <script>
+                    function moveFocus(currentInput, event) {
+                        // Only move focus if the input value is not empty and it's a valid number
+                        if (currentInput.value && /[0-9]/.test(currentInput.value)) {
+                            const nextInput = currentInput.nextElementSibling;
+                            if (nextInput) {
+                                nextInput.focus();
+                            }
+                        }
+                
+                        // Prevent the user from typing anything other than a number
+                        currentInput.value = currentInput.value.replace(/[^0-9]/g, '');
+                    }
+                </script>
+                
 
-                <div class="otp-resend-code">Re-send code in</div>
+                <div class="otp-resend-code">Kodu tekrar gönder</div>
 
                 <div class="timer-container">
                     <div class="progress-circle">
                         <span id="timer">30</span>
-                        <small id="small">Sec</small>
+                        <small id="small">Saniye</small>
 
                         <svg>
                             <circle cx="50" cy="50" r="48"></circle>
@@ -215,7 +214,7 @@
 
                 <div class="close-btn w-100">
                     <button id="otp-verify-btn"> <img class="popup-close"
-                            src="{{ asset('images/verify_button_lock.svg') }}" alt="">VERIFY <img
+                            src="{{ asset('images/verify_button_lock.svg') }}" alt=""> DOĞRULA <img
                             class="popup-arrow" src="{{ asset('images/popup_arrow.svg') }}" alt=""></button>
                 </div>
 
@@ -246,7 +245,7 @@
             <div class="verify-bottom-content">
 
                 <div class="rating-heading">FoodaysCoffee</div>
-                <div class="verify-bottom-heading" style="font-weight:500;">How would you rate us?</div>
+                <div class="verify-bottom-heading" style="font-weight:500;">Bizi nasıl değerlendirirsin?</div>
 
 
                 <div id="star-rating">
@@ -259,7 +258,7 @@
 
                 <div class="close-btn w-100">
                     <button id="rating-btn"> <img class="popup-close"
-                            src="{{ asset('images/rating_btn_star.svg') }}" alt="">NEXT <img
+                            src="{{ asset('images/rating_btn_star.svg') }}" alt="">DEVAM <img
                             class="popup-arrow" src="{{ asset('images/popup_arrow.svg') }}" alt=""></button>
                 </div>
 
@@ -281,19 +280,17 @@
         <div class="verify-bottom">
             <div class="verify-bottom-content">
 
-                <div class="rating-heading">Rate Us on Google</div>
-                <div class="verify-bottom-heading" style="font-weight:500;">Click the button below to leave us a
-                    Google review</div>
+                <div class="rating-heading">Google’da Bizi Değerlendir</div>
+                <div class="verify-bottom-heading" style="font-weight:500;">Google’da bizi değerlendirmek için lütfen aşağıdaki butona tıkla.</div>
 
 
                 <div class="close-btn w-100">
                     <button id="rateUsOnGoogle"> <img class="popup-close"
-                            src="{{ asset('images/review_google_icon.svg') }}" alt="">RATE US ON
-                        GOOGLE <img class="popup-arrow" src="{{ asset('images/popup_arrow.svg') }}"
+                            src="{{ asset('images/review_google_icon.svg') }}" alt="">Google’da değerlendir <img class="popup-arrow" src="{{ asset('images/popup_arrow.svg') }}"
                             alt=""></button>
                 </div>
-                <div class="verify-bottom-heading" style="font-weight:500; margin-top: 1.3rem;">Once you’re done,
-                    please reopen this window.</div>
+                <div class="verify-bottom-heading" style="font-weight:500; margin-top: 1.3rem;">Tamamladığında
+                    bu pencereyi yeniden aç.</div>
 
             </div>
         </div>
@@ -309,7 +306,7 @@
         <div class="welcome-img"><img style="top: 13%;" class="bg-img" src="{{ asset('images/bg_pic.svg') }}"
                 alt=""><img src="{{ asset('images/success_msg1.svg') }}" alt=""></div>
 
-        <div class="success-msg-title">Your discount code is being generated</div>
+        <div class="success-msg-title">İndirim kodun oluşturuluyor</div>
 
     </div>
 
@@ -322,8 +319,8 @@
 
         <div class="welcome-img"><img style="top: -5%;" class="bg-img" src="{{ asset('images/bg_pic.svg') }}"
                 alt=""><img src="{{ asset('images/success_msg2.svg') }}" alt=""></div>
-        <div class="success-msg-title">Claim your gift from our team now</div>
-        <div class="success-msg-title2">Show the discount code</div>
+        <div class="success-msg-title">Hemen şimdi ekibimizden hediyeni al.</div>
+        <div class="success-msg-title2">SMS ile indirim kodunu göster</div>
 
 
 
@@ -342,7 +339,28 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script>
+        function moveFocus(currentInput, event) {
+            // If a value is entered, move to the next input
+            if (currentInput.value && /[0-9]/.test(currentInput.value)) {
+                const nextInput = currentInput.nextElementSibling;
+                if (nextInput) {
+                    nextInput.focus();
+                }
+            }
+            
+            // If the input is empty (backspace), move to the previous input
+            if (!currentInput.value) {
+                const prevInput = currentInput.previousElementSibling;
+                if (prevInput) {
+                    prevInput.focus();
+                }
+            }
+    
+            // Prevent any character other than numbers from being entered
+            currentInput.value = currentInput.value.replace(/[^0-9]/g, '');
+        }
+    </script>
 
 
 </body>

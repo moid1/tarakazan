@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
             modal.show();
         }
     });
-})
+});
+
 
 
 
@@ -83,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (remainingTime < 0) {
                 clearInterval(interval);
-                timerElement.textContent = "Resend";
+                timerElement.textContent = "Tekrar Yolla";
                 small.textContent = " "
                 // secondsLabel.textContent = "0";
                 $('#timer').on('click', function () {
@@ -130,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
         name = $('#name').val();
         phoneNo = $('#phoneNo').val();
         if (!name || !phoneNo) {
-            alert("ALl fields are rqeuired");
+            alert("Dogrulama Sifre should be „Onay Kodu:");
             return;
         }
         sendOTP(phoneNo, name);
@@ -196,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementsByClassName('success-message1')[0].style.display = 'none';
                     document.getElementsByClassName('success-message2')[0].style.display = 'block';
 
-                  
+
                 } else {
                     alert("Error processing coupon data");
                 }
@@ -218,9 +219,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-$("#bankToListBtn").on('click', function(){
-    $('#backToList').modal('show');
-})
+    $("#bankToListBtn").on('click', function () {
+        $('#backToList').modal('show');
+    })
 
 
 });
