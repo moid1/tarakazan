@@ -113,7 +113,7 @@ class PaymentController extends Controller
 
 
        
-        $subscription = Subscription::where('token', $request->hash)->first();
+        $subscription = Subscription::where('token', $request->merchant_oid)->first();
         if ($subscription) {
             $subscription->start_date = now();
             $subscription->end_date = now()->addMonth();

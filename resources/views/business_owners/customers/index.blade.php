@@ -25,7 +25,8 @@
                     <th>{{ __('messages.Name') }}</th> <!-- Translated Header -->
                     <th>{{ __('messages.Phone No') }}</th> <!-- Translated Header -->
                     <th>{{ __('messages.Business Owner Name') }}</th> <!-- Translated Header -->
-                    <th>Interaction Date</th>
+                    <th>Kayıt Tarihi</th>
+                    <th>Son Etkileşim Tarihi</th>
                     <th>Total Redemption</th>
                     <th>Action</th>
                 </tr>
@@ -37,9 +38,9 @@
                         <td>{{ $customer->name }}</td>
                         <td>{{ $customer->phone }}</td>
                         <td>{{ $customer->businessOwner->business_name }}</td>
-                        <td>{{ $customer->created_at->format('d M Y | H:m') }}</td>
+                        <td>{{ $customer->created_at}}</td>
+                        <td>{{ $customer->redeemCoupon->isNotEmpty() ? $customer->redeemCoupon->first()->created_at : 'No Coupon' }}</td>
                         <td>{{ count($customer->redeemCoupon) }}</td>
-
                         <td>
                             <form class="" action="{{ route('admin.customer.destroy', $customer->id) }}"
                                 method="POST" style="display:inline;"
@@ -61,8 +62,9 @@
                     <th>{{ __('messages.Name') }}</th> <!-- Translated Header -->
                     <th>{{ __('messages.Phone No') }}</th> <!-- Translated Header -->
                     <th>{{ __('messages.Business Owner Name') }}</th> <!-- Translated Header -->
-                    <th>Interaction Date</th>
-
+                    <th>Kayıt Tarihi</th>
+                    <th>Son Etkileşim Tarihi</th>
+                    <th>Total Redemption</th>
                 </tr>
             </tfoot>
             </tbody>

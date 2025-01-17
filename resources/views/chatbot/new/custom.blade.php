@@ -199,7 +199,7 @@
 
                 <div class="otp-resend-code">Kodu tekrar gönder</div>
 
-                <div class="timer-container">
+                <div class="timer-container" id="timeerContent">
                     <div class="progress-circle">
                         <span id="timer">30</span>
                         <small id="small">Saniye</small>
@@ -244,7 +244,7 @@
         <div class="verify-bottom">
             <div class="verify-bottom-content">
 
-                <div class="rating-heading">FoodaysCoffee</div>
+                <div class="rating-heading">{{ $business->business_name }}</div>
                 <div class="verify-bottom-heading" style="font-weight:500;">Bizi nasıl değerlendirirsin?</div>
 
 

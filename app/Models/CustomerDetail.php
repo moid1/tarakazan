@@ -15,6 +15,7 @@ class CustomerDetail extends Model
     }
 
     public function redeemCoupon(){
-        return $this->hasMany(RedeemCode::class, 'customer_details_id');
+        return $this->hasMany(RedeemCode::class, 'customer_details_id')->orderBy('created_at', 'desc');
     }
+    
 }

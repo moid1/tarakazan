@@ -87,9 +87,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 timerElement.textContent = "Tekrar Yolla";
                 small.textContent = " "
                 // secondsLabel.textContent = "0";
-                $('#timer').on('click', function () {
+                $('#timeerContent').off('click').on('click', function () {
                     sendOTP(phoneNo, name);
-                })
+                });
             }
         }, 1000);
     }
