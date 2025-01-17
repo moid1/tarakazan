@@ -209,6 +209,10 @@ class HomeController extends Controller
             //// Next Package
             $isNextPackage = false;
 
+            $lifeTimeSMSSent =  0;
+             $lifeTimeSMSSent = SMSQuota::where('business_owner_id', $businessOwner->id)
+            ->count();
+
             if ($subscription && ($subscription->status === 'active' && $subscription->end_date >= now())) {
                 // Subscription is valid, proceed with the logic
     
@@ -252,7 +256,7 @@ class HomeController extends Controller
             }
 
 
-            return view('business_owners.home', compact('customersCount', 'businessOwner', 'smsCount', 'totalSMSRemaining', 'user', 'redeemCodeCount', 'subscription', 'otpSmsRemaining', 'weeks', 'totals', 'package','isNextPackage'));
+            return view('business_owners.home', compact('customersCount', 'businessOwner', 'smsCount', 'totalSMSRemaining', 'user', 'redeemCodeCount', 'subscription', 'otpSmsRemaining', 'weeks', 'totals', 'package','isNextPackage', 'lifeTimeSMSSent'));
         } else {
 
             $waiterData = Waiter::where('user_id', Auth::id())->first();
