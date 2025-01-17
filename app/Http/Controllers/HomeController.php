@@ -206,8 +206,53 @@ class HomeController extends Controller
             // $weeks = $customerGrowth->pluck('week');
             $totals = $customerGrowth->pluck('total');
 
+            //// Next Package
+            $isNextPackage = false;
 
-            return view('business_owners.home', compact('customersCount', 'businessOwner', 'smsCount', 'totalSMSRemaining', 'user', 'redeemCodeCount', 'subscription', 'otpSmsRemaining', 'weeks', 'totals', 'package'));
+            if ($subscription && ($subscription->status === 'active' && $subscription->end_date >= now())) {
+                // Subscription is valid, proceed with the logic
+    
+                // Retrieve the business owner, package, and SMS count in a more efficient manner
+                $businessOwner = BusinessOwner::where('user_id', Auth::id())->first();
+                if (!$businessOwner) {
+                    return back()->with('error', 'Business owner profile not found.');
+                }
+    
+                // Get the package details for the business owner
+                $package = $businessOwner->package ? Package::find($businessOwner->package) : null;
+    
+                // Ensure package exists before proceeding
+                if (!$package) {
+                    return back()->with('error', 'Invalid package associated with your business.');
+                }
+    
+                // Calculate the remaining SMS count for the current month
+                $currentMonth = Carbon::now()->month;
+                $currentYear = Carbon::now()->year;
+                $smsCount = SMSQuota::where('business_owner_id', $businessOwner->id)
+                    ->whereMonth('created_at', $currentMonth)
+                    ->whereYear('created_at', $currentYear)
+                    ->count();
+    
+                // Calculate total remaining SMS
+                $totalSMSRemaining = max(0, $package->quantity - $smsCount);
+                if ($totalSMSRemaining === 0) {
+                  $isNextPackage = true;
+                  $subscription->update(['status' => 'inactive']); // Efficient status update
+                  Auth::user()->update(['is_paid' => false]);
+                }
+    
+                //checkk if Customer Count exceeds
+                $customersCount = CustomerDetail::where([['business_owner_id', $businessOwner->id], ['is_verified', true]])->count();
+                if (intval($package->customers) <= $customersCount) {
+                    $isNextPackage = true;
+                    $subscription->update(['status' => 'inactive']); // Efficient status update
+                    Auth::user()->update(['is_paid' => false]);
+                }
+            }
+
+
+            return view('business_owners.home', compact('customersCount', 'businessOwner', 'smsCount', 'totalSMSRemaining', 'user', 'redeemCodeCount', 'subscription', 'otpSmsRemaining', 'weeks', 'totals', 'package','isNextPackage'));
         } else {
 
             $waiterData = Waiter::where('user_id', Auth::id())->first();

@@ -3,7 +3,11 @@
 @section('content')
     <div class="row dashboard-detail mt-5">
         <!-- Upgrade Reminder (If Paid is 0) -->
-        @if ($user->is_paid === 0 || ($subscription && $subscription->status !== 'active'))
+        @if($isNextPackage)
+            <div class="alert alert-danger mt-3">
+                {{ __('messages.Upgrade package reminder') }} <a href="{{ route('upgrade.sms.package') }}">{{ __('messages.Click here') }}</a>
+            </div>
+        @elseif ($$user->is_paid === 0 || ($subscription && $subscription->status !== 'active'))
             <div class="alert alert-danger mt-3">
                 {{ __('messages.Upgrade package reminder') }} <a href="{{ route('subscription.create') }}">{{ __('messages.Click here') }}</a>
             </div>

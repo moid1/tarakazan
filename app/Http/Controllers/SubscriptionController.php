@@ -238,8 +238,8 @@ class SubscriptionController extends Controller
         $payment_amount = floatval($nextPackage->price)*100;
         $merchant_oid = rand(100000, 999999);
         $user_name = $user->name;
-        $merchant_ok_url = "http://panel.tarakazan.com.tr/home";
-        $merchant_fail_url = "http://panel.tarakazan.com.tr/home";
+        $merchant_ok_url = "http://qr.tarakazan.com.tr/home";
+        $merchant_fail_url = "http://qr.tarakazan.com.tr/home";
         $user_basket = "";
         #
         // EXAMPLE $user_basket creation - You can duplicate arrays per each product
