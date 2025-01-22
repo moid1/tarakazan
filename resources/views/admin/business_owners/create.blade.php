@@ -54,6 +54,14 @@
                     </div>
 
                     <div class="col-12 col-md-6 mb-3">
+                        <div class="chemist-input-heading">{{ __('messages.IYS CODE') }}</div>
+                        <!-- Translated label -->
+                        <input type="text" name="iys_code" id="" required
+                            class="form-control" />
+                    </div>
+
+
+                    <div class="col-12 col-md-6 mb-3">
                         <div class="chemist-input-heading">{{ __('messages.Mersis No') }}</div>
                         <!-- Translated label -->
                         <input type="text" name="mersis_no" id="" required class="form-control" />

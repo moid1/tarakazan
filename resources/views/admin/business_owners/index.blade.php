@@ -52,7 +52,7 @@
                             <td>{{ $businessOwner->business_name }}</td>
                             <td>{{ $businessOwner->address }}</td>
                             <td>{{ $businessOwner->business_email }}</td>
-                            <td>{{ \App\Models\Package::find($businessOwner->package)->name }}</td>
+                            <td>{{ optional(\App\Models\Package::find($businessOwner->package))->name ?? 'N/A' }}</td>
                             <td>{{ $businessOwner->slug }}</td>
                             <td>{{ $businessOwner->created_at->format('d M Y') }}</td>
                             <td>

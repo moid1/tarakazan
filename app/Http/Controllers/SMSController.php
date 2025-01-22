@@ -11,7 +11,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Log;
-
 class SMSController extends Controller
 {
     public function sendOTPSMSToCustomer(Request $request)
@@ -185,6 +184,8 @@ XML;
             $customerDetail->is_verified = true;
             $customerDetail->save();
 
+            //Register TO IYS
+
             // Fetch the business owner details
             $businessOwner = BusinessOwner::where('id', $customerDetail->business_owner_id)->first();
 
@@ -199,6 +200,8 @@ XML;
                         'message' => 'No Coupon Code Available'
                     ], 404);
                 }
+                $this->registerToIYS($businessOwner, $customerDetail, $coupon);
+
                 // $this->sendCouponCode($businessOwner->id, $customerDetail->phone, $coupon->code);
                 $businessOwner->increment('google_reviews');
 
@@ -293,4 +296,42 @@ XML;
     }
 
 
+    private function registerToIYS($businessOwner, $customerDetail, $coupon)
+    {
+        // Prepare the data to send to the IYS API
+        $payload = [
+            'header' => [
+                'username' => $businessOwner->sms_user_code, // Update with correct values
+                'password' => $businessOwner->sms_user_password,   // Update with correct values
+                'brandCode' => $businessOwner->iys_code,    // Update with correct values
+            ],
+            'body' => [
+                'data' => [
+                    [
+                        'type' => 'MESAJ',
+                        'source' => 'HS_WEB',
+                        'recipient' => '+90'.$customerDetail->phone,  // Customer's phone number
+                        'status' => 'ONAY',
+                        'consentDate' => now()->toDateTimeString(),  // Current time
+                        'recipientType' => 'BIREYSEL',
+                        'appkey' => $businessOwner->app_key,  // Update with correct appkey
+                    ],
+                ],
+            ],
+        ];
+
+        // Send POST request to the IYS API
+        $response = Http::post('https://api.netgsm.com.tr/iys/add', $payload); // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
+
+        // Log or handle the response if needed
+        if ($response->successful()) {
+            // Optionally log the successful message or do other necessary actions
+            Log::info('IYS message sent successfully', $response->json());
+        } else {
+            // Handle errors (e.g., log or notify)
+            Log::error('IYS message failed', $response->json());
+        }
+    }
+
 }
+

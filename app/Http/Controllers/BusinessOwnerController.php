@@ -62,7 +62,8 @@ class BusinessOwnerController extends Controller
             'phone_number_netgsm' => 'required',
             'google_review_before'=>'required',
             'google_review_after'=>'required',
-            'stop_link' => 'required'
+            'stop_link' => 'required',
+            'iys_code'=>'required'
         ]);
 
         // Handle the logo upload (if exists)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BusinessOwner;
+use App\Models\CustomerDetail;
 use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -108,11 +109,11 @@ class PaymentController extends Controller
 
     public function test(Request $request)
     {
-        
+
         \Log::info($request->all());
 
 
-       
+
         $subscription = Subscription::where('token', $request->merchant_oid)->first();
         if ($subscription) {
             $subscription->start_date = now();
@@ -125,14 +126,62 @@ class PaymentController extends Controller
                 $user->is_paid = true;
                 $user->save();
             }
-            
+
             $busessOwenr = BusinessOwner::where('user_id', $subscription->user_id)->first();
-            if($busessOwenr){
-                $busessOwenr->update(['package'=>$subscription->package_id]);
+            if ($busessOwenr) {
+                $busessOwenr->update(['package' => $subscription->package_id]);
             }
 
         }
         echo 'OK';
 
     }
+
+    public function iysWebhook(Request $request)
+    {
+        \Log::info('Getting notification');
+
+        // Get raw request content
+        $rawData = $request->getContent();
+        \Log::info('IYS Webhook Raw Data:', ['raw_data' => $rawData]);
+
+        // Decode the JSON directly as an array
+        $decodedData = json_decode($rawData, true);
+
+        if (empty($decodedData) || !is_array($decodedData)) {
+            return response()->json(['success' => false, 'message' => 'Invalid JSON data.'], 200);
+        }
+
+        // Get the last entry from the array
+        $lastEntry = end($decodedData);
+
+        if (!$lastEntry) {
+            return response()->json(['success' => false, 'message' => 'No data in the array.'], 200);
+        }
+
+        $no = $lastEntry['recipient'] ?? null;
+
+        if (empty($no)) {
+            \Log::warning('Recipient phone number is missing in the last entry.', ['entry' => $lastEntry]);
+            return response()->json(['success' => false, 'message' => 'Recipient phone number is missing.'], 200);
+        }
+
+        // Remove the +90 prefix if present
+        $no = preg_replace('/^\+90/', '', $no);
+
+        // Check if a customer exists with the phone number
+        $customer = CustomerDetail::where('phone', $no)->first();
+
+        if ($customer && ($lastEntry['status'] ?? null) === 'RET') {
+            $customer->delete();
+            \Log::info("Customer with phone $no has been deleted.");
+            return response()->json(['success' => true, 'message' => 'Customer record deleted successfully.']);
+        }
+
+        \Log::warning("No customer found with phone number $no or status is not 'RET'.", ['entry' => $lastEntry]);
+        return response()->json(['success' => true, 'message' => 'Customer not found or status mismatch.'], 200);
+    }
+
+
+
 }

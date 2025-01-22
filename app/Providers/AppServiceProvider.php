@@ -30,7 +30,8 @@ class AppServiceProvider extends ServiceProvider
         App::setLocale($locale); // Set the application's locale globally
       
         \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::except([
-            'payment-test'
+            'payment-test',
+            'iys-webhook'
         ]);
         
     }

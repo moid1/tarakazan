@@ -122,6 +122,7 @@ Route::post('verify-otp', [SMSController::class, 'verifyOTP']);
 //
 Route::get('payment', [PaymentController::class, 'storageeCard']);
 Route::post('payment-test', [PaymentController::class, 'test']);
+Route::post('iys-webhook', [PaymentController::class, 'iysWebhook']);
 
 
 // SUBSCRIPTION FOR BUSINESS OWNERS
